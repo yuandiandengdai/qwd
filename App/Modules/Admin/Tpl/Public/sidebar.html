@@ -1,0 +1,39 @@
+<div class="container-fluid">
+	<div class="row">
+		<!--        侧边栏功能菜单-->
+		<div class="col-xs-2 col-sm-2 sidebar">
+			<!--侧边栏上部分-->
+			<ul class="nav nav-sidebar">
+				<li class="active">
+					<a href="<?php echo (isset($_SESSION['admin_id'])) ? (ADMIN_HOME_PATH.$_SESSION['admin_id']) : (ADMIN_LOGIN_PATH) ?>"
+					   class="active ajax-link">
+						<span class="hidden-xs">功能菜单列表</span>
+					</a>
+				</li>
+
+				<li>
+					<a class="ajax-link"
+					   href="<?php echo (isset($_SESSION['admin_id'])) ? (ADMIN_USERS_PATH.$_SESSION['admin_id']) : (ADMIN_LOGIN_PATH) ?>">
+						<span class="hidden-xs">玩家管理</span>
+					</a>
+				</li>
+
+				<li>
+					<a class="ajax-link"
+					   href="<?php echo (isset($_SESSION['admin_id'])) ? (ADMIN_ROOM_PATH.$_SESSION['admin_id']) : (ADMIN_LOGIN_PATH) ?>">
+						<span class="hidden-xs">房间管理</span>
+					</a>
+				</li>
+
+				<li>
+					<a class="link"
+					   href="<?php echo (isset($_SESSION['admin_id'])) ? (ADMIN_QUESTION_PATH.$_SESSION['admin_id']) : (ADMIN_LOGIN_PATH) ?>">
+						<span class="hidden-xs">题库管理</span>
+					</a>
+				</li>
+
+			</ul>
+		</div>
+
+		<!--        右边内容区域显示-->
+

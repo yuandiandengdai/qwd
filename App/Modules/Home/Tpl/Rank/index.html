@@ -1,0 +1,51 @@
+<include file="public:header"/>
+
+<div class="container" id="all_info">
+	<h2 id="game_order_info">排行榜</h2>
+	<div id="leader_info">
+		<div class="top_title">领先排行列表</div>
+		<dt class="item_list_info">
+                    <span class="num_order"
+                          style="<?php if($i < 4){
+                              echo 'background-color:orange;color: #FFF;';
+                          } ?>">
+                        <?= $i ?></span>
+			<span class="xu_wei"><a href="javascript:void(0)" title="<?= $row['name'] ?>&nbsp;总共赢得了"><?=
+                            $row['name'] ?>
+				&nbsp;总共赢得了</a></span>
+			<span class="z_wu_pai_ming"><?= $row['onwercount'] ?>&nbsp;局比赛</span>
+		</dt>
+
+	</div>
+
+	<div id="user_info">
+		<div class="top_title">玩家状态列表</div>
+
+		<dt class="item_list_info">
+			<span class="num_order"><?= $i ?></span>
+			<span class="ply_join_game"><a href="javascript:void(0)"
+			                               title="<?= $row['name'] ?>&nbsp;进入了&nbsp;<?= $row['rid'] ?>号房间"><?= $row['name'] ?>
+				&nbsp;进入了&nbsp;<?= $row['rid'] ?>号房间</a></span>
+			<span class="ply_join_time"><?= $row['addtime'] ?></span>
+
+		</dt>
+
+	</div>
+
+	<div id="room_info">
+		<div class="top_title">房间状态列表</div>
+		<dt class="item_list_info">
+			<span class="num_order"><?= $i ?></span>
+			<span class="ply_info"><a href="javascript:void(0)"
+			                          title="<?= $row['onwer'] ?>&nbsp;赢得本局比赛"><?= $row['onwer'] ?>
+				&nbsp;在本房间赢得比赛</a></span>
+			<span class="ply_num">&nbsp;人在玩</span>
+		</dt>
+	</div>
+	<form class="new_user" id="new_user" method="post" accept-charset="UTF-8"
+	      action="<?php echo (isset($_SESSION['id'])) ? (SELECT_ROOMS_PATH.$_SESSION['id']) : (GAME_RANK_INFO_PATH) ?> ">
+		<input id="game_start_button1" name="commit" value="开始游戏" class="btn btn-primary" type="submit">
+	</form>
+</div>
+
+<include file="public:footer"/>

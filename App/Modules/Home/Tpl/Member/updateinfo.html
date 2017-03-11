@@ -1,0 +1,27 @@
+<include file="public:header"/>
+
+<h2>更新个人资料</h2>
+<div class="row">
+	<div class="col-md-4 col-md-offset-4">
+		<form class="edit_user" id="edit_user_1" action="<?php echo USERUPDATE_PATH . '?id=' .
+                $_SESSION['id'] ?>" accept-charset="UTF-8" method="post">
+			<label for="user_name">玩家姓名</label>
+			<input class="form-control" type="text" name="name" id="user_name"
+			       value="<?php if (isset($_POST['name'])) { echo $_POST['name']; } else {
+                           echo $_SESSION['name']; } ?>"/>
+			<label for="user_email">Email</label>
+			<input class="form-control" type="text" name="email" id="user_email"
+			       value="<?php if (isset($_POST['email'])) { echo $_POST['email']; } else {
+                           echo $_SESSION['email']; } ?>"/>
+			<label for="user_password">密码</label>
+			<input class="form-control" type="password" name="p1" id="user_password"
+			       value="<?php if (isset($_POST['p1'])) echo $_POST['p1']; ?>"/>
+			<label for="user_password_confirmation">密码确认</label>
+			<input class="form-control" type="password" name="p2" id="user_password_confirmation"
+			       value="<?php if (isset($_POST['p2'])) echo $_POST['p2']; ?>"/>
+			<input type="submit" name="commit" value="更新" class="btn btn-primary" />
+		</form>
+	</div>
+</div>
+
+<include file="public:footer"/>
