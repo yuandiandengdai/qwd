@@ -5,7 +5,7 @@
 			<!--侧边栏上部分-->
 			<ul class="nav nav-sidebar">
 				<li class="active">
-					<a href="<?php echo (isset($_SESSION['admin_id'])) ? (ADMIN_HOME_PATH.$_SESSION['admin_id']) : (ADMIN_LOGIN_PATH) ?>"
+					<a href="javascript:void(0)"
 					   class="active ajax-link">
 						<span class="hidden-xs">功能菜单列表</span>
 					</a>
@@ -13,21 +13,21 @@
 
 				<li>
 					<a class="ajax-link"
-					   href="<?php echo (isset($_SESSION['admin_id'])) ? (ADMIN_USERS_PATH.$_SESSION['admin_id']) : (ADMIN_LOGIN_PATH) ?>">
+					   href="__ROOT__/Admin/Member">
 						<span class="hidden-xs">玩家管理</span>
 					</a>
 				</li>
 
 				<li>
 					<a class="ajax-link"
-					   href="<?php echo (isset($_SESSION['admin_id'])) ? (ADMIN_ROOM_PATH.$_SESSION['admin_id']) : (ADMIN_LOGIN_PATH) ?>">
+					   href="__ROOT__/Admin/Room">
 						<span class="hidden-xs">房间管理</span>
 					</a>
 				</li>
 
 				<li>
 					<a class="link"
-					   href="<?php echo (isset($_SESSION['admin_id'])) ? (ADMIN_QUESTION_PATH.$_SESSION['admin_id']) : (ADMIN_LOGIN_PATH) ?>">
+					   href="__ROOT__/Admin/Question">
 						<span class="hidden-xs">题库管理</span>
 					</a>
 				</li>

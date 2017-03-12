@@ -1,2 +1,197 @@
 <include file="public:header"/>
 <include file="public:sidebar"/>
+<div class="col-xs-12 col-sm-10 main">
+	<!--图片的位置-->
+	<div id="addDiv" style="display:none;margin-top: 10px">
+		<form id="addForm" name="addForm" method="POST" enctype="multipart/form-data" action="">
+			<table width="100%" style="background: #EFEFEF;border: 1px solid #428BCA">
+				<tr>
+					<td>
+						<table width="100%">
+							<tr>
+								<td width="7%" style="padding-top: 5px">&nbsp;&nbsp;房间名称：</td>
+								<td style="padding-top: 5px"><input name="name" id="name" style="width:99%;"/>
+								</td>
+							</tr>
+							<tr>
+								<td width="7%" style="padding-top: 5px">&nbsp;&nbsp;房间卡号：</td>
+								<td style="padding-top: 5px">
+									<input type="text" name="number" style="width:99%;" id="number" value=""/>
+								</td>
+							</tr>
+							<tr>
+								<td height="25px" width="5%" style="padding-top: 5px;padding-bottom: 5px">&nbsp;&nbsp;房间状态：</td>
+								<td style="padding-top: 5px;padding-bottom: 5px">
+									<select name="status">
+										<option value="-1">请选择</option>
+										<option value="0">无效</option>
+										<option value="1">有效</option>
+									</select>
+								</td>
+							</tr>
+							<tr>
+								<td height="25px" colspan="2" style="text-align: center">
+									&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="submit" value="保存">
+									&nbsp;&nbsp;&nbsp;<input type="reset" value="重置">
+									&nbsp;&nbsp;&nbsp;<input type="button" onclick="javascript: cancel_add();"
+									                         value="取消">
+								</td>
+							</tr>
+						</table>
+					</td>
+				</tr>
+			</table>
+		</form>
+		<br/>
+	</div>
+	<!--表格部分-->
+	<h3 class="sub-header">房间管理</h3>
+	<div class="table-responsive">
+		<table class="table table-hover table-bordered table-condensed">
+			<thead>
+			<tr>
+				<th width="3%">房间</th>
+				<th width="10%">房间名称</th>
+				<th width="15%">房间卡号</th>
+				<th width="7%">在线人数</th>
+				<th width="11%">赢得游戏时间</th>
+				<th width="12%">赢家名字</th>
+				<th width="11%">修改时间</th>
+				<th width="5%">状态</th>
+				<th width="6%">操作</th>
+			</tr>
+			</thead>
+			<tbody class="loaddata">
+			</tbody>
+			<tr>
+				<td colspan="9" style="text-align:center"><a href="#" onclick="javascript:display_add()
+            ">添加新房间</a></td>
+			</tr>
+		</table>
+		<div id="pagecount"></div>
+	</div>
+</div>
+</div>
+</div>
+<script type="text/javascript" language="javascript">
+
+    $(function () {
+        getData(1);
+        $("#pagecount").delegate("a", "click", function () {
+            var rel = $(this).attr("rel");
+            if (rel) {
+                getData(rel);
+            }
+        });
+    });
+
+    //获取数据
+    function getData(page) {
+        var curPage = 1; //当前页码
+        var total, pageSize, totalPage;
+        $.ajax({
+            type: 'POST',
+            url: 'http://localhost/php/ajax_room.php',
+            data: {'pageNum': page - 1},
+            dataType: 'json',
+            success: function (json) {
+                $(".loaddata").empty();
+                total = json.total; //总记录数
+                pageSize = json.pageSize; //每页显示条数
+                curPage = page; //当前页
+                totalPage = json.totalPage; //总页数
+                var li = "";
+                var list = json.list;
+                $.each(list, function (index, array) { //遍历json数据列
+
+                    li += "<tr>" +
+                        "<td>" + array['rid'] + "</td>" +
+                        "<td>" + array['name'] + "</td>" +
+                        "<td>" + array['number'] + "</td>" +
+                        "<td>" + array['count'] + "</td>" +
+                        "<td>" + array['onwertime'] + "</td>" +
+                        "<td>" + array['onwer'] + "</td>" +
+                        "<td>" + array['addtime'] + "</td>" +
+                        "<td>" + array['status'] + "</td>" +
+                        "<td>" + "<a href='#'  onclick=\"edit_record('" + array['rid'] + "','" + array['name'] + "','" + array['number'] + "','" + array['status'] + "')\">" + "修改</a>&nbsp;" + "/&nbsp;" +
+                        "<a href='#' onclick=\"delete_record('" + array['rid'] + "')\">" + "删除</a>" + "</td>" +
+                        "</tr>";
+
+                });
+                $(".loaddata").append(li);
+            },
+            complete: function () { //生成分页条
+                //页码大于最大页数
+                if (curPage > totalPage) curPage = totalPage;
+                //页码小于1
+                if (curPage < 1) curPage = 1;
+                pageStr = "<span>共" + total + "条</span><span>" + curPage + "/" + totalPage + "</span>";
+
+                //如果是第一页
+                if (curPage == 1) {
+                    pageStr += "<span>首页</span><span>上一页</span>";
+                } else {
+                    pageStr += "<span><a href='javascript:void(0)' rel='1'>首页</a></span><span><a href='javascript:void(0)' rel='" + (curPage - 1) + "'>上一页</a></span>";
+                }
+
+                //如果是最后页
+                if (curPage >= totalPage) {
+                    pageStr += "<span>下一页</span><span>尾页</span>";
+                } else {
+                    pageStr += "<span><a href='javascript:void(0)' rel='" + (parseInt(curPage) + 1) + "'>下一页</a></span><span><a href='javascript:void(0)' rel='" + totalPage + "'>尾页</a></span>";
+                }
+
+                $("#pagecount").html(pageStr);
+            },
+            error: function () {
+                alert("数据加载失败");
+            }
+        });
+    }
+
+    function delete_record(id) {
+        if (confirm("您确定要删除这间房么？")) {
+            document.location.href = "<?= ROOM_ACTION_PATH ?>?act=del&id=" + id;
+        }
+    }
+
+    function edit_record(id, name, number, status) {
+        var addDiv = document.getElementById("addDiv");
+        addDiv.style.display = "";
+        var addForm = document.getElementById("addForm");
+        addForm.action = "<?= ROOM_ACTION_PATH ?>?act=edit&id=" + id;
+        //addForm.id.value = id;
+        addForm.name.value = name;
+        addForm.number.value = number;
+        //addForm.status.value = status;
+        selCheck(addForm.status, status);
+    }
+
+    function cancel_add() {
+        var addDiv = document.getElementById("addDiv");
+        addDiv.style.display = "none";
+    }
+
+    function display_add() {
+        var addDiv = document.getElementById("addDiv");
+        addDiv.style.display = "";
+        var addForm = document.getElementById("addForm");
+        addForm.action = "<?= ROOM_ACTION_PATH ?>?act=add";
+        addForm.name.value = '';
+        addForm.number.value = '';
+        selCheck(addForm.status, 1);
+    }
+
+    function selCheck(radioList, val) {
+        for (var i = 0; i < radioList.length; i++) {
+            if (radioList[i].value == val) {
+                radioList[i].selected = true;
+            }
+            else {
+                radioList[i].selected = false;
+            }
+        }
+    }
+</script>
+</body>
+</html>
