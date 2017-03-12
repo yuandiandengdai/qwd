@@ -55,95 +55,36 @@
 				<th width="4%">题号</th>
 				<th width="50%">问题描述</th>
 				<th width="15%">问题答案</th>
-				<th width="12%">修改时间</th>
 				<th width="5%">状态</th>
 				<th width="7%">操作</th>
 			</tr>
 			</thead>
 			<tbody class="loaddata">
+			<volist name="data" id="val">
+				<tr>
+					<td>{$val.id}</td>
+					<td>{$val.question}</td>
+					<td>{$val.answer}</td>
+					<td>
+						<eq name="val.status" value="1">正常
+							<else/>
+							禁用
+						</eq>
+					</td>
+					<td><a href="">修改</a>&nbsp;&nbsp;&nbsp;<a href="">删除</a></td>
+				</tr>
+			</volist>
 			</tbody>
 			<tr>
 				<td colspan="6" style="text-align:center"><a href="#" onclick="javascript:display_add()">添加新题目</a></td>
 			</tr>
 		</table>
-		<div id="pagecount"></div>
+		<div id="pagecount">{$page}</div>
 	</div>
 </div>
 </div>
 </div>
 <script type="text/javascript" language="javascript">
-
-    $(function () {
-        getData(1);
-        $("#pagecount").delegate("a", "click", function () {
-            var rel = $(this).attr("rel");
-            if (rel) {
-                getData(rel);
-            }
-        });
-    });
-
-    //获取数据
-    function getData(page) {
-        var curPage = 1; //当前页码
-        var total, pageSize, totalPage;
-        $.ajax({
-            type: 'POST',
-            url: 'http://localhost/php/ajax_question.php',
-            data: {'pageNum': page - 1},
-            dataType: 'json',
-            success: function (json) {
-                $(".loaddata").empty();
-                total = json.total; //总记录数
-                pageSize = json.pageSize; //每页显示条数
-                curPage = page; //当前页
-                totalPage = json.totalPage; //总页数
-                var li = "";
-                var list = json.list;
-                $.each(list, function (index, array) { //遍历json数据列
-
-                    li += "<tr>" +
-                        "<td>" + array['qid'] + "</td>" +
-                        "<td>" + array['question'] + "</td>" +
-                        "<td>" + array['answer'] + "</td>" +
-                        "<td>" + array['addtime'] + "</td>" +
-                        "<td>" + array['status'] + "</td>" +
-                        "<td>" + "<a href='#'  onclick=\"edit_record('" + array['qid'] + "','" + array['question'] + "','" + array['answer'] + "','" + array['status'] + "')\">" + "修改</a>&nbsp;" + "/&nbsp;" +
-                        "<a href='#' onclick=\"delete_record('" + array['qid'] + "')\">" + "删除</a>" + "</td>" +
-                        "</tr>";
-
-                });
-                $(".loaddata").append(li);
-            },
-            complete: function () { //生成分页条
-                //页码大于最大页数
-                if (curPage > totalPage) curPage = totalPage;
-                //页码小于1
-                if (curPage < 1) curPage = 1;
-                pageStr = "<span>共" + total + "条</span><span>" + curPage + "/" + totalPage + "</span>";
-
-                //如果是第一页
-                if (curPage == 1) {
-                    pageStr += "<span>首页</span><span>上一页</span>";
-                } else {
-                    pageStr += "<span><a href='javascript:void(0)' rel='1'>首页</a></span><span><a href='javascript:void(0)' rel='" + (curPage - 1) + "'>上一页</a></span>";
-                }
-
-                //如果是最后页
-                if (curPage >= totalPage) {
-                    pageStr += "<span>下一页</span><span>尾页</span>";
-                } else {
-                    pageStr += "<span><a href='javascript:void(0)' rel='" + (parseInt(curPage) + 1) + "'>下一页</a></span><span><a href='javascript:void(0)' rel='" + totalPage + "'>尾页</a></span>";
-                }
-
-                $("#pagecount").html(pageStr);
-            },
-            error: function () {
-                alert("数据加载失败");
-            }
-        });
-    }
-
     function delete_record(id) {
         if (confirm("您确定要删除这道题目么？")) {
             document.location.href = "<?= QUES_ACTION_PATH ?>?act=del&id=" + id;
