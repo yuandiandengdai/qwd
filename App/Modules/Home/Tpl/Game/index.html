@@ -1,0 +1,39 @@
+<include file="public:header"/>
+
+<h2 id="room_list_and_state">各房间状态列表</h2>
+<div class="row">
+	<div class="col-md-4 col-md-offset-4">
+		<ul class="room_info_list" id="room_state_all_list">
+			<volist name="data" id="room">
+				<ol class="room_player_link">
+					<a href="javascript:void(0)">
+						<span class="room_player_font">{$room.id}号房间:</span>
+						<span class="room_name">&nbsp;{$room.name}</span>
+						<span class="room_player_font">在玩人数:</span>
+						<span class="player_num">&nbsp;{$room.count}</span>
+					</a>
+				</ol>
+			</volist>
+		</ul>
+
+		<form class="new_user" id="new_user" action=""
+		      accept-charset="UTF-8" method="post">
+			<label>请选择房间:</label>
+
+			<select id="ply_select_room" name="rid" class="form-control">
+				<volist name="data" id="room">
+					<option value="{$room.id}">{$room.id}号房间</option>
+				</volist>
+			</select>
+
+			<input id="game_start_button" name="commit" value="开始游戏" class="btn btn-primary" type="submit">
+		</form>
+
+		<a href="__ROOT__/Rank">
+			<button id="look_phb" type="button" class="btn btn-default">你可以点击这里查看游戏排行榜</button>
+		</a>
+
+	</div>
+</div>
+
+<include file="public:footer"/>

@@ -42,10 +42,10 @@
 			<span class="ply_num">&nbsp;人在玩</span>
 		</dt>
 	</div>
-	<form class="new_user" id="new_user" method="post" accept-charset="UTF-8"
-	      action="<?php echo (isset($_SESSION['id'])) ? (SELECT_ROOMS_PATH.$_SESSION['id']) : (GAME_RANK_INFO_PATH) ?> ">
+	<a href="<?php echo isset($_SESSION['uid']) ? "__ROOT__/Game" : "__ROOT__/Member/login" ?>">
 		<input id="game_start_button1" name="commit" value="开始游戏" class="btn btn-primary" type="submit">
-	</form>
+	</a>
+
 </div>
 
 <include file="public:footer"/>

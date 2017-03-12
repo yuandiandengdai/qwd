@@ -6,16 +6,16 @@
 		<form class="new_user" id="new_user" action="" accept-charset="UTF-8" method="post">
 			<label for="user_name">玩家姓名</label>
 			<input class="form-control" type="text" name="name" id="user_name"
-			       value="<?php if (isset($_POST['name'])) echo $_POST['name']; ?>"/>
+			       value="<?php if (isset($_POST['name'])) echo $_POST['name']; ?>" required/>
 			<label for="user_email">Email</label>
 			<input class="form-control" type="text" name="email" id="user_email"
-			       value="<?php if (isset($_POST['email'])) echo $_POST['email']; ?>"/>
+			       value="<?php if (isset($_POST['email'])) echo $_POST['email']; ?>" required/>
 			<label for="user_pass">密码</label>
 			<input class="form-control" type="password" name="p1" id="user_pass"
-			       value="<?php if (isset($_POST['p1'])) echo $_POST['p1']; ?>"/>
+			       value="<?php if (isset($_POST['p1'])) echo $_POST['p1']; ?>" required/>
 			<label for="pass_confirm">密码确认</label>
 			<input class="form-control" type="password" name="p2" id="pass_confirm"
-			       value="<?php if (isset($_POST['p2'])) echo $_POST['p2']; ?>"/>
+			       value="<?php if (isset($_POST['p2'])) echo $_POST['p2']; ?>" required/>
 			<input id="success_for" type="submit" name="commit" value="创建账号" class="btn btn-primary" />
 		</form>
 	</div>

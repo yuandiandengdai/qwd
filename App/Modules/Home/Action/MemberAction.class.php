@@ -8,6 +8,7 @@
  */
 class MemberAction extends Action{
     public function index(){
+//        var_dump(D('Member')->relation(true)->where(array('id' => session('uid')))->find());
         $this->display();
     }
 
@@ -132,6 +133,9 @@ EOF;
         }
     }
 
+    /**
+     * 重置密码
+     */
     public function resetPassword(){
         if (IS_POST) {
             if (I('post.p1') != I('post.p2')) $this->error('两次输入的密码不匹配');
@@ -152,7 +156,20 @@ EOF;
      * 更新资料
      */
     public function updateInfo(){
-        $this->display();
+        $member = D('Member')->field('name,email')->where(array('id' => session('uid')))->find();
+        $this->assign('member', $member);
+        if(IS_POST){
+            if (I('post.p1') != I('post.p2')) $this->error('两次输入的密码不匹配');
+            $res = D('Member')->where(array('id' => session('memberId')))->setField('password', sha1(I('post.p1')));
+            if ($res) {
+                $this->success('更新资料成功', __ROOT__.'/Member');
+                return;
+            } else {
+                $this->error('资料更新失败或没有修改');
+            }
+        }else{
+            $this->display();
+        }
     }
 
     /**

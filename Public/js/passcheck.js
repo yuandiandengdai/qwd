@@ -16,8 +16,8 @@
 
         $.ajax({
             type: "GET",
-            url: "passcheck.php", //验证处理页
-            data: "plyanswer=" + answer + "&qid=" + qid + "&c=" + currentItem,
+            url: "check", //验证处理页
+            data: "memberAnswer=" + answer + "&qid=" + qid + "&c=" + currentItem,
             dataType: "json",
             success: function (data) {
                 if (data.sts == 1) {

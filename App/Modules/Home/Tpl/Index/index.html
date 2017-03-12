@@ -12,7 +12,8 @@
 	</ul>
 	<a href="__ROOT__/Member/register" class="btn btn-lg btn-primary">还没账号，点此注册！</a>
 	<div>
-		<a href="__ROOT__/Member/login" id="home_start_btn" class="btn btn-lg btn-primary">已有账号，开始游戏！</a>
+		<a href="<?php echo isset($_SESSION['uid']) ? "__ROOT__/Game" : "__ROOT__/Member/login" ?>" id="home_start_btn"
+		class="btn btn-lg btn-primary">已有账号，开始游戏！</a>
 	</div>
 </div>
 

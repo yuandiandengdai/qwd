@@ -6,11 +6,11 @@
 		<form action="" accept-charset="UTF-8" method="post">
 			<label for="session_email">Email</label>
 			<input class="form-control" type="text" name="email" id="session_email"
-			       value="<?php if (isset($_POST['email'])) echo $_POST['email']; ?>"/>
+			       value="<?php if (isset($_POST['email'])) echo $_POST['email']; ?>" required/>
 			<label for="session_password">密码</label>
 			<a href="__ROOT__/Member/forgetpassword">（忘了密码）</a>
 			<input class="form-control" type="password" name="password" id="session_password"
-			       value="<?php if (isset($_POST['password'])) echo $_POST['password']; ?>"/>
+			       value="<?php if (isset($_POST['password'])) echo $_POST['password']; ?>" required/>
 
 			<label class="checkbox inline" for="remember_me">
 				<input type="checkbox" value="1" name="remember_me" id="remember_me"/>
