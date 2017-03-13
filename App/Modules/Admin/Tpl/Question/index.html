@@ -1,107 +1,104 @@
 <include file="public:header"/>
 <include file="public:sidebar"/>
 <div class="col-xs-12 col-sm-10 main">
-	<!--图片的位置-->
-	<div id="addDiv" style="display:none;margin-top: 10px">
-		<?php dump($question); ?>
-		<form id="addForm" name="addForm" method="POST" enctype="multipart/form-data" action="">
-			<table width="100%" style="background: #EFEFEF;border: 1px solid #428BCA">
-				<tr>
-					<td>
-						<table width="100%">
-							<tr>
-								<td width="5%" style="padding-top: 5px">&nbsp;&nbsp;问题：</td>
-								<td style="padding-top: 5px"><input name="question" id="question" style="width:99%;"
-								                                    value="{$question[0]['question']}"/>
-								</td>
-							</tr>
-							<tr>
-								<td width="5%" style="padding-top: 5px">&nbsp;&nbsp;答案：</td>
-								<td style="padding-top: 5px">
-									<input type="text" name="answer" style="width:99%;" id="answer" value=""/>
-								</td>
-							</tr>
-							<tr>
-								<td height="25px" width="5%" style="padding-top: 5px;padding-bottom: 5px">&nbsp;&nbsp;
-									状态：
-								</td>
-								<td style="padding-top: 5px;padding-bottom: 5px">
-									<select name="status">
-										<option value="-1">请选择</option>
-										<option value="0">不启用</option>
-										<option value="1">启用</option>
-									</select>
-								</td>
-							</tr>
-							<tr>
-								<td height="25px" colspan="2" style="text-align: center">
-									&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="submit" value="保存">
-									&nbsp;&nbsp;&nbsp;<input type="reset" value="重置">
-									&nbsp;&nbsp;&nbsp;<input type="button" onclick="javascript: cancel_add();" value="取消">
-								</td>
-							</tr>
-						</table>
-					</td>
-				</tr>
-			</table>
-		</form>
-		<br/>
-	</div>
-	<!--表格部分-->
-	<h3 class="sub-header">题库管理</h3>
-	<div class="table-responsive">
-		<table class="table table-hover table-bordered table-condensed">
-			<thead>
-			<tr>
-				<th width="4%">题号</th>
-				<th width="50%">问题描述</th>
-				<th width="15%">问题答案</th>
-				<th width="5%">状态</th>
-				<th width="7%">操作</th>
-			</tr>
-			</thead>
-			<tbody class="loaddata">
-			<volist name="data" id="val">
-				<tr>
-					<td>{$val.id}</td>
-					<td>{$val.question}</td>
-					<td>{$val.answer}</td>
-					<td>
-						<eq name="val.status" value="1">正常
-							<else/>
-							禁用
-						</eq>
-					</td>
-					<td><a href="__ROOT__/Admin/Question/edit/id/{$val.id}" id="editQuestion">修改</a>&nbsp;&nbsp;
-						&nbsp;<a href="">删除</a></td>
-				</tr>
-			</volist>
-			</tbody>
-			<tr>
-				<td colspan="6" style="text-align:center"><a href="#" onclick="javascript:display_add()">添加新题目</a></td>
-			</tr>
-		</table>
-		<div id="pagecount">{$page}</div>
-	</div>
+    <!--图片的位置-->
+    <div id="addDiv" style="display:none;margin-top: 10px">
+        <form id="addForm" name="addForm" method="POST" enctype="multipart/form-data"
+              action="__ROOT__/Admin/Question/index">
+            <input type="hidden" name="id" value="0">
+            <table width="100%" style="background: #EFEFEF;border: 1px solid #428BCA">
+                <tr>
+                    <td>
+                        <table width="100%">
+                            <tr>
+                                <td width="5%" style="padding-top: 5px">&nbsp;&nbsp;问题：</td>
+                                <td style="padding-top: 5px"><input name="question" id="question" style="width:99%;"
+                                                                    value=""/>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td width="5%" style="padding-top: 5px">&nbsp;&nbsp;答案：</td>
+                                <td style="padding-top: 5px">
+                                    <input type="text" name="answer" style="width:99%;" id="answer" value=""/>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td height="25px" width="5%" style="padding-top: 5px;padding-bottom: 5px">&nbsp;&nbsp;
+                                    状态：
+                                </td>
+                                <td style="padding-top: 5px;padding-bottom: 5px">
+                                    <select name="status" class="status">
+                                        <option value="-1">请选择</option>
+                                        <option value="1" selected="selected">启用</option>
+                                        <option value="2">不启用</option>
+                                    </select>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td height="25px" colspan="2" style="text-align: center">
+                                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="submit" value="保存">
+                                    &nbsp;&nbsp;&nbsp;<input type="reset" value="重置">
+                                    &nbsp;&nbsp;&nbsp;<input type="button" onclick="javascript: cancel_add();"
+                                                             value="取消">
+                                </td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+            </table>
+        </form>
+        <br/>
+    </div>
+    <!--表格部分-->
+    <h3 class="sub-header">题库管理</h3>
+    <div class="table-responsive">
+        <table class="table table-hover table-bordered table-condensed">
+            <thead>
+            <tr>
+                <th width="4%">题号</th>
+                <th width="50%">问题描述</th>
+                <th width="15%">问题答案</th>
+                <th width="5%">状态</th>
+                <th width="7%">操作</th>
+            </tr>
+            </thead>
+            <tbody class="loaddata">
+            <volist name="data" id="val">
+                <tr id="item_{$val.id}">
+                    <td>{$val.id}</td>
+                    <td>{$val.question}</td>
+                    <td>{$val.answer}</td>
+                    <td>
+                        <input type="hidden" name="questionStatus" value="{$val.status}">
+                        <eq name="val.status" value="1">正常
+                            <else/>
+                            禁用
+                        </eq>
+                    </td>
+                    <td><a href="javascript:void(0)" onclick="javascript:edit_record({$val.id})">修改</a>&nbsp;&nbsp;&nbsp;
+                        <a href="__ROOT__/Admin/Question/delete/id/{$val.id}" onclick="return confirm('确定要删除这道题目')">删除</a></td>
+                </tr>
+            </volist>
+            </tbody>
+            <tr>
+                <td colspan="6" style="text-align:center"><a href="#" onclick="javascript:display_add()">添加新题目</a></td>
+            </tr>
+        </table>
+        <div id="pagecount">{$page}</div>
+    </div>
 </div>
 </div>
 </div>
 <script type="text/javascript" language="javascript">
-    $('#editQuestion').click(function(){
+    function edit_record(id) {
         var addDiv = document.getElementById("addDiv");
         addDiv.style.display = "";
         var addForm = document.getElementById("addForm");
-    });
-    function delete_record(id) {
-        if (confirm("您确定要删除这道题目么？")) {
-            document.location.href = "<?= QUES_ACTION_PATH ?>?act=del&id=" + id;
-        }
-    }
-
-    function edit_record() {
-        var addDiv = document.getElementById("addDiv");
-        addDiv.style.display = "";
-        var addForm = document.getElementById("addForm");
+        var item = $('#item_' + id);
+        $('input[name=id]').val(id);
+        $('input[name=question]').val(item.find('td:eq(1)').text());
+        $('input[name=answer]').val(item.find('td:eq(2)').text());
+        $('.status').val($("input[name='questionStatus']").val());
     }
 
     function cancel_add() {
@@ -113,21 +110,7 @@
         var addDiv = document.getElementById("addDiv");
         addDiv.style.display = "";
         var addForm = document.getElementById("addForm");
-        addForm.action = "<?= QUES_ACTION_PATH ?>?act=add";
-        addForm.question.value = '';
-        addForm.answer.value = '';
-        selCheck(addForm.status, 1);
-    }
-
-    function selCheck(radioList, val) {
-        for (var i = 0; i < radioList.length; i++) {
-            if (radioList[i].value == val) {
-                radioList[i].selected = true;
-            }
-            else {
-                radioList[i].selected = false;
-            }
-        }
+        $('input[name=id]').val(0);
     }
 </script>
 </body>

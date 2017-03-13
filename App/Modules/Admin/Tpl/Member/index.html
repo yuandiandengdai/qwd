@@ -1,43 +1,52 @@
 <include file="public:header"/>
 <include file="public:sidebar"/>
 <div class="col-xs-12 col-sm-10 main">
-	<!--表格部分-->
-	<h3 class="sub-header">玩家管理</h3>
-	<div class="table-responsive">
-		<table class="table table-hover table-bordered table-condensed">
-			<thead>
-			<tr>
-				<th width="3%">ID</th>
-				<th width="9%">玩家姓名</th>
-				<th width="14%">玩家邮箱</th>
-				<th width="10%">注册时间</th>
-				<th width="9%">当前游戏所在房间</th>
-				<th width="7%">赢得游戏总数</th>
-				<th width="5%">状态</th>
-				<th width="8%">操作</th>
-			</tr>
-			</thead>
-			<tbody class="loaddata">
-			<volist name="data" id="val">
-				<tr>
-					<td>{$val.id}</td>
-					<td>{$val.name}</td>
-					<td>{$val.email}</td>
-					<td>{$val.create_at}</td>
-					<td>{$val.rid}</td>
-					<td>{$val.win}</td>
-					<td>
-						<eq name="val.status" value="1">正常
-							<else/>禁用
-						</eq>
-					</td>
-					<td><a href="">踢下线</a>&nbsp;&nbsp;&nbsp;<a href="">删除</a></td>
-				</tr>
-			</volist>
-			</tbody>
-		</table>
-		<div id="pagecount">{$page}</div>
-	</div>
+    <!--表格部分-->
+    <h3 class="sub-header">玩家管理</h3>
+    <div class="table-responsive">
+        <table class="table table-hover table-bordered table-condensed">
+            <thead>
+            <tr>
+                <th width="3%">ID</th>
+                <th width="9%">玩家姓名</th>
+                <th width="14%">玩家邮箱</th>
+                <th width="10%">注册时间</th>
+                <th width="9%">当前游戏所在房间</th>
+                <th width="7%">赢得游戏总数</th>
+                <th width="5%">状态</th>
+                <th width="8%">操作</th>
+            </tr>
+            </thead>
+            <tbody class="loaddata">
+            <volist name="data" id="val">
+                <tr>
+                    <td>{$val.id}</td>
+                    <td>{$val.name}</td>
+                    <td>{$val.email}</td>
+                    <td>{$val.create_at|date="Y-m-d H:i:s",###}</td>
+                    <td>{$val.rid}</td>
+                    <td>{$val.win}</td>
+                    <td>
+                        <eq name="val.status" value="1">正常
+                            <else/>
+                            禁用
+                        </eq>
+                    </td>
+                    <td>
+                        <eq name="val.status" value="1">
+                            <a href="__ROOT__/Admin/Member/offLine/id/{$val.id}" onclick="return confirm('确定要踢下线')">踢下线</a>
+                            <else />
+                            <a href="__ROOT__/Admin/Member/online/id/{$val.id}" onclick="return confirm('确定要踢下线')">恢复上线</a>
+                        </eq>
+                        &nbsp;&nbsp;&nbsp;
+                        <a href="__ROOT__/Admin/Member/delete/id/{$val.id}" onclick="return confirm('确定要删除这一玩家')">删除</a>
+                    </td>
+                </tr>
+            </volist>
+            </tbody>
+        </table>
+        <div id="pagecount">{$page}</div>
+    </div>
 </div>
 </div>
 </div>

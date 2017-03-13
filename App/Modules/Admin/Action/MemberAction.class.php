@@ -18,4 +18,34 @@ class MemberAction extends Action{
         $this->assign('page', $show);// 赋值分页输出
         $this->display(); // 输出模板
     }
+
+    public function online($id){
+        $member = D('Member');
+        $res = $member->where(array('id' => $id))->setField('status', 1);
+        if($res){
+            $this->success('恢复上线成功');
+        }else{
+            $this->error('恢复上线失败');
+        }
+    }
+
+    public function offLine($id){
+        $member = D('Member');
+        $res = $member->where(array('id' => $id))->setField('status', 2);
+        if($res){
+            $this->success('已成功踢下线');
+        }else{
+            $this->error('踢下线失败');
+        }
+    }
+
+    public function delete($id){
+        $member = D('Member');
+        $res = $member->where(array('id' => $id))->delete();
+        if($res){
+            $this->success('删除成功');
+        }else{
+            $this->error('删除失败');
+        }
+    }
 }
