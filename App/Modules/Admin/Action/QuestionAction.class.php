@@ -18,4 +18,11 @@ class QuestionAction extends Action{
         $this->assign('page', $show);// 赋值分页输出
         $this->display(); // 输出模板
     }
+
+    public function edit($id){
+        $question = D('Question')->find($id);
+        $this->assign('question', $question);
+        $this->display('Question/index');
+        $this->redirect('/Admin/Question');
+    }
 }

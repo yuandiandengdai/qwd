@@ -3,6 +3,7 @@
 <div class="col-xs-12 col-sm-10 main">
 	<!--图片的位置-->
 	<div id="addDiv" style="display:none;margin-top: 10px">
+		<?php dump($question); ?>
 		<form id="addForm" name="addForm" method="POST" enctype="multipart/form-data" action="">
 			<table width="100%" style="background: #EFEFEF;border: 1px solid #428BCA">
 				<tr>
@@ -10,7 +11,8 @@
 						<table width="100%">
 							<tr>
 								<td width="5%" style="padding-top: 5px">&nbsp;&nbsp;问题：</td>
-								<td style="padding-top: 5px"><input name="question" id="question" style="width:99%;"/>
+								<td style="padding-top: 5px"><input name="question" id="question" style="width:99%;"
+								                                    value="{$question[0]['question']}"/>
 								</td>
 							</tr>
 							<tr>
@@ -35,8 +37,7 @@
 								<td height="25px" colspan="2" style="text-align: center">
 									&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="submit" value="保存">
 									&nbsp;&nbsp;&nbsp;<input type="reset" value="重置">
-									&nbsp;&nbsp;&nbsp;<input type="button" onclick="javascript: cancel_add();"
-									                         value="取消">
+									&nbsp;&nbsp;&nbsp;<input type="button" onclick="javascript: cancel_add();" value="取消">
 								</td>
 							</tr>
 						</table>
@@ -71,7 +72,8 @@
 							禁用
 						</eq>
 					</td>
-					<td><a href="#" onclick="javascript:edit_record()">修改</a>&nbsp;&nbsp;&nbsp;<a href="">删除</a></td>
+					<td><a href="__ROOT__/Admin/Question/edit/id/{$val.id}" id="editQuestion">修改</a>&nbsp;&nbsp;
+						&nbsp;<a href="">删除</a></td>
 				</tr>
 			</volist>
 			</tbody>
@@ -85,20 +87,21 @@
 </div>
 </div>
 <script type="text/javascript" language="javascript">
+    $('#editQuestion').click(function(){
+        var addDiv = document.getElementById("addDiv");
+        addDiv.style.display = "";
+        var addForm = document.getElementById("addForm");
+    });
     function delete_record(id) {
         if (confirm("您确定要删除这道题目么？")) {
             document.location.href = "<?= QUES_ACTION_PATH ?>?act=del&id=" + id;
         }
     }
 
-    function edit_record(id, question, answer, status) {
+    function edit_record() {
         var addDiv = document.getElementById("addDiv");
         addDiv.style.display = "";
         var addForm = document.getElementById("addForm");
-        addForm.action = "<?= QUES_ACTION_PATH ?>?act=edit&id=" + id;
-        addForm.question.value = question;
-        addForm.answer.value = answer;
-        selCheck(addForm.status, status);
     }
 
     function cancel_add() {
