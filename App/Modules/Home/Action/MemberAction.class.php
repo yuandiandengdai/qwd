@@ -9,6 +9,10 @@
 class MemberAction extends Action{
     public function index(){
 //        var_dump(D('Member')->relation(true)->where(array('id' => session('uid')))->find());
+        if(empty(session('uid'))){
+            $this->error('请登录后再操作');
+            $this->redirect('/');
+        }
         $this->display();
     }
 
@@ -157,6 +161,10 @@ EOF;
      * 更新资料
      */
     public function updateInfo(){
+        if(empty(session('uid'))){
+            $this->error('非法操作');
+            $this->redirect('/');
+        }
         $member = D('Member')->field('name,email')->where(array('id' => session('uid')))->find();
         $this->assign('member', $member);
         if(IS_POST){

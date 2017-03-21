@@ -8,6 +8,10 @@
  */
 class GameAction extends Action{
     public function index(){
+        if(empty(session('uid'))){
+            $this->error('请登录后再操作');
+            $this->redirect('/');
+        }
         $data = D('Room')->select();
         if (IS_POST) {
             $rid = I('post.rid');
@@ -20,6 +24,10 @@ class GameAction extends Action{
     }
 
     public function hall(){
+        if(empty(session('uid'))){
+            $this->error('请登录后再操作');
+            $this->redirect('/');
+        }
         $room = D('Room')->where(array('id' => session('rid')))->find();
         $question = D('Question')->order("rand()")->limit(1)->select();
         $this->assign('room', $room);
@@ -28,6 +36,10 @@ class GameAction extends Action{
     }
 
     public function check(){
+        if(empty(session('uid'))){
+            $this->error('请登录后再操作');
+            $this->redirect('/');
+        }
         $memberAnswer = I('get.memberAnswer');
         $qid = I('get.qid');
         $currentItem = I('get.c');

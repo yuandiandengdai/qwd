@@ -8,6 +8,10 @@
  */
 class MemberAction extends Action{
     public function index(){
+        if(empty(session('aid'))){
+            $this->error('请登录后再操作');
+            $this->redirect(__ROOT__.'/Admin');
+        }
         import('ORG.Util.Page');// 导入分页类
         $count = D('Member')->count();// 查询满足要求的总记录数
         $Page = new Page($count, 8);// 实例化分页类 传入总记录数和每页显示的记录数

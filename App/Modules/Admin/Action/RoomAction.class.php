@@ -8,6 +8,10 @@
  */
 class RoomAction extends Action{
     public function index(){
+        if(empty(session('aid'))){
+            $this->error('请登录后再操作');
+            $this->redirect(__ROOT__.'/Admin');
+        }
         if(IS_POST){
             $room = D('Room')->create();
             if($room['id']){//修改

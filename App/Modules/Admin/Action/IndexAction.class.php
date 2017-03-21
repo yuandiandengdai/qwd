@@ -19,10 +19,14 @@ class IndexAction extends Action{
 
     public function logout(){
         session(null);
-        $this->redirect('/Admin');
+        $this->redirect(__ROOT__.'/Admin');
     }
 
     public function welcome(){
+        if(empty(session('aid'))){
+            $this->error('请登录后再操作');
+            $this->redirect('/Admin');
+        }
         $this->display();
     }
 
