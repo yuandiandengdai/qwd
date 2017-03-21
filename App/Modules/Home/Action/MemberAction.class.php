@@ -19,6 +19,7 @@ class MemberAction extends Action{
         $email = I('post.email');
         $password = I('post.password');
         if (IS_POST) {
+            if(session('verify') != md5(I('post.verify'))) $this->error('验证码错误');
             $condition['email'] = $email;
             $data = D('Member')->field('id,name,email,password,status,activate')->where($condition)->find();
             if (!$data) {
@@ -192,5 +193,12 @@ EOF;
         } else {
             $this->error('无效的激活链接');
         }
+    }
+
+    /**
+     * 测试ueditor使用
+     */
+    public function test(){
+        $this->display();
     }
 }

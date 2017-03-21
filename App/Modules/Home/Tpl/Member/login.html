@@ -2,24 +2,26 @@
 
 <h2>登录</h2>
 <div class="row">
-	<div class="col-md-4 col-md-offset-4">
-		<form action="" accept-charset="UTF-8" method="post">
-			<label for="session_email">Email</label>
-			<input class="form-control" type="text" name="email" id="session_email"
-			       value="<?php if (isset($_POST['email'])) echo $_POST['email']; ?>" required/>
-			<label for="session_password">密码</label>
-			<a href="__ROOT__/Member/forgetpassword">（忘了密码）</a>
-			<input class="form-control" type="password" name="password" id="session_password"
-			       value="<?php if (isset($_POST['password'])) echo $_POST['password']; ?>" required/>
-
-			<label class="checkbox inline" for="remember_me">
-				<input type="checkbox" value="1" name="remember_me" id="remember_me"/>
-				<span>在此计算机上记住我</span>
-			</label>
-			<input type="submit" name="commit" value="登录" class="btn btn-primary"/>
-		</form>
-		<p id="nocount">还没有账号 ？<a href="__ROOT__/Member/register"> 现在就注册！</a></p>
-	</div>
+    <div class="col-md-4 col-md-offset-4">
+        <form action="" accept-charset="UTF-8" method="post">
+            <label for="session_email">Email</label>
+            <input class="form-control" type="text" name="email" placeholder="请在此输入邮箱" id="session_email" value="" required/>
+            <label for="session_password">密码</label>
+            <a href="__ROOT__/Member/forgetpassword">（忘记密码）</a>
+            <input class="form-control" type="password" name="password" placeholder="请在此输入密码" id="session_password" value="" required/>
+            <div><label >验证码</label></div>
+            <div class="verify" id="verifyInput">
+                <input type="text" name="verify" id="verify" placeholder="请输入图形验证码" class="form-control">
+            </div>
+            <div class="verify" id="verifyCode"><img src="__ROOT__/Home/Common/verifyCode" onclick="this.src=this.src+'?'"/></div>
+            <label class="checkbox inline" for="remember_me">
+                <input type="checkbox" value="1" name="remember_me" id="remember_me"/>
+                <span>在此计算机上记住我</span>
+            </label>
+            <input type="submit" name="commit" value="登录" class="btn btn-primary"/>
+        </form>
+        <p id="nocount">还没有账号 ？<a href="__ROOT__/Member/register"> 现在就注册！</a></p>
+    </div>
 </div>
 
 <include file="public:footer"/>

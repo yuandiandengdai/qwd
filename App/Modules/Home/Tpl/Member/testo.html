@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<pre id="x">initializing</pre>
+<script type="text/javascript">
+    var es = new EventSource("{:U('Member/testo')}");
+    es.addEventListener("message", function(event) {
+        var data = event.data;
+        var origin = event.origin;
+        var lastEventId = event.lastEventId;
+        // handle message
+    }, false);
+    es.onmessage = function (e) {
+        document.getElementById('x').innerHTML += "\n" + e.data;
+    };
+</script>
+</body>
+</html>
