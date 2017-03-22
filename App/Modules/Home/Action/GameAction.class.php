@@ -16,10 +16,14 @@ class GameAction extends Action{
         if (IS_POST) {
             $rid = I('post.rid');
             session('rid', $rid);
-            $this->success('正在前往游戏大厅', __ROOT__.'/Game/hall');
+            $this->success('正在前往游戏大厅', __ROOT__.'/Game/wait');
             return;
         }
         $this->assign('data', $data);
+        $this->display();
+    }
+
+    public function wait(){
         $this->display();
     }
 
