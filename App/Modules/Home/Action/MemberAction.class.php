@@ -47,7 +47,7 @@ class MemberAction extends Action{
      */
     public function logout(){
         session(null);
-        $this->redirect('/');
+        $this->success('退出成功', '/');
     }
 
     /**

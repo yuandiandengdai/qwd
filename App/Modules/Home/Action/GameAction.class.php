@@ -16,7 +16,7 @@ class GameAction extends Action{
         if (IS_POST) {
             $rid = I('post.rid');
             session('rid', $rid);
-            $this->success('正在前往游戏大厅', __ROOT__.'/Game/wait');
+            $this->success('成功进入'.$rid.'号房间,正在前往游戏大厅......', __ROOT__.'/Game/wait');
             return;
         }
         $this->assign('data', $data);
@@ -24,6 +24,8 @@ class GameAction extends Action{
     }
 
     public function wait(){
+        $rid = session('rid');
+        $this->assign('rid', $rid);
         $this->display();
     }
 
