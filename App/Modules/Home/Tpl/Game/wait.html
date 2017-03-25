@@ -4,148 +4,96 @@
     <div class="col-md-12">
         <table style="margin:auto;">
             <tr>
-                <td>
-                    <table width="180" border="1" style="margin: 27px">
-                        <tr>
-                            <td width="60" height="20" align="center" colspan="3"><span>1号桌</span></td>
-                        </tr>
-                        <tr>
-                            <td width="60" height="60" align="right"><span>1111</span></td>
-                            <td width="60" height="60" align="center"><img src="__PUBLIC__/images/hall/b.png"></td>
-                            <td width="60" height="60" align="left"><span>1111</span></td>
-                        </tr>
-                        <tr>
-                            <td width="60" height="20" align="center" colspan="3"><span>1111</span></td>
-                        </tr>
-                    </table>
-                </td>
-                <td>
-                    <table width="180" border="1" style="margin: 27px">
-                        <tr>
-                            <td width="60" height="20" align="center" colspan="3"><span>1号桌</span></td>
-                        </tr>
-                        <tr>
-                            <td width="60" height="60" align="right"><span>1111</span></td>
-                            <td width="60" height="60" align="center"><img src="__PUBLIC__/images/hall/a.png"></td>
-                            <td width="60" height="60" align="left"><span>1111</span></td>
-                        </tr>
-                        <tr>
-                            <td width="60" height="20" align="center" colspan="3"><span>1111</span></td>
-                        </tr>
-                    </table>
-                </td>
-                <td>
-                    <table width="180" border="1" style="margin: 27px">
-                        <tr>
-                            <td width="60" height="20" align="center" colspan="3"><span>1号桌</span></td>
-                        </tr>
-                        <tr>
-                            <td width="60" height="60" align="right"><span>1111</span></td>
-                            <td width="60" height="60" align="center"><img src="__PUBLIC__/images/hall/a.png"></td>
-                            <td width="60" height="60" align="left"><span>1111</span></td>
-                        </tr>
-                        <tr>
-                            <td width="60" height="20" align="center" colspan="3"><span>1111</span></td>
-                        </tr>
-                    </table>
-                </td>
+                <volist name="table" id="val" offset="0" length='3'>
+                    <td>
+                        <table width="180" border="1" style="margin: 27px">
+                            <tr>
+                                <td width="60" height="20" align="center" colspan="3"><span id="top_{$val.id}"></span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td width="60" height="60" align="right"><span id="left_{$val.id}"></span></td>
+                                <td width="60" height="60" align="center"><a href="javascript:void(0)"><img
+                                        id="img_{$val.id}" onclick="select_table({$val.id})"
+                                        src="__PUBLIC__/images/hall/a.png"></a>
+                                </td>
+                                <td width="60" height="60" align="left"><span id="right_{$val.id}"></span></td>
+                            </tr>
+                            <tr>
+                                <td width="60" height="20" align="center" colspan="3"><span>{$val.id}号桌</span></td>
+                            </tr>
+                        </table>
+                    </td>
+                </volist>
             </tr>
             <tr>
-                <td>
-                    <table width="180" border="1" style="margin: 27px">
-                        <tr>
-                            <td width="60" height="20" align="center" colspan="3"><span>1号桌</span></td>
-                        </tr>
-                        <tr>
-                            <td width="60" height="60" align="right"><span>1111</span></td>
-                            <td width="60" height="60" align="center"><img src="__PUBLIC__/images/hall/a.png"></td>
-                            <td width="60" height="60" align="left"><span>1111</span></td>
-                        </tr>
-                        <tr>
-                            <td width="60" height="20" align="center" colspan="3"><span>1111</span></td>
-                        </tr>
-                    </table>
-                </td>
-                <td>
-                    <table width="180" border="1" style="margin: 27px">
-                        <tr>
-                            <td width="60" height="20" align="center" colspan="3"><span>1号桌</span></td>
-                        </tr>
-                        <tr>
-                            <td width="60" height="60" align="right"><span>1111</span></td>
-                            <td width="60" height="60" align="center"><img src="__PUBLIC__/images/hall/a.png"></td>
-                            <td width="60" height="60" align="left"><span>1111</span></td>
-                        </tr>
-                        <tr>
-                            <td width="60" height="20" align="center" colspan="3"><span>1111</span></td>
-                        </tr>
-                    </table>
-                </td>
-                <td>
-                    <table width="180" border="1" style="margin: 27px">
-                        <tr>
-                            <td width="60" height="20" align="center" colspan="3"><span>1号桌</span></td>
-                        </tr>
-                        <tr>
-                            <td width="60" height="60" align="right"><span>1111</span></td>
-                            <td width="60" height="60" align="center"><img src="__PUBLIC__/images/hall/a.png"></td>
-                            <td width="60" height="60" align="left"><span>1111</span></td>
-                        </tr>
-                        <tr>
-                            <td width="60" height="20" align="center" colspan="3"><span>1111</span></td>
-                        </tr>
-                    </table>
-                </td>
+                <volist name="table" id="val" offset="3" length='3'>
+                    <td>
+                        <table width="180" border="1" style="margin: 27px">
+                            <tr>
+                                <td width="60" height="20" align="center" colspan="3"><span id="top_{$val.id}"></span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td width="60" height="60" align="right"><span id="left_{$val.id}"></span></td>
+                                <td width="60" height="60" align="center"><a href="javascript:void(0)"><img
+                                        id="img_{$val.id}" onclick="select_table({$val.id})"
+                                        src="__PUBLIC__/images/hall/a.png"></a>
+                                </td>
+                                <td width="60" height="60" align="left"><span id="right_{$val.id}"></span></td>
+                            </tr>
+                            <tr>
+                                <td width="60" height="20" align="center" colspan="3"><span>{$val.id}号桌</span></td>
+                            </tr>
+                        </table>
+                    </td>
+                </volist>
             </tr>
             <tr>
-                <td>
-                    <table width="180" border="1" style="margin: 27px">
-                        <tr>
-                            <td width="60" height="20" align="center" colspan="3"><span>1号桌</span></td>
-                        </tr>
-                        <tr>
-                            <td width="60" height="60" align="right"><span>1111</span></td>
-                            <td width="60" height="60" align="center"><img src="__PUBLIC__/images/hall/a.png"></td>
-                            <td width="60" height="60" align="left"><span>1111</span></td>
-                        </tr>
-                        <tr>
-                            <td width="60" height="20" align="center" colspan="3"><span>1111</span></td>
-                        </tr>
-                    </table>
-                </td>
-                <td>
-                    <table width="180" border="1" style="margin: 27px">
-                        <tr>
-                            <td width="60" height="20" align="center" colspan="3"><span>1号桌</span></td>
-                        </tr>
-                        <tr>
-                            <td width="60" height="60" align="right"><span>1111</span></td>
-                            <td width="60" height="60" align="center"><img src="__PUBLIC__/images/hall/a.png"></td>
-                            <td width="60" height="60" align="left"><span>1111</span></td>
-                        </tr>
-                        <tr>
-                            <td width="60" height="20" align="center" colspan="3"><span>1111</span></td>
-                        </tr>
-                    </table>
-                </td>
-                <td>
-                    <table width="180" border="1" style="margin: 27px">
-                        <tr>
-                            <td width="60" height="20" align="center" colspan="3"><span>1号桌</span></td>
-                        </tr>
-                        <tr>
-                            <td width="60" height="60" align="right"><span>1111</span></td>
-                            <td width="60" height="60" align="center"><img src="__PUBLIC__/images/hall/a.png"></td>
-                            <td width="60" height="60" align="left"><span>1111</span></td>
-                        </tr>
-                        <tr>
-                            <td width="60" height="20" align="center" colspan="3"><span>1111</span></td>
-                        </tr>
-                    </table>
-                </td>
+                <volist name="table" id="val" offset="6" length='3'>
+                    <td>
+                        <table width="180" border="1" style="margin: 27px">
+                            <tr>
+                                <td width="60" height="20" align="center" colspan="3"><span id="top_{$val.id}"></span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td width="60" height="60" align="right"><span id="left_{$val.id}"></span></td>
+                                <td width="60" height="60" align="center"><a href="javascript:void(0)"><img
+                                        id="img_{$val.id}" onclick="select_table({$val.id})"
+                                        src="__PUBLIC__/images/hall/a.png"></a>
+                                </td>
+                                <td width="60" height="60" align="left"><span id="right_{$val.id}"></span></td>
+                            </tr>
+                            <tr>
+                                <td width="60" height="20" align="center" colspan="3"><span>{$val.id}号桌</span></td>
+                            </tr>
+                        </table>
+                    </td>
+                </volist>
             </tr>
         </table>
     </div>
 </div>
+
+<script type="text/javascript">
+    var Config = {root: '/'};
+    function select_table(id) {
+        $.post(Config.root + 'Home/Game/desk', {id: id});
+    }
+    var es = new EventSource("__ROOT__/Game/desk");
+    es.addEventListener("message", function (event) {
+        var data = JSON.parse(event.data);
+        if (data.status == 200) { //状态为200说明房间有人
+            $('#img_' + data.table).attr('src', '__PUBLIC__/images/hall/b.png');
+            $('#top_' + data.table).text(data.member_one);
+            $('#left_' + data.table).text(data.member_two);
+            $('#right_' + data.table).text(data.member_three);
+        }
+        if (data.number == 3) {
+//                window.location = Config.root + 'Home/Game/hall';
+        }
+    }, false);
+</script>
 
 <include file="public:footer"/>

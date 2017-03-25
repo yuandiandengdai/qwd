@@ -19,7 +19,7 @@ class IndexAction extends Action{
 
     public function logout(){
         session(null);
-        $this->redirect(__ROOT__.'/Admin');
+        $this->success('退出成功', __ROOT__.'/Admin');
     }
 
     public function welcome(){

@@ -13,6 +13,7 @@ class MemberAction extends Action{
             $this->error('请登录后再操作');
             $this->redirect('/');
         }
+        var_dump(session('did'));
         $this->display();
     }
 
