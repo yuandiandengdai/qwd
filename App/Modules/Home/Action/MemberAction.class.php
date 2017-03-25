@@ -47,7 +47,14 @@ class MemberAction extends Action{
      * 退出
      */
     public function logout(){
-        session(null);
+        D('Desk')->where('id=%d', session('did'))->setDec('number'); //退出房间清除最后一次所在房间的信息
+        $member = D('Desk')->field('member_one,member_two,member_three')->where('id=%d', session('did'))->find();
+        foreach($member as $key => $value){
+            if($value == session('user_name')){
+                D('Desk')->where('id=%d', session('did'))->setField($key, '');
+            }
+        }
+        session(null); //清除所有的session
         $this->success('退出成功', '/');
     }
 

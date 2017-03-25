@@ -10,10 +10,6 @@
                             <tr>
                                 <td width="60" height="20" align="center" colspan="3">
                                     <span id="top_{$val.id}"></span>
-                                    <input type="hidden" value="{$val.number}" id="number_{$val.id}">
-                                    <input type="hidden" value="{$val.member_one}" id="member_one_{$val.id}">
-                                    <input type="hidden" value="{$val.member_two}" id="member_two_{$val.id}">
-                                    <input type="hidden" value="{$val.member_three}" id="member_three_{$val.id}">
                                 </td>
                             </tr>
                             <tr>
@@ -38,10 +34,6 @@
                             <tr>
                                 <td width="60" height="20" align="center" colspan="3">
                                     <span id="top_{$val.id}"></span>
-                                    <input type="hidden" value="{$val.number}" id="number_{$val.id}">
-                                    <input type="hidden" value="{$val.member_one}" id="member_one_{$val.id}">
-                                    <input type="hidden" value="{$val.member_two}" id="member_two_{$val.id}">
-                                    <input type="hidden" value="{$val.member_three}" id="member_three_{$val.id}">
                                 </td>
                             </tr>
                             <tr>
@@ -66,10 +58,6 @@
                             <tr>
                                 <td width="60" height="20" align="center" colspan="3">
                                     <span id="top_{$val.id}"></span>
-                                    <input type="hidden" value="{$val.number}" id="number_{$val.id}">
-                                    <input type="hidden" value="{$val.member_one}" id="member_one_{$val.id}">
-                                    <input type="hidden" value="{$val.member_two}" id="member_two_{$val.id}">
-                                    <input type="hidden" value="{$val.member_three}" id="member_three_{$val.id}">
                                 </td>
                             </tr>
                             <tr>
@@ -96,39 +84,21 @@
     function select_table(id) {
         $.post(Config.root + 'Home/Game/desk', {id: id});
     }
-    for (var i = 0; i <= 9; i++) { //房间已有人数，则变换背景
-        var value = $('#number_' + i).val();
-        var member_one = $('#member_one_' + i).val();
-        var member_two = $('#member_two_' + i).val();
-        var member_three = $('#member_three_' + i).val();
-        if (value > 0) {
-            $('#img_' + i).attr('src', '__PUBLIC__/images/hall/b.png');
-        }
-        if (member_one != '') {
-            $('#top_' + i).text(member_one);
-        }
-        if (member_two != '') {
-            $('#left_' + i).text(member_two);
-        }
-        if (member_three != '') {
-            $('#right_' + i).text(member_three);
-        }
-    }
-
     var es = new EventSource("__ROOT__/Game/desk");
     es.addEventListener("message", function (event) {
         var data = JSON.parse(event.data);
-        if (data.status == 200) { //状态为200说明房间有人
-            $('#img_' + data.table).attr('src', '__PUBLIC__/images/hall/b.png');
-            $('#top_' + data.table).text(data.member_one);
-            $('#left_' + data.table).text(data.member_two);
-            $('#right_' + data.table).text(data.member_three);
-        }
-
-        if (data.number == 3) { //人数够就直接转向游戏大厅
-            setTimeout(function () {
-                window.location = Config.root + 'Home/Game/hall';
-            }, 5000);
+        for (var k in data) {
+            $('#top_' + data[k]['id']).text(data[k]['member_one']);
+            $('#left_' + data[k]['id']).text(data[k]['member_two']);
+            $('#right_' + data[k]['id']).text(data[k]['member_three']);
+            if(data[k]['number'] != 0){ //根据房间的人数切换背景图片
+                $('#img_' + data[k]['id']).attr('src', '__PUBLIC__/images/hall/b.png');
+            }
+//            if(data[k]['number'] == 3){ //某一张桌子人数凑够就直接转向大厅
+//                setTimeout(function () {
+//                    window.location = Config.root + 'Home/Game/hall';
+//                }, 5000);
+//            }
         }
     }, false);
 </script>

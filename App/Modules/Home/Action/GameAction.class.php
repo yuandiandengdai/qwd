@@ -89,30 +89,10 @@ class GameAction extends Action{
             }
         }
 
-        $data = D('Desk')->find(session('did'));
-        if(empty(session('did'))){
-            $info = array(
-                'status' => 300,
-                'member' => '',
-                'number' => 0,
-            );
-            echo 'data:' . json_encode($info) . "\n\n";
-            @ob_flush();
-            @flush();
-        }else{
-            $info = array(
-                'status' => 200,
-                'table' => $data['id'],
-                'number' => $data['number'],
-                'member_one' => $data['member_one'],
-                'member_two' => $data['member_two'],
-                'member_three' => $data['member_three'],
-            );
-            echo 'data:' . json_encode($info) . "\n\n";
-            @ob_flush();
-            @flush();
-        }
-
+        $data = D('Desk')->select();
+        echo 'data:' . json_encode($data) . "\n\n";
+        @ob_flush();
+        @flush();
     }
 
     public function hall(){
