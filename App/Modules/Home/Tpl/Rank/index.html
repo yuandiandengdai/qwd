@@ -6,9 +6,10 @@
         <div class="top_title">领先排行列表</div>
         <volist name="counter" id="val">
             <dt class="item_list_info">
-                <span class="num_order" style="<?php if($i < 4){echo 'background-color:orange;color: #FFF;';} ?>">{$i}</span>
-                <span class="xu_wei"><a href="javascript:void(0)" title="{$val.name}&nbsp;总共赢得了{$val.win}&nbsp;局比赛">{$val.name}&nbsp;总共赢得了</a></span>
-                <span class="z_wu_pai_ming">{$val.win}&nbsp;局比赛</span>
+                <span class="num_order"
+                      style="<?php if($i < 4){echo 'background-color:orange;color: #FFF;';} ?>">{$i}</span>
+                <span class="xu_wei"><a href="javascript:void(0)"><span id="name_{$val.id}"></span>&nbsp;总共赢得了</a></span>
+                <span class="z_wu_pai_ming" id="win_{$val.id}"></span><span>&nbsp;局比赛</span>
             </dt>
         </volist>
     </div>
@@ -18,8 +19,8 @@
         <volist name="add_time" id="val">
             <dt class="item_list_info">
                 <span class="num_order">{$i}</span>
-                <span class="ply_join_game"><a href="javascript:void(0)" title="{$val.name}&nbsp;进入了&nbsp;{$val.rid}号房间">{$val.name}&nbsp;进入了&nbsp;{$val.rid}号房间</a></span>
-                <span class="ply_join_time">{$val.add_time|date="Y-m-d H:i:s",###}</span>
+                <span class="ply_join_game"><a href="javascript:void(0)"><span id="time_name_{$val.id}"></span>&nbsp;进入了&nbsp;<span id="rid_{$val.id}"></span>号房间</a></span>
+                <span class="ply_join_time" id="time_{$val.id}"></span>
             </dt>
         </volist>
     </div>
@@ -29,8 +30,8 @@
         <volist name="room" id="val">
             <dt class="item_list_info">
                 <span class="num_order">{$i}</span>
-                <span class="ply_info"><a href="javascript:void(0)" title="{$val.onwer}&nbsp;赢得本局比赛">{$val.onwer}&nbsp;在本房间赢得比赛</a></span>
-                <span class="ply_num">{$val.count}&nbsp;人在玩</span>
+                <span class="ply_info"><a href="javascript:void(0)"><span id="room_{$val.id}"></span>&nbsp;在本房间赢得比赛</a></span>
+                <span class="ply_num"><span id="count_{$val.id}"></span>&nbsp;人在玩</span>
             </dt>
         </volist>
     </div>
@@ -40,10 +41,31 @@
 
 </div>
 <script type="text/javascript">
-    var es = new EventSource("{:U('Rank/member')}");
-    es.addEventListener("message", function (e) {
-        var j = JSON.parse(e.data);
-        for (var n = 0; n < j.length; n++) {
+    var counter = new EventSource("__ROOT__/Rank/counter");
+    counter.addEventListener("message", function (event) {
+        var data = JSON.parse(event.data);
+        for (var i in data) {
+            $('#win_' + data[i]['id']).text(data[i]['win']);
+            $('#name_' + data[i]['id']).text(data[i]['name']);
+        }
+    }, false);
+
+    var time = new EventSource("__ROOT__/Rank/time");
+    time.addEventListener("message", function (event) {
+        var data = JSON.parse(event.data);
+        for (var k in data) {
+            $('#time_name_' + data[k]['id']).text(data[k]['name']);
+            $('#rid_' + data[k]['id']).text(data[k]['rid']);
+            $('#time_' + data[k]['id']).text(data[k]['add_time']);
+        }
+    }, false);
+
+    var room = new EventSource("__ROOT__/Rank/room");
+    room.addEventListener("message", function (event) {
+        var data = JSON.parse(event.data);
+        for (var k in data) {
+            $('#room_' + data[k]['id']).text(data[k]['onwer']);
+            $('#count_' + data[k]['id']).text(data[k]['count']);
         }
     }, false);
 </script>

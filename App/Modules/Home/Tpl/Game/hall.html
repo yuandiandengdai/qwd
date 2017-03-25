@@ -2,22 +2,27 @@
 
 <h2>游戏大厅</h2>
 <div class="row">
-	<div class="col-md-8 col-md-offset-2">
-		<button id="card" type="button" class="btn btn-info btn-lg">{$room.number|formatNumber=###,0}</button>
-		<div id="content" class="cc"></div>
-		<div class="game_body">
-			<h3>开始答题</h3>
-			<div id="question_id" style="display: none">{$question[0]['id']}</div>
-			<div class="alert alert-info" role="alert" id="question_show">
-				{$question[0]['question']}
-			</div>
-			<h3>回 答</h3>
-			<input class="form-control" type="text" id="answer_check" placeholder="请在这里输入你的答案"
-			       value="" required/>
-		</div>
-		<button type="button" currentItem="1" class="btn btn-primary" id="to_validation" onclick="loadPageData()">提交验证
-		</button>
-	</div>
+    <div class="col-md-8 col-md-offset-2">
+        <button id="card" type="button" class="btn btn-info btn-lg">{$room.number|formatNumber=###,0}</button>
+        <div id="content" class="cc"></div>
+        <div class="game_body">
+            <h3>开始答题</h3>
+            <div id="question_id" style="display: none">{$question[0]['id']}</div>
+            <div class="alert alert-info" role="alert" id="question_show">
+                {$question[0]['question']}
+            </div>
+            <h3>回 答</h3>
+            <input class="form-control" type="text" id="answer_check" placeholder="请在这里输入你的答案"
+                   value="" required/>
+        </div>
+        <button type="button" currentItem="1" class="btn btn-primary" id="to_validation" onclick="loadPageData()">提交验证
+        </button>
+    </div>
+</div>
+<div style="">
+    <p class="subject"><input type="hidden" class="qid" name="qid" value="104"/>股市连续下跌称为____。</p>
+    <p class="subject"><input type="hidden" class="qid" name="qid" value="101"/>苏州四大园林之一的留园建于哪一年代？</p>
+    <p class="subject"><input type="hidden" class="qid" name="qid" value="111"/>请问股市中，ST股是什么股？</p>
 </div>
 
 <include file="public:footer"/>
