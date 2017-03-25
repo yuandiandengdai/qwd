@@ -55,16 +55,35 @@ class GameAction extends Action{
             }
             session('did', $id);
             $number = D('Desk')->where('id=%d', $id)->getField('number'); //获取房间的人数
+            $table = D('Desk')->find(session('did'));
             if($number == 0){
-                $data['member_one'] = session('user_name');
+                if($table['member_one'] == ''){
+                    $data['member_one'] = session('user_name');
+                }elseif($table['member_two'] == ''){
+                    $data['member_two'] = session('user_name');
+                }elseif($table['member_three'] == ''){
+                    $data['member_three'] = session('user_name');
+                }
                 $data['number'] = 1;
                 D('Desk')->where('id=%d', session('did'))->save($data);
             }elseif($number == 1){
-                $data['member_two'] = session('user_name');
+                if($table['member_one'] == ''){
+                    $data['member_one'] = session('user_name');
+                }elseif($table['member_two'] == ''){
+                    $data['member_two'] = session('user_name');
+                }elseif($table['member_three'] == ''){
+                    $data['member_three'] = session('user_name');
+                }
                 $data['number'] = 2;
                 D('Desk')->where('id=%d', session('did'))->save($data);
             }elseif($number == 2){
-                $data['member_three'] = session('user_name');
+                if($table['member_one'] == ''){
+                    $data['member_one'] = session('user_name');
+                }elseif($table['member_two'] == ''){
+                    $data['member_two'] = session('user_name');
+                }elseif($table['member_three'] == ''){
+                    $data['member_three'] = session('user_name');
+                }
                 $data['number'] = 3;
                 D('Desk')->where('id=%d', session('did'))->save($data);
             }
