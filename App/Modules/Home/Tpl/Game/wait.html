@@ -94,11 +94,11 @@
             if(data[k]['number'] != 0){ //根据房间的人数切换背景图片
                 $('#img_' + data[k]['id']).attr('src', '__PUBLIC__/images/hall/b.png');
             }
-//            if(data[k]['number'] == 3){ //某一张桌子人数凑够就直接转向大厅
-//                setTimeout(function () {
-//                    window.location = Config.root + 'Home/Game/hall';
-//                }, 5000);
-//            }
+            if(data[k]['number'] == 3){ //某一张桌子人数凑够就直接转向大厅
+                setTimeout(function () {
+                    window.location = Config.root + 'Home/Game/hall';
+                }, 5000);
+            }
         }
     }, false);
 </script>

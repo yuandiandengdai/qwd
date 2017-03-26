@@ -100,7 +100,9 @@ class GameAction extends Action{
             $this->error('请登录后再操作');
             $this->redirect('/');
         }
-        $room = D('Room')->where(array('id' => session('rid')))->find();
+        $room = D('Room')->where(array('id' => session('rid')))->find(); //房间
+//        var_dump(session('rid'));
+//        var_dump(session('did'));
         $number = $room['number'];
         $length = strlen($number);
         $question = D('Question')->order("rand()")->limit($length)->select();
@@ -134,4 +136,16 @@ class GameAction extends Action{
             echo createResponseJson(4, '回答错误，继续努力！', '');
         }
     }
+
+    public function memberInfo(){
+        header("X-Accel-Buffering: no");
+        header("Content-Type: text/event-stream");
+        header("Cache-Control: no-cache");
+        $data = D('Desk')->find(session('did'));
+        echo 'data:' . json_encode($data) . "\n\n";
+        @ob_flush();
+        @flush();
+    }
+
+
 }

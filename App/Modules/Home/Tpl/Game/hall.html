@@ -1,32 +1,50 @@
-<include file="public:header"/>
+<include file="public:headerhall"/>
 
-<h2>游戏大厅</h2>
-<div class="row">
-    <div class="col-md-8 col-md-offset-2">
+<h2>游戏大厅--{$room['id']}号房间</h2>
+    <div id="chartContainer" style="width: 358px;height: 300px;">
+    </div>
+
+    <div style="width: 500px;margin: auto;padding-top: 0px">
         <button id="card" type="button" class="btn btn-info btn-lg">{$room.number|formatNumber=###,0}</button>
         <div id="content" class="cc"></div>
         <div class="game_body">
-            <h3>开始答题</h3>
+            <h3>本题题目：</h3>
             <div class="alert alert-info" role="alert" id="question_show">
             </div>
-            <h3>回 答</h3>
+            <h3>开始抢答：</h3>
             <input class="form-control" type="text" id="answer_check" placeholder="请在这里输入你的答案"
                    value="" required/>
         </div>
         <button type="button" currentItem="1" class="btn btn-primary" id="to_validation" onclick="loadPageData()">提交验证
         </button>
     </div>
-</div>
 <div style="display: none">
     <volist name="question" id="val">
-        <p class="subject"><input type="hidden" class="qid" name="qid" value="{$val.id}" id="question_id"/>{$val.question}</p>
+        <p class="subject"><input type="hidden" class="qid" name="qid" value="{$val.id}" id="question_id"/>{$val.question}
+        </p>
     </volist>
 </div>
 <script type="text/javascript">
-    $(function () {
+    $(function () { //初始化游戏题目信息
         $('#question_show').html($('.subject').first().html());
     });
+    var es = new EventSource("__ROOT__/Member/test3");
+    es.addEventListener("message", function (event) {
+        var data = JSON.parse(event.data);
+        var chart = new CanvasJS.Chart("chartContainer", {
+            theme: "theme2",
+            animationEnabled: false,
+            title: {
+                text: "玩家答题统计"
+            },
+            data: [
+                {
+                    type: "column",
+                    dataPoints: data
+                }
+            ]
+        });
+        chart.render();
+    }, false);
 </script>
-
-
-<include file="public:footer"/>
+<include file="public:footerhall"/>

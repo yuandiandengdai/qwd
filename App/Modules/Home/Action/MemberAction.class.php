@@ -217,4 +217,85 @@ EOF;
     public function test(){
         $this->display();
     }
+
+    public function test1(){
+        $this->display();
+    }
+
+    public function test2(){
+        $this->display();
+    }
+
+    public function test8(){
+        $this->display();
+    }
+
+    public function test3(){
+        header("X-Accel-Buffering: no");
+        header("Content-Type: text/event-stream");
+        header("Cache-Control: no-cache");
+        $dataPoints = array(
+            array("y" => 12, "label" => "Apple"),
+            array("y" => 4, "label" => "Mango"),
+            array("y" => 5, "label" => "Orange"),
+            array("y" => 7, "label" => "Banana"),
+            array("y" => 4, "label" => "Pineapple"),
+            array("y" => 6, "label" => "Pears"),
+            array("y" => 7, "label" => "Grapes"),
+            array("y" => 5, "label" => "Lychee"),
+            array("y" => 4, "label" => "Jackfruit")
+        );
+        echo 'data:' . json_encode($dataPoints) . "\n\n";
+        @ob_flush();
+        @flush();
+        sleep(3);
+    }
+
+    public function test4(){
+        header("X-Accel-Buffering: no");
+        header("Content-Type: text/event-stream");
+        header("Cache-Control: no-cache");
+        $dataPoints_1 = array(
+            array("y" => 243, "label" => "France"),
+            array("y" => 273, "label" => "Great Britain"),
+            array("y" => 525, "label" => "Soviet Union"),
+            array("y" => 1118, "label" => "USA")
+        );
+        echo 'data:' . json_encode($dataPoints_1) . "\n\n";
+        @ob_flush();
+        @flush();
+        sleep(3);
+    }
+
+    public function test5(){
+        header("X-Accel-Buffering: no");
+        header("Content-Type: text/event-stream");
+        header("Cache-Control: no-cache");
+        $dataPoints_2 = array(
+            array("y" => 272, "label" => "France"),
+            array("y" => 299, "label" => "Great Britain"),
+            array("y" => 419, "label" => "Soviet Union"),
+            array("y" => 896, "label" => "USA")
+        );
+        echo 'data:' . json_encode($dataPoints_2) . "\n\n";
+        @ob_flush();
+        @flush();
+        sleep(3);
+    }
+
+    public function test6(){
+        header("X-Accel-Buffering: no");
+        header("Content-Type: text/event-stream");
+        header("Cache-Control: no-cache");
+        $dataPoints_3 = array(
+            array("y" => 307, "label" => "France"),
+            array("y" => 301, "label" => "Great Britain"),
+            array("y" => 392, "label" => "Soviet Union"),
+            array("y" => 788, "label" => "USA")
+        );
+        echo 'data:' . json_encode($dataPoints_3) . "\n\n";
+        @ob_flush();
+        @flush();
+        sleep(3);
+    }
 }
