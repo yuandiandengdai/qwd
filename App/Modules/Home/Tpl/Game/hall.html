@@ -1,10 +1,10 @@
 <include file="public:headerhall"/>
 
 <h2>游戏大厅--{$room['id']}号房间</h2>
-    <div id="chartContainer" style="width: 358px;height: 300px;">
+<div>
+    <div id="chartContainer" style="width: 358px;height: 300px;float: left">
     </div>
-
-    <div style="width: 500px;margin: auto;padding-top: 0px">
+    <div style="width: 500px;margin: auto;padding-top: 0px;">
         <button id="card" type="button" class="btn btn-info btn-lg">{$room.number|formatNumber=###,0}</button>
         <div id="content" class="cc"></div>
         <div class="game_body">
@@ -18,12 +18,13 @@
         <button type="button" currentItem="1" class="btn btn-primary" id="to_validation" onclick="loadPageData()">提交验证
         </button>
     </div>
-<div style="display: none">
+</div>
+<span style="display: none">
     <volist name="question" id="val">
         <p class="subject"><input type="hidden" class="qid" name="qid" value="{$val.id}" id="question_id"/>{$val.question}
         </p>
     </volist>
-</div>
+</span>
 <script type="text/javascript">
     $(function () { //初始化游戏题目信息
         $('#question_show').html($('.subject').first().html());
@@ -47,4 +48,3 @@
         chart.render();
     }, false);
 </script>
-<include file="public:footerhall"/>

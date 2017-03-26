@@ -3,25 +3,54 @@
 <h2>登录</h2>
 <div class="row">
     <div class="col-md-4 col-md-offset-4">
-        <form action="" accept-charset="UTF-8" method="post">
+        <form action="" accept-charset="UTF-8" method="post" id="form">
             <label for="session_email">Email</label>
-            <input class="form-control" type="text" name="email" placeholder="请在此输入邮箱" id="session_email" value="" required/>
+            <input class="form-control" type="text" name="email" placeholder="请在此输入邮箱" id="session_email" value=""
+                   required/>
             <label for="session_password">密码</label>
             <a href="__ROOT__/Member/forgetpassword">（忘记密码）</a>
-            <input class="form-control" type="password" name="password" placeholder="请在此输入密码" id="session_password" value="" required/>
-            <div><label >验证码</label></div>
+            <input class="form-control" type="password" name="password" placeholder="请在此输入密码" id="session_password"
+                   value="" required/>
+            <div><label>验证码</label></div>
             <div class="verify" id="verifyInput">
                 <input type="text" name="verify" id="verify" placeholder="请输入图形验证码" class="form-control">
             </div>
-            <div class="verify" id="verifyCode"><img src="__ROOT__/Home/Common/verifyCode" onclick="this.src=this.src+'?'"/></div>
+            <div class="verify" id="verifyCode"><img src="__ROOT__/Home/Common/verifyCode"
+                                                     onclick="this.src=this.src+'?'"/></div>
             <label class="checkbox inline" for="remember_me">
                 <input type="checkbox" value="1" name="remember_me" id="remember_me"/>
                 <span>在此计算机上记住我</span>
             </label>
-            <input type="submit" name="commit" value="登录" class="btn btn-primary"/>
+            <input type="button" name="commit" value="登录" id="commit" class="btn btn-primary"/>
         </form>
         <p id="nocount">还没有账号 ？<a href="__ROOT__/Member/register"> 现在就注册！</a></p>
     </div>
 </div>
 
+<script type="text/javascript">
+    $(function () {
+        $('#commit').click(function () {
+            var Config = {root: '/'};
+            var email = $('#session_email').val();
+            var password = $('#session_password').val();
+            var verify = $('#verify').val();
+            if (email == '') {
+                layer.alert('请输入Email');
+            } else if (password == '') {
+                layer.alert('请输入密码');
+            } else if (verify == '') {
+                layer.alert('请输入验证码');
+            }else {
+                $.post(Config.root + 'Home/Common/verify', {verify: verify}, function (data) {
+                    if (data == 402) {
+                        layer.alert('验证码错误');
+                    }else {
+                        $('#form').submit();
+                    }
+                });
+            }
+
+        });
+    });
+</script>
 <include file="public:footer"/>

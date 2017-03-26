@@ -14,10 +14,8 @@ class CommonAction extends Action{
     }
 
     public function verify(){
-        if(session('verify') == md5($this->_post('verify'))){
-            $this->ajaxReturn(200);
-        }else{
-            $this->ajaxReturn(300);
+        if(session('verify') != md5($this->_post('verify'))){
+            $this->ajaxReturn(402); //验证码错误
         }
     }
 }
