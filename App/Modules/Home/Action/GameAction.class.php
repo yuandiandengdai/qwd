@@ -101,7 +101,9 @@ class GameAction extends Action{
             $this->redirect('/');
         }
         $room = D('Room')->where(array('id' => session('rid')))->find();
-        $question = D('Question')->order("rand()")->limit(1)->select();
+        $number = $room['number'];
+        $length = strlen($number);
+        $question = D('Question')->order("rand()")->limit($length)->select();
         $this->assign('room', $room);
         $this->assign('question', $question);
         $this->display();
@@ -115,22 +117,21 @@ class GameAction extends Action{
         $memberAnswer = I('get.memberAnswer');
         $qid = I('get.qid');
         $currentItem = I('get.c');
-        $question = D('Question')->order("rand()")->limit(1)->select();
         $number = D('Room')->field('number')->where(array('id' => session('rid')))->find();
         $answer = D('Question')->field('answer')->find($qid);
         if($memberAnswer == $answer['answer']){
             if($currentItem < strlen($number['number'])){
                 $numberto = formatNumber($number['number'], $currentItem);
-                echo createResponseJson(2, '回答正确，再接再厉！', $numberto, $question[0]['question'], $question[0]['id']);
+                echo createResponseJson(2, '回答正确，再接再厉！', $numberto);
             }else{
                 $room = D('Room');
                 $data['onwer'] = session('user_name');
                 $data['onwertime'] = date('Y-m-d H:i:s', NOW_TIME);
                 $room->where(array('id' => session('rid')))->save($data); // 根据条件保存修改的数据
-                echo createResponseJson(3, '恭喜你赢得本局比赛！', $number['number'], '', '');
+                echo createResponseJson(3, '恭喜你赢得本局比赛！', $number['number']);
             }
         }else{
-            echo createResponseJson(4, '回答错误，继续努力！', '', '', '');
+            echo createResponseJson(4, '回答错误，继续努力！', '');
         }
     }
 }

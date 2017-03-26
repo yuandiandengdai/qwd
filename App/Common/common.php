@@ -38,13 +38,11 @@ function sendMail($to, $title, $content){
     }
 }
 
-function createResponseJson($code, $msg, $number, $ques, $quesid){
+function createResponseJson($code, $msg, $number){
     $ret = array();
     $ret['sts'] = $code;
     $ret['msg'] = $msg;
     $ret['num'] = $number;
-    $ret['ques'] = $ques;
-    $ret['quesid'] = $quesid;
     return json_encode($ret, JSON_UNESCAPED_UNICODE);
 }
 

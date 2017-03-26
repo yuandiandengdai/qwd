@@ -7,9 +7,7 @@
         <div id="content" class="cc"></div>
         <div class="game_body">
             <h3>开始答题</h3>
-            <div id="question_id" style="display: none">{$question[0]['id']}</div>
             <div class="alert alert-info" role="alert" id="question_show">
-                {$question[0]['question']}
             </div>
             <h3>回 答</h3>
             <input class="form-control" type="text" id="answer_check" placeholder="请在这里输入你的答案"
@@ -19,10 +17,16 @@
         </button>
     </div>
 </div>
-<div style="">
-    <p class="subject"><input type="hidden" class="qid" name="qid" value="104"/>股市连续下跌称为____。</p>
-    <p class="subject"><input type="hidden" class="qid" name="qid" value="101"/>苏州四大园林之一的留园建于哪一年代？</p>
-    <p class="subject"><input type="hidden" class="qid" name="qid" value="111"/>请问股市中，ST股是什么股？</p>
+<div style="display: none">
+    <volist name="question" id="val">
+        <p class="subject"><input type="hidden" class="qid" name="qid" value="{$val.id}" id="question_id"/>{$val.question}</p>
+    </volist>
 </div>
+<script type="text/javascript">
+    $(function () {
+        $('#question_show').html($('.subject').first().html());
+    });
+</script>
+
 
 <include file="public:footer"/>
