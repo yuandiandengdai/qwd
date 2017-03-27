@@ -91,10 +91,10 @@
             $('#top_' + data[k]['id']).text(data[k]['member_one']);
             $('#left_' + data[k]['id']).text(data[k]['member_two']);
             $('#right_' + data[k]['id']).text(data[k]['member_three']);
-            if(data[k]['number'] != 0){ //根据房间的人数切换背景图片
+            if(data[k]['number'] >= 1){ //根据房间的人数切换背景图片
                 $('#img_' + data[k]['id']).attr('src', '__PUBLIC__/images/hall/b.png');
             }
-            if(data[k]['number'] == 3){ //某一张桌子人数凑够就直接转向大厅
+            if(data[k]['number'] == 5){ //某一张桌子人数凑够就直接转向大厅
                 setTimeout(function () {
                     window.location = Config.root + 'Home/Game/hall';
                 }, 5000);

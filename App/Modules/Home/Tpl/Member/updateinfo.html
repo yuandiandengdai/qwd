@@ -2,23 +2,23 @@
 
 <h2>更新个人资料</h2>
 <div class="row">
-	<div class="col-md-4 col-md-offset-4">
-		<form class="edit_user" id="edit_user_1" action="" accept-charset="UTF-8" method="post">
-			<label for="user_name">玩家姓名</label>
-			<input class="form-control" type="text" name="name" id="user_name"
-			       value="{$member['name']}" disabled/>
-			<label for="user_email">Email</label>
-			<input class="form-control" type="text" name="email" id="user_email"
-			       value="{$member['email']}" disabled/>
-			<label for="user_password">密码</label>
-			<input class="form-control" type="password" name="p1" id="user_password"
-			       value=""/>
-			<label for="user_password_confirmation">密码确认</label>
-			<input class="form-control" type="password" name="p2" id="user_password_confirmation"
-			       value=""/>
-			<input type="button" name="commit" id="renew" value="更新" class="btn btn-primary" />
-		</form>
-	</div>
+    <div class="col-md-4 col-md-offset-4">
+        <form class="edit_user" id="edit_user_1" action="" accept-charset="UTF-8" method="post">
+            <label for="user_name">玩家姓名</label>
+            <input class="form-control" type="text" name="name" id="user_name"
+                   value="{$member['name']}" disabled/>
+            <label for="user_email">Email</label>
+            <input class="form-control" type="text" name="email" id="user_email"
+                   value="{$member['email']}" disabled/>
+            <label for="user_password">密码</label>
+            <input class="form-control" type="password" name="p1" id="user_password" placeholder="请输入长度大于6位数的密码"
+                   value=""/>
+            <label for="user_password_confirmation">密码确认</label>
+            <input class="form-control" type="password" name="p2" id="user_password_confirmation" placeholder="请再次输入密码"
+                   value=""/>
+            <input type="button" name="commit" id="renew" value="更新" class="btn btn-primary"/>
+        </form>
+    </div>
 </div>
 
 <script type="text/javascript">

@@ -8,15 +8,15 @@
  */
 class GameAction extends Action{
     public function index(){
-        if(empty(session('uid'))){
+        if(empty($_SESSION['uid'])){
             $this->error('请登录后再操作');
             $this->redirect('/');
         }
-        var_dump(session('uid'));
+        var_dump($_SESSION['uid']);
         $data = D('Room')->select();
         if(IS_POST){
             $rid = I('post.rid');
-            session('rid', $rid);
+            $_SESSION['rid'] = $rid;
             $this->success('正在前往' . $rid . '号房间......', __ROOT__ . '/Game/wait');
             return;
         }
@@ -25,13 +25,15 @@ class GameAction extends Action{
     }
 
     public function wait(){
-        if(empty(session('uid'))){
+        if(empty($_SESSION['uid'])){
             $this->error('请登录后再操作');
             $this->redirect('/');
         }
-        $rid = session('rid');
-        var_dump(session('did'));
-        var_dump(session('user_name'));
+        $rid = $_SESSION['rid'];
+        var_dump($_SESSION['did']);
+        var_dump($_SESSION['user_name']);
+        var_dump($_SESSION['time_did']);
+        var_dump(time() - $_SESSION['time_did']);
         $table = D('Desk')->select();
         $this->assign('rid', $rid);
         $this->assign('table', $table);
@@ -44,50 +46,63 @@ class GameAction extends Action{
         header("Cache-Control: no-cache");
         if(IS_POST){
             $id = $this->_post('id');
-            if($id != session('did')){  //房间人数减一，同时去掉用户所在上一房间的名字
-                D('Desk')->where('id=%d', session('did'))->setDec('number');
-                $member = D('Desk')->field('member_one,member_two,member_three')->where('id=%d', session('did'))->find();
+            if($id != $_SESSION['did']){  //房间人数减一，同时去掉用户所在上一房间的名字
+                D('Desk')->where('id=%d', $_SESSION['did'])->setDec('number');
+                $member = D('Desk')->field('member_one,member_two,member_three')->where('id=%d', $_SESSION['did'])->find();
                 foreach($member as $key => $value){
-                    if($value == session('user_name')){
-                        D('Desk')->where('id=%d', session('did'))->setField($key, '');
+                    if($value == $_SESSION['user_name']){
+                        D('Desk')->where('id=%d', $_SESSION['did'])->setField($key, '');
                     }
                 }
             }
-            session('did', $id);
+            $_SESSION['did'] = $id;  //session赋值给刚刚进入的房间号
+            $_SESSION['time_did'] = time();   //session赋值给时间，监测 30 分钟内如果房间没有满人，则清空$_SESSION['did']所在玩家的信息
             $number = D('Desk')->where('id=%d', $id)->getField('number'); //获取房间的人数
-            $table = D('Desk')->find(session('did'));
+            $table = D('Desk')->find($_SESSION['did']);
             if($number == 0){
                 if($table['member_one'] == ''){
-                    $data['member_one'] = session('user_name');
+                    $data['member_one'] = $_SESSION['user_name'];
                 }elseif($table['member_two'] == ''){
-                    $data['member_two'] = session('user_name');
+                    $data['member_two'] = $_SESSION['user_name'];
                 }elseif($table['member_three'] == ''){
-                    $data['member_three'] = session('user_name');
+                    $data['member_three'] = $_SESSION['user_name'];
                 }
                 $data['number'] = 1;
-                D('Desk')->where('id=%d', session('did'))->save($data);
+                D('Desk')->where('id=%d', $_SESSION['did'])->save($data);
             }elseif($number == 1){
                 if($table['member_one'] == ''){
-                    $data['member_one'] = session('user_name');
+                    $data['member_one'] = $_SESSION['user_name'];
                 }elseif($table['member_two'] == ''){
-                    $data['member_two'] = session('user_name');
+                    $data['member_two'] = $_SESSION['user_name'];
                 }elseif($table['member_three'] == ''){
-                    $data['member_three'] = session('user_name');
+                    $data['member_three'] = $_SESSION['user_name'];
                 }
                 $data['number'] = 2;
-                D('Desk')->where('id=%d', session('did'))->save($data);
+                D('Desk')->where('id=%d', $_SESSION['did'])->save($data);
             }elseif($number == 2){
                 if($table['member_one'] == ''){
-                    $data['member_one'] = session('user_name');
+                    $data['member_one'] = $_SESSION['user_name'];
                 }elseif($table['member_two'] == ''){
-                    $data['member_two'] = session('user_name');
+                    $data['member_two'] = $_SESSION['user_name'];
                 }elseif($table['member_three'] == ''){
-                    $data['member_three'] = session('user_name');
+                    $data['member_three'] = $_SESSION['user_name'];
                 }
                 $data['number'] = 3;
-                D('Desk')->where('id=%d', session('did'))->save($data);
+                D('Desk')->where('id=%d', $_SESSION['did'])->save($data);
             }
         }
+        $time = time() - $_SESSION['time_did'];
+        if($time >= 3600){
+            D('Desk')->where('id=%d', $_SESSION['did'])->setDec('number');
+            $member = D('Desk')->field('member_one,member_two,member_three')->where('id=%d', $_SESSION['did'])->find();
+            foreach($member as $key => $value){
+                if($value == $_SESSION['user_name']){
+                    D('Desk')->where('id=%d', $_SESSION['did'])->setField($key, '');
+                }
+            }
+            unset($_SESSION['did']);
+        }
+
 
         $data = D('Desk')->select();
         echo 'data:' . json_encode($data) . "\n\n";
@@ -96,13 +111,13 @@ class GameAction extends Action{
     }
 
     public function hall(){
-        if(empty(session('uid'))){
+        if(empty($_SESSION['uid'])){
             $this->error('请登录后再操作');
             $this->redirect('/');
         }
-        $room = D('Room')->where(array('id' => session('rid')))->find(); //房间
-//        var_dump(session('rid'));
-//        var_dump(session('did'));
+        $room = D('Room')->where(array('id' => $_SESSION['rid']))->find(); //房间
+//        var_dump($_SESSION['rid']);
+//        var_dump($_SESSION['did']);
         $number = $room['number'];
         $length = strlen($number);
         $question = D('Question')->order("rand()")->limit($length)->select();
@@ -112,14 +127,14 @@ class GameAction extends Action{
     }
 
     public function check(){
-        if(empty(session('uid'))){
+        if(empty($_SESSION['uid'])){
             $this->error('请登录后再操作');
             $this->redirect('/');
         }
         $memberAnswer = I('get.memberAnswer');
         $qid = I('get.qid');
         $currentItem = I('get.c');
-        $number = D('Room')->field('number')->where(array('id' => session('rid')))->find();
+        $number = D('Room')->field('number')->where(array('id' => $_SESSION['rid']))->find();
         $answer = D('Question')->field('answer')->find($qid);
         if($memberAnswer == $answer['answer']){
             if($currentItem < strlen($number['number'])){
@@ -127,9 +142,9 @@ class GameAction extends Action{
                 echo createResponseJson(2, '回答正确，再接再厉！', $numberto);
             }else{
                 $room = D('Room');
-                $data['onwer'] = session('user_name');
+                $data['onwer'] = $_SESSION['user_name'];
                 $data['onwertime'] = date('Y-m-d H:i:s', NOW_TIME);
-                $room->where(array('id' => session('rid')))->save($data); // 根据条件保存修改的数据
+                $room->where(array('id' => $_SESSION['rid']))->save($data); // 根据条件保存修改的数据
                 echo createResponseJson(3, '恭喜你赢得本局比赛！', $number['number']);
             }
         }else{
@@ -141,7 +156,7 @@ class GameAction extends Action{
         header("X-Accel-Buffering: no");
         header("Content-Type: text/event-stream");
         header("Cache-Control: no-cache");
-        $data = D('Desk')->find(session('did'));
+        $data = D('Desk')->find($_SESSION['did']);
         echo 'data:' . json_encode($data) . "\n\n";
         @ob_flush();
         @flush();

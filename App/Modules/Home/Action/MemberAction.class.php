@@ -8,12 +8,12 @@
  */
 class MemberAction extends Action{
     public function index(){
-//        var_dump(D('Member')->relation(true)->where(array('id' => session('uid')))->find());
-        if(empty(session('uid'))){
+//        var_dump(D('Member')->relation(true)->where(array('id' => $_SESSION['uid']))->find());
+        if(empty($_SESSION['uid'])){
             $this->error('请登录后再操作');
             $this->redirect('/');
         }
-        var_dump(session('did'));
+        var_dump($_SESSION['did']);
         $this->display();
     }
 
@@ -34,9 +34,8 @@ class MemberAction extends Action{
             }elseif($data['activate'] != 2){
                 $this->error('账户未激活，请前往注册邮件中激活账号');
             }else{
-                session('uid', $data['id']);
-                session('user_name', $data['name']);
-                session('test', time());
+                $_SESSION['uid'] = $data['id'];
+                $_SESSION['user_name'] = $data['name'];
                 $this->success('登录成功', __ROOT__ . '/Member');
             }
         }elseif(IS_GET){
@@ -44,27 +43,19 @@ class MemberAction extends Action{
         }
     }
 
-
-    public function test10(){
-        var_dump(time()-session('test'));
-        var_dump(session('test'));
-        var_dump(session('?test'));
-        if(time()-session('test') >= 1121){
-            D('Member')->where(array('id' => session('uid')))->setField('win', time());
-        }
-    }
     /**
      * 退出
      */
     public function logout(){
-        D('Desk')->where('id=%d', session('did'))->setDec('number'); //退出房间清除最后一次所在房间的信息
-        $member = D('Desk')->field('member_one,member_two,member_three')->where('id=%d', session('did'))->find();
+        D('Desk')->where('id=%d', $_SESSION['did'])->setDec('number'); //退出房间清除最后一次所在房间的信息
+        $member = D('Desk')->field('member_one,member_two,member_three')->where('id=%d', $_SESSION['did'])->find();
         foreach($member as $key => $value){
-            if($value == session('user_name')){
-                D('Desk')->where('id=%d', session('did'))->setField($key, '');
+            if($value == $_SESSION['user_name']){
+                D('Desk')->where('id=%d', $_SESSION['did'])->setField($key, '');
             }
         }
-        session(null); //清除所有的session
+        session_unset();
+        session_destroy(); //清除所有的session
         $this->success('退出成功', '/');
     }
 
@@ -101,7 +92,7 @@ class MemberAction extends Action{
 		如果点击此链接无反映，您可以将其复制到浏览器中来执行。
 EOF;
                     sendMail($email, '账号激活', $msg);
-                    session('activeToken', $activeToken);
+                    $_SESSION['activeToken'] = $activeToken;
                     $this->success('注册成功，请前往邮件中激活账号', '/');
                     return;
                 }else{
@@ -158,8 +149,8 @@ EOF;
 		如果你没有请求密码重置，请忽略此邮件，你的密码将不会改变。
 EOF;
                 sendMail($email, '重置密码', $msg);
-                session('resetPasswordToken', $resetPasswordToken);
-                session('memberId', $member['id']);
+                $_SESSION['resetPasswordToken'] = $resetPasswordToken;
+                $_SESSION['memberId'] = $member['id'];
                 $this->success('邮件发送成功，请前往邮件中重置密码');
                 return;
             }
@@ -169,7 +160,7 @@ EOF;
 
     public function getResetPasswordToken(){
         $token = I('get.y');
-        if(md5($token) == session('resetPasswordToken')){
+        if(md5($token) == $_SESSION['resetPasswordToken']){
             $this->redirect(__ROOT__ . 'Member/resetPassword');
         }else{
             $this->error('无效的激活链接');
@@ -182,10 +173,10 @@ EOF;
     public function resetPassword(){
         if(IS_POST){
             if(I('post.p1') != I('post.p2')) $this->error('两次输入的密码不匹配');
-            $res = D('Member')->where(array('id' => session('memberId')))->setField('password', sha1(I('post.p1')));
+            $res = D('Member')->where(array('id' => $_SESSION['memberId']))->setField('password', sha1(I('post.p1')));
             if($res){
-                session('uid', session('memberId'));
-                session('user_name', $res['name']);
+                $_SESSION['uid'] = $_SESSION['memberId'];
+                $_SESSION['user_name'] = $res['name'];
                 $this->success('重置密码成功', __ROOT__ . '/Member');
                 return;
             }else{
@@ -199,15 +190,15 @@ EOF;
      * 更新资料
      */
     public function updateInfo(){
-        if(empty(session('uid'))){
+        if(empty($_SESSION['uid'])){
             $this->error('非法操作');
             $this->redirect('/');
         }
-        $member = D('Member')->field('name,email')->where(array('id' => session('uid')))->find();
+        $member = D('Member')->field('name,email')->where(array('id' => $_SESSION['uid']))->find();
         $this->assign('member', $member);
         if(IS_POST){
             if(I('post.p1') != I('post.p2')) $this->error('两次输入的密码不匹配');
-            $res = D('Member')->where(array('id' => session('memberId')))->setField('password', sha1(I('post.p1')));
+            $res = D('Member')->where(array('id' => $_SESSION['memberId']))->setField('password', sha1(I('post.p1')));
             if($res){
                 $this->success('更新资料成功', __ROOT__ . '/Member');
                 return;
@@ -225,13 +216,13 @@ EOF;
     public function activeMember(){
         $email = I('get.x');
         $token = I('get.y');
-        if(md5($token) == session('activeToken')){
+        if(md5($token) == $_SESSION['activeToken']){
             $res = D('Member')->where(array('email' => $email))->setField('activate', 2);
             if($res){
                 $condition['email'] = $email;
                 $data = D('Member')->field('id,name,email,password,status,activate')->where($condition)->find();
-                session('uid', $data['id']);
-                session('user_name', $data['name']);
+                $_SESSION['uid'] = $data['id'];
+                $_SESSION['user_name'] = $data['name'];
                 $this->success('激活成功', __ROOT__ . '/Member');
             }else{
                 $this->error('激活失败');
