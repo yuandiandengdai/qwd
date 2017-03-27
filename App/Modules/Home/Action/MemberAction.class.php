@@ -32,7 +32,7 @@ class MemberAction extends Action{
             }elseif($data['password'] != sha1($password)){
                 $this->error('密码错误');
             }elseif($data['activate'] != 2){
-                $this->error('账户未激活');
+                $this->error('账户未激活，请前往注册邮件中激活账号');
             }else{
                 session('uid', $data['id']);
                 session('user_name', $data['name']);
@@ -102,7 +102,7 @@ class MemberAction extends Action{
 EOF;
                     sendMail($email, '账号激活', $msg);
                     session('activeToken', $activeToken);
-                    $this->success('注册成功，请前往邮件中激活账号');
+                    $this->success('注册成功，请前往邮件中激活账号', '/');
                     return;
                 }else{
                     $this->error('注册失败');

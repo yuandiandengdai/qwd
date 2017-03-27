@@ -6,7 +6,7 @@
 		<form class="edit_user" id="edit_user_1" action="" accept-charset="UTF-8" method="post">
 			<label for="user_name">玩家姓名</label>
 			<input class="form-control" type="text" name="name" id="user_name"
-			       value="{$member['name']}"/>
+			       value="{$member['name']}" disabled/>
 			<label for="user_email">Email</label>
 			<input class="form-control" type="text" name="email" id="user_email"
 			       value="{$member['email']}" disabled/>
@@ -16,9 +16,29 @@
 			<label for="user_password_confirmation">密码确认</label>
 			<input class="form-control" type="password" name="p2" id="user_password_confirmation"
 			       value=""/>
-			<input type="submit" name="commit" value="更新" class="btn btn-primary" />
+			<input type="button" name="commit" id="renew" value="更新" class="btn btn-primary" />
 		</form>
 	</div>
 </div>
+
+<script type="text/javascript">
+    $(function () {
+        $('#renew').click(function () {
+            var password1 = $('#user_password').val();
+            var password2 = $('#user_password_confirmation').val();
+            if (password1 == '') {
+                layer.alert('请输入密码');
+            } else if (password1.length < 6) {
+                layer.alert('密码长度不能少于6位数');
+            } else if (password2 == '') {
+                layer.alert('请再次输入密码');
+            } else if (password1 != password2) {
+                layer.alert('两次输入密码不匹配');
+            } else {
+                $('#renew').submit();
+            }
+        });
+    });
+</script>
 
 <include file="public:footer"/>

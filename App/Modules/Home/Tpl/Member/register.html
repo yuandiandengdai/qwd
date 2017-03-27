@@ -7,18 +7,25 @@
             <label for="user_name">玩家姓名</label>
             <input class="form-control" type="text" name="name" id="user_name" value="" placeholder="请输入昵称" required/>
             <label for="user_email">Email</label>
-            <input class="form-control" type="text" name="email" id="user_email" value="" placeholder="请输入邮箱" required/>
+            <input class="form-control" type="text" name="email" id="user_email" value="" placeholder="请输入Email" required/>
             <label for="user_pass">密码</label>
-            <input class="form-control" type="password" name="p1" id="user_pass" value="" placeholder="请输入密码" required/>
+            <input class="form-control" type="password" name="p1" id="user_pass" value="" placeholder="请输入长度大于6位数的密码" required/>
             <label for="pass_confirm">密码确认</label>
             <input class="form-control" type="password" name="p2" id="pass_confirm" value="" placeholder="请再次输入密码"
                    required/>
+            <div><label>验证码</label></div>
+            <div class="verify" id="verifyInput">
+                <input type="text" name="verify" id="verify" placeholder="请输入图形验证码" class="form-control">
+            </div>
+            <div class="verify" id="verifyCode"><img src="__ROOT__/Home/Common/verifyCode"
+                                                     onclick="this.src=this.src+'?'"/></div>
             <input id="success_for" type="button" name="commit" value="创建账号" class="btn btn-primary"/>
         </form>
     </div>
 </div>
 <script type="text/javascript">
     $(function () {
+        var Config = {root: '/'};
         function checkEmailIsExist() {
             var flag = false;
             var email = $('#user_email').val();
@@ -67,6 +74,7 @@
             var reg = /^([\.a-zA-Z0-9_-])+@([a-zA-Z0-9_-])+(\.[a-zA-Z0-9_-])+/;
             var password1 = $('#user_pass').val();
             var password2 = $('#pass_confirm').val();
+            var verify = $('#verify').val();
             if (name == '') {
                 layer.alert('请输入玩家姓名');
             } else if (checkUserNameIsExist()) {
@@ -79,14 +87,21 @@
                 layer.alert('该邮箱地址已经被注册');
             } else if (password1 == '') {
                 layer.alert('请输入密码');
+            }else if(password1.length < 6){
+                layer.alert('密码长度不能少于6位数');
             } else if (password2 == '') {
                 layer.alert('请再次输入密码');
             } else if (password1 != password2) {
                 layer.alert('两次输入密码不匹配');
             } else {
-                $('#new_user').submit();
+                $.post(Config.root + 'Home/Common/verify', {verify: verify}, function (data) {
+                    if (data == 402) {
+                        layer.alert('验证码错误');
+                    }else {
+                        $('#new_user').submit();
+                    }
+                });
             }
-
         });
     });
 </script>
