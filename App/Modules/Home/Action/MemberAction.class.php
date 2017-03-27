@@ -36,6 +36,7 @@ class MemberAction extends Action{
             }else{
                 session('uid', $data['id']);
                 session('user_name', $data['name']);
+                session('test', time());
                 $this->success('登录成功', __ROOT__ . '/Member');
             }
         }elseif(IS_GET){
@@ -43,6 +44,15 @@ class MemberAction extends Action{
         }
     }
 
+
+    public function test10(){
+        var_dump(time()-session('test'));
+        var_dump(session('test'));
+        var_dump(session('?test'));
+        if(time()-session('test') >= 1121){
+            D('Member')->where(array('id' => session('uid')))->setField('win', time());
+        }
+    }
     /**
      * 退出
      */

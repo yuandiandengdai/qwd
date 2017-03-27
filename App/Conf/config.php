@@ -14,12 +14,12 @@ return array(
     /* url模式，去掉index.php */
     'URL_MODEL' => 2,
     /* 邮件配置 */
-    'SMTP_MAIL'=>array(
-        'username'=>'2739792145@qq.com',
-        'password'=>'mxlxsfkoagkrddce',
+    'SMTP_MAIL' => array(
+        'username' => '2739792145@qq.com',
+        'password' => 'mxlxsfkoagkrddce',
     ),
     /* 公共的提示模板文件 */
-    'TMPL_ACTION_ERROR'     => 'Public/html/tip.html', // 默认错误跳转对应的模板文件
-    'TMPL_ACTION_SUCCESS'   => 'Public/html/tip.html', // 默认成功跳转对应的模板文件
+    'TMPL_ACTION_ERROR' => 'Public/html/tip.html', // 默认错误跳转对应的模板文件
+    'TMPL_ACTION_SUCCESS' => 'Public/html/tip.html', // 默认成功跳转对应的模板文件
 );
 ?>
