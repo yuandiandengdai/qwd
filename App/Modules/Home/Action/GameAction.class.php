@@ -56,6 +56,7 @@ class GameAction extends Action{
                 }
             }
             $_SESSION['did'] = $id;  //session赋值给刚刚进入的房间号
+            $_SESSION['clear_did'] = $id;  //session赋值给刚刚进入的房间号,用于清空房间信息
             $_SESSION['time_did'] = time();   //session赋值给时间，监测 30 分钟内如果房间没有满人，则清空$_SESSION['did']所在玩家的信息
             $number = D('Desk')->where('id=%d', $id)->getField('number'); //获取房间的人数
             $table = D('Desk')->find($_SESSION['did']);
@@ -92,17 +93,17 @@ class GameAction extends Action{
             }
         }
         $time = time() - $_SESSION['time_did'];
-        if($time >= 3600){
-            D('Desk')->where('id=%d', $_SESSION['did'])->setDec('number');
-            $member = D('Desk')->field('member_one,member_two,member_three')->where('id=%d', $_SESSION['did'])->find();
+        $desk = D('Desk')->find($_SESSION['did']);
+        if(($time > 60) && ($desk['number'] != 3)){
+            D('Desk')->where('id=%d', $_SESSION['clear_did'])->setDec('number');
+            $member = D('Desk')->field('member_one,member_two,member_three')->where('id=%d', $_SESSION['clear_did'])->find();
             foreach($member as $key => $value){
                 if($value == $_SESSION['user_name']){
-                    D('Desk')->where('id=%d', $_SESSION['did'])->setField($key, '');
+                    D('Desk')->where('id=%d', $_SESSION['clear_did'])->setField($key, '');
                 }
             }
-            unset($_SESSION['did']);
+            unset($_SESSION['clear_did']); // 释放玩家当时所在房间号
         }
-
 
         $data = D('Desk')->select();
         echo 'data:' . json_encode($data) . "\n\n";
@@ -116,8 +117,8 @@ class GameAction extends Action{
             $this->redirect('/');
         }
         $room = D('Room')->where(array('id' => $_SESSION['rid']))->find(); //房间
-//        var_dump($_SESSION['rid']);
-//        var_dump($_SESSION['did']);
+        var_dump($_SESSION['rid']);
+        var_dump($_SESSION['did']);
         $number = $room['number'];
         $length = strlen($number);
         $question = D('Question')->order("rand()")->limit($length)->select();
