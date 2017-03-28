@@ -31,6 +31,7 @@ class GameAction extends Action{
         }
         $rid = $_SESSION['rid'];
         var_dump($_SESSION['did']);
+        var_dump($_SESSION['rid']);
         var_dump($_SESSION['user_name']);
         var_dump($_SESSION['time_did']);
         var_dump(time() - $_SESSION['time_did']);
@@ -111,20 +112,35 @@ class GameAction extends Action{
         @flush();
     }
 
+    public function question(){
+        $room = D('Room')->where(array('id' => $_SESSION['rid']))->find(); //房间
+        $number = $room['number'];
+        $length = strlen($number);
+        $question = D('Question')->order("rand()")->limit($length)->select();
+        $_SESSION['question'] = $question;
+        return $_SESSION['question'];
+    }
     public function hall(){
         if(empty($_SESSION['uid'])){
             $this->error('请登录后再操作');
             $this->redirect('/');
         }
+        var_dump($_SESSION['question']);
+
         $room = D('Room')->where(array('id' => $_SESSION['rid']))->find(); //房间
-        var_dump($_SESSION['rid']);
-        var_dump($_SESSION['did']);
-        $number = $room['number'];
-        $length = strlen($number);
-        $question = D('Question')->order("rand()")->limit($length)->select();
         $this->assign('room', $room);
-        $this->assign('question', $question);
+        $this->assign('question', $this->question()); //将函数的返回值进行赋值，解决了不执行question函数时$_SESSION['question']为空的问题
+        var_dump($this->question());
         $this->display();
+    }
+
+    public function getQuestion(){
+        header("X-Accel-Buffering: no");
+        header("Content-Type: text/event-stream");
+        header("Cache-Control: no-cache");
+        echo 'data:' . json_encode($_SESSION['question'], JSON_UNESCAPED_UNICODE) . "\n\n";
+        @ob_flush();
+        @flush();
     }
 
     public function check(){
