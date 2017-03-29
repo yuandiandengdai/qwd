@@ -50,7 +50,7 @@ class GameAction extends Action{
             if($id != $_SESSION['did']){  //房间人数减一，同时去掉用户所在上一房间的名字
                 D('Desk')->where('id=%d', $_SESSION['did'])->setDec('number');
                 $member = D('Desk')->field('member_one,member_two,member_three')->where('id=%d', $_SESSION['did'])->find();
-                foreach($member as $key => $value){
+                foreach($member as $key => $value) {
                     if($value == $_SESSION['user_name']){
                         D('Desk')->where('id=%d', $_SESSION['did'])->setField($key, '');
                     }
@@ -98,7 +98,7 @@ class GameAction extends Action{
         if(($time > 60) && ($desk['number'] != 3)){
             D('Desk')->where('id=%d', $_SESSION['clear_did'])->setDec('number');
             $member = D('Desk')->field('member_one,member_two,member_three')->where('id=%d', $_SESSION['clear_did'])->find();
-            foreach($member as $key => $value){
+            foreach($member as $key => $value) {
                 if($value == $_SESSION['user_name']){
                     D('Desk')->where('id=%d', $_SESSION['clear_did'])->setField($key, '');
                 }
@@ -113,24 +113,45 @@ class GameAction extends Action{
     }
 
     public function question(){
+        global $qid;
         $room = D('Room')->where(array('id' => $_SESSION['rid']))->find(); //房间
         $number = $room['number'];
         $length = strlen($number);
         $question = D('Question')->order("rand()")->limit($length)->select();
-        $_SESSION['question'] = $question;
-        return $_SESSION['question'];
+        $counter = count($question);
+        foreach($question as $value) { //将每次取出的题库题号取出来，用","分隔，存入到数据库中，可保证同时在这桌子的玩家看到的题目是一样的
+            if($value == $question[$counter - 1]){
+                $str = $value['id'];
+            }else{
+                $str = $value['id'] . ",";
+            }
+            $qid .= $str;
+        }
+        $res = D('DeskQuestion')->where('id=%d', $_SESSION['did'])->setField('question', $qid);
+        if($res){
+            return true;
+        }else{
+            return false;
+        }
     }
+
     public function hall(){
+        global $qid;
+        $question = array();
         if(empty($_SESSION['uid'])){
             $this->error('请登录后再操作');
             $this->redirect('/');
         }
-        var_dump($_SESSION['question']);
-
         $room = D('Room')->where(array('id' => $_SESSION['rid']))->find(); //房间
+        if($this->question()){
+            $qid = D('DeskQuestion')->where('id=%d', $_SESSION['did'])->getField('question');
+        }
+        $arr = explode(",", $qid); //分隔字符串，得到题库
+        foreach($arr as $a) {
+            $question[] = D('Question')->find($a);
+        }
         $this->assign('room', $room);
-        $this->assign('question', $this->question()); //将函数的返回值进行赋值，解决了不执行question函数时$_SESSION['question']为空的问题
-        var_dump($this->question());
+        $this->assign('question', $question);
         $this->display();
     }
 
