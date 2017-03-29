@@ -34,8 +34,8 @@ class MemberAction extends Action{
             }elseif($data['activate'] != 2){
                 $this->error('账户未激活，请前往注册邮件中激活账号');
             }else{
-                $_SESSION['uid'] = $data['id'];
-                $_SESSION['user_name'] = $data['name'];
+                $_SESSION['uid'] = $data['id']; //------------玩家id-------------
+                $_SESSION['user_name'] = $data['name']; //------------玩家姓名-------------
                 $this->success('登录成功', __ROOT__ . '/Member');
             }
         }elseif(IS_GET){

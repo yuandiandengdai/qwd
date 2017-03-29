@@ -16,7 +16,7 @@ class GameAction extends Action{
         $data = D('Room')->select();
         if(IS_POST){
             $rid = I('post.rid');
-            $_SESSION['rid'] = $rid;
+            $_SESSION['rid'] = $rid; //------------玩家进入房间的id-------------
             $this->success('正在前往' . $rid . '号房间......', __ROOT__ . '/Game/wait');
             return;
         }
@@ -56,6 +56,7 @@ class GameAction extends Action{
                     }
                 }
             }
+            $_SESSION['question'] = $id; //session赋值给刚刚进入的房间号,用于清空题库的操作信息,避免再次生成题库
             $_SESSION['did'] = $id;  //session赋值给刚刚进入的房间号
             $_SESSION['clear_did'] = $id;  //session赋值给刚刚进入的房间号,用于清空房间信息
             $_SESSION['time_did'] = time();   //session赋值给时间，监测 30 分钟内如果房间没有满人，则清空$_SESSION['did']所在玩家的信息
@@ -127,12 +128,11 @@ class GameAction extends Action{
             }
             $qid .= $str;
         }
-        $res = D('DeskQuestion')->where('id=%d', $_SESSION['did'])->setField('question', $qid);
-        if($res){
-            return true;
-        }else{
-            return false;
+        $question_id = D('DeskQuestion')->where('id=%d', $_SESSION['question'])->getField('question');
+        if(empty($question_id)){
+            D('DeskQuestion')->where('id=%d', $_SESSION['question'])->setField('question', $qid);
         }
+        return true;
     }
 
     public function hall(){
@@ -150,6 +150,7 @@ class GameAction extends Action{
         foreach($arr as $a) {
             $question[] = D('Question')->find($a);
         }
+        var_dump($_SESSION['did']);
         $this->assign('room', $room);
         $this->assign('question', $question);
         $this->display();
