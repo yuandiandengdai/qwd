@@ -254,27 +254,6 @@ EOF;
         $this->display();
     }
 
-    public function test3(){
-        header("X-Accel-Buffering: no");
-        header("Content-Type: text/event-stream");
-        header("Cache-Control: no-cache");
-        $dataPoints = array(
-            array("y" => 12, "label" => "Apple"),
-            array("y" => 4, "label" => "Mango"),
-            array("y" => 5, "label" => "Orange"),
-            array("y" => 7, "label" => "Banana"),
-            array("y" => 4, "label" => "Pineapple"),
-            array("y" => 6, "label" => "Pears"),
-            array("y" => 7, "label" => "Grapes"),
-            array("y" => 5, "label" => "Lychee"),
-            array("y" => 4, "label" => "Jackfruit")
-        );
-        echo 'data:' . json_encode($dataPoints) . "\n\n";
-        @ob_flush();
-        @flush();
-        sleep(3);
-    }
-
     public function test4(){
         header("X-Accel-Buffering: no");
         header("Content-Type: text/event-stream");
@@ -288,7 +267,6 @@ EOF;
         echo 'data:' . json_encode($dataPoints_1) . "\n\n";
         @ob_flush();
         @flush();
-        sleep(3);
     }
 
     public function test5(){
@@ -304,7 +282,6 @@ EOF;
         echo 'data:' . json_encode($dataPoints_2) . "\n\n";
         @ob_flush();
         @flush();
-        sleep(3);
     }
 
     public function test6(){
@@ -320,6 +297,5 @@ EOF;
         echo 'data:' . json_encode($dataPoints_3) . "\n\n";
         @ob_flush();
         @flush();
-        sleep(3);
     }
 }

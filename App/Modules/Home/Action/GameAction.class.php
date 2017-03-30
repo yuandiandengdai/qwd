@@ -50,7 +50,7 @@ class GameAction extends Action{
             if($id != $_SESSION['did']){  //房间人数减一，同时去掉用户所在上一房间的名字
                 D('Desk')->where('id=%d', $_SESSION['did'])->setDec('number');
                 $member = D('Desk')->field('member_one,member_two,member_three')->where('id=%d', $_SESSION['did'])->find();
-                foreach($member as $key => $value) {
+                foreach($member as $key => $value){
                     if($value == $_SESSION['user_name']){
                         D('Desk')->where('id=%d', $_SESSION['did'])->setField($key, '');
                     }
@@ -99,7 +99,7 @@ class GameAction extends Action{
         if(($time > 60) && ($desk['number'] != 3)){
             D('Desk')->where('id=%d', $_SESSION['clear_did'])->setDec('number');
             $member = D('Desk')->field('member_one,member_two,member_three')->where('id=%d', $_SESSION['clear_did'])->find();
-            foreach($member as $key => $value) {
+            foreach($member as $key => $value){
                 if($value == $_SESSION['user_name']){
                     D('Desk')->where('id=%d', $_SESSION['clear_did'])->setField($key, '');
                 }
@@ -120,7 +120,7 @@ class GameAction extends Action{
         $length = strlen($number);
         $question = D('Question')->order("rand()")->limit($length)->select();
         $counter = count($question);
-        foreach($question as $value) { //将每次取出的题库题号取出来，用","分隔，存入到数据库中，可保证同时在这桌子的玩家看到的题目是一样的
+        foreach($question as $value){ //将每次取出的题库题号取出来，用","分隔，存入到数据库中，可保证同时在这桌子的玩家看到的题目是一样的
             if($value == $question[$counter - 1]){
                 $str = $value['id'];
             }else{
@@ -131,6 +131,7 @@ class GameAction extends Action{
         $question_id = D('DeskQuestion')->where('id=%d', $_SESSION['question'])->getField('question');
         if(empty($question_id)){
             D('DeskQuestion')->where('id=%d', $_SESSION['question'])->setField('question', $qid);
+            D('Desk')->where('id=%d', $_SESSION['did'])->setField('question_counter', $length);
         }
         return true;
     }
@@ -147,59 +148,70 @@ class GameAction extends Action{
             $qid = D('DeskQuestion')->where('id=%d', $_SESSION['did'])->getField('question');
         }
         $arr = explode(",", $qid); //分隔字符串，得到题库
-        foreach($arr as $a) {
+        foreach($arr as $a){
             $question[] = D('Question')->find($a);
         }
         var_dump($_SESSION['did']);
         $this->assign('room', $room);
+        $this->assign('table', $_SESSION['did']);
         $this->assign('question', $question);
         $this->display();
     }
 
-    public function getQuestion(){
+    public function check(){
         header("X-Accel-Buffering: no");
         header("Content-Type: text/event-stream");
         header("Cache-Control: no-cache");
-        echo 'data:' . json_encode($_SESSION['question'], JSON_UNESCAPED_UNICODE) . "\n\n";
-        @ob_flush();
-        @flush();
-    }
-
-    public function check(){
         if(empty($_SESSION['uid'])){
             $this->error('请登录后再操作');
             $this->redirect('/');
         }
-        $memberAnswer = I('get.memberAnswer');
-        $qid = I('get.qid');
-        $currentItem = I('get.c');
-        $number = D('Room')->field('number')->where(array('id' => $_SESSION['rid']))->find();
-        $answer = D('Question')->field('answer')->find($qid);
-        if($memberAnswer == $answer['answer']){
-            if($currentItem < strlen($number['number'])){
-                $numberto = formatNumber($number['number'], $currentItem);
-                echo createResponseJson(2, '回答正确，再接再厉！', $numberto);
+        $number = D('Room')->where(array('id' => $_SESSION['rid']))->getField('number');
+        if(IS_GET){
+            $memberAnswer = I('get.memberAnswer');
+            $qid = I('get.qid');
+            $currentItem = I('get.c');
+            $answer = D('Question')->field('answer')->find($qid);
+            if($memberAnswer == $answer['answer']){
+                if($currentItem < strlen($number)){
+                    $numberto = formatNumber($number, $currentItem);
+                    D('Desk')->where('id=%d', $_SESSION['did'])->setDec('question_counter');
+                    echo createResponseJson(2, '回答正确，再接再厉！', $numberto);
+                }else{
+                    $room = D('Room');
+                    $data['onwer'] = $_SESSION['user_name'];
+                    $data['onwertime'] = date('Y-m-d H:i:s', NOW_TIME);
+                    $room->where(array('id' => $_SESSION['rid']))->save($data); // 根据条件保存修改的数据
+                    D('Desk')->where('id=%d', $_SESSION['did'])->setField('question_counter', 0); //游戏结束，未答题数清空
+                    echo createResponseJson(3, '恭喜你赢得本局比赛！', $number);
+                }
             }else{
-                $room = D('Room');
-                $data['onwer'] = $_SESSION['user_name'];
-                $data['onwertime'] = date('Y-m-d H:i:s', NOW_TIME);
-                $room->where(array('id' => $_SESSION['rid']))->save($data); // 根据条件保存修改的数据
-                echo createResponseJson(3, '恭喜你赢得本局比赛！', $number['number']);
+                echo createResponseJson(4, '回答错误，继续努力！', '');
             }
-        }else{
-            echo createResponseJson(4, '回答错误，继续努力！', '');
         }
     }
 
-    public function memberInfo(){
+    /**
+     * 玩家答题信息统计
+     */
+    public function information(){
         header("X-Accel-Buffering: no");
         header("Content-Type: text/event-stream");
         header("Cache-Control: no-cache");
-        $data = D('Desk')->find($_SESSION['did']);
-        echo 'data:' . json_encode($data) . "\n\n";
+        $desk = D('Desk')->where(array('id' => $_SESSION['did']))->find(); //房间
+        $number = intval($desk['question_counter']); //得到的是字符串，强转int
+        $a = '哈哈哈hh';
+        $dataPoints = array(
+            array("y" => $number, "label" => "本桌未答"),
+            array("y" => 1, "label" => "{$a}答对"),
+            array("y" => 0, "label" => "{$a}答对"),
+            array("y" => 0, "label" => "{$a}答对"),
+            array("y" => 0, "label" => "赢家答对总数")
+        );
+        echo 'data:' . json_encode($dataPoints, JSON_UNESCAPED_UNICODE) . "\n\n";
         @ob_flush();
         @flush();
+        sleep(3);
     }
-
 
 }

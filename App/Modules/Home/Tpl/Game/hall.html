@@ -1,8 +1,8 @@
 <include file="public:headerhall"/>
 
-<h2>游戏大厅--{$room['id']}号房间</h2>
+<h2>游戏大厅--{$room['id']}号房间{$table}号桌</h2>
 <div>
-    <div id="chartContainer" style="width: 358px;height: 300px;float: left">
+    <div id="chartContainer" style="width: 410px;height: 300px;float: left">
     </div>
     <div style="width: 500px;margin: auto;padding-top: 0px;">
         <button id="card" type="button" class="btn btn-info btn-lg">{$room.number|formatNumber=###,0}</button>
@@ -29,19 +29,21 @@
     $(function () { //初始化游戏题目信息
         $('#question_show').html($('.subject').first().html());
     });
-    var es = new EventSource("__ROOT__/Member/test3");
+    var es = new EventSource("__ROOT__/Game/information");
     es.addEventListener("message", function (event) {
-        var data = JSON.parse(event.data);
+        data1 = JSON.parse(event.data);
         var chart = new CanvasJS.Chart("chartContainer", {
             theme: "theme2",
             animationEnabled: false,
             title: {
-                text: "玩家答题统计"
+                text: "本桌答题统计"
             },
             data: [
                 {
-                    type: "column",
-                    dataPoints: data
+                    type: "stackedColumn",
+                    dataPoints: data1,
+                    indexLabel: "#total",
+                    indexLabelPlacement: "outside"
                 }
             ]
         });
