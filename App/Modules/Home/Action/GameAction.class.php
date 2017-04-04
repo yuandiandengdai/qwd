@@ -41,6 +41,9 @@ class GameAction extends Action{
         $this->display();
     }
 
+    /**
+     * 桌子处理方法
+     */
     public function desk(){
         header("X-Accel-Buffering: no");
         header("Content-Type: text/event-stream");
@@ -176,6 +179,7 @@ class GameAction extends Action{
                 if($currentItem < strlen($number)){
                     $numberto = formatNumber($number, $currentItem);
                     D('Desk')->where('id=%d', $_SESSION['did'])->setDec('question_counter');
+                    D('Desk')->where('id=%d', $_SESSION['did'])->setInc('qid'); //记录qid
                     echo createResponseJson(2, '回答正确，再接再厉！', $numberto);
                 }else{
                     $room = D('Room');
@@ -200,15 +204,25 @@ class GameAction extends Action{
         header("Cache-Control: no-cache");
         $desk = D('Desk')->where(array('id' => $_SESSION['did']))->find(); //房间
         $number = intval($desk['question_counter']); //得到的是字符串，强转int
-        $a = '哈哈哈hh';
         $dataPoints = array(
             array("y" => $number, "label" => "本桌未答"),
-            array("y" => 1, "label" => "{$a}答对"),
-            array("y" => 0, "label" => "{$a}答对"),
-            array("y" => 0, "label" => "{$a}答对"),
-            array("y" => 0, "label" => "赢家答对总数")
+            array("y" => 2, "label" => "{$desk['member_one']}答对"),
+            array("y" => 4, "label" => "{$desk['member_two']}答对"),
+            array("y" => 1, "label" => "{$desk['member_three']}答对"),
+            array("y" => 5, "label" => "赢家答对总数")
         );
         echo 'data:' . json_encode($dataPoints, JSON_UNESCAPED_UNICODE) . "\n\n";
+        @ob_flush();
+        @flush();
+        sleep(3);
+    }
+
+    public function questionId(){
+        header("X-Accel-Buffering: no");
+        header("Content-Type: text/event-stream");
+        header("Cache-Control: no-cache");
+        $id = D('Desk')->where(array('id' => $_SESSION['did']))->getField('qid');
+        echo 'data:' . intval($id) . "\n\n";
         @ob_flush();
         @flush();
         sleep(3);

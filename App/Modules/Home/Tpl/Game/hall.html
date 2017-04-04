@@ -49,4 +49,10 @@
         });
         chart.render();
     }, false);
+
+    var qid = new EventSource("__ROOT__/Game/questionId");
+    qid.addEventListener("message", function (event) {
+        var x = $('.subject').eq(event.data).html(); //获取下一道题目的问题
+        $('#question_show').html(x); //显示赋值
+    }, false);
 </script>
