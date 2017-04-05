@@ -8,5 +8,5 @@
  */
 class DeskQuestionModel extends Model{
     protected $trueTableName = 'desk_question';
-    protected $fields = array('id', 'question');
+    protected $fields = array('id', 'question', 'numbers');
 }

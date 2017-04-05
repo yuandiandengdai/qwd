@@ -132,8 +132,10 @@ class GameAction extends Action{
             $qid .= $str;
         }
         $question_id = D('DeskQuestion')->where('id=%d', $_SESSION['question'])->getField('question');
+        $numbers = formatNumber($number);
         if(empty($question_id)){
             D('DeskQuestion')->where('id=%d', $_SESSION['question'])->setField('question', $qid);
+            D('DeskQuestion')->where('id=%d', $_SESSION['question'])->setField('numbers', $numbers);
             D('Desk')->where('id=%d', $_SESSION['did'])->setField('question_counter', $length);
         }
         return true;
@@ -165,6 +167,7 @@ class GameAction extends Action{
         header("X-Accel-Buffering: no");
         header("Content-Type: text/event-stream");
         header("Cache-Control: no-cache");
+        global $id;
         if(empty($_SESSION['uid'])){
             $this->error('请登录后再操作');
             $this->redirect('/');
@@ -176,18 +179,22 @@ class GameAction extends Action{
             $currentItem = I('get.c');
             $answer = D('Question')->field('answer')->find($qid);
             if($memberAnswer == $answer['answer']){
-                if($currentItem < strlen($number)){
+                $id = D('Desk')->where('id=%d', $_SESSION['did'])->getField('qid'); //记录qid
+                if(intval($id) < (strlen($number)-1)){
                     $numberto = formatNumber($number, $currentItem);
                     D('Desk')->where('id=%d', $_SESSION['did'])->setDec('question_counter');
                     D('Desk')->where('id=%d', $_SESSION['did'])->setInc('qid'); //记录qid
+                    $id = D('Desk')->where('id=%d', $_SESSION['did'])->getField('qid'); //记录qid
+                    D('DeskQuestion')->where('id=%d', $_SESSION['question'])->setField('numbers', formatNumber($number, $id));
                     echo createResponseJson(2, '回答正确，再接再厉！', $numberto);
-                }else{
+                }else if(intval($id) == (strlen($number)-1)){
                     $room = D('Room');
                     $data['onwer'] = $_SESSION['user_name'];
                     $data['onwertime'] = date('Y-m-d H:i:s', NOW_TIME);
                     $room->where(array('id' => $_SESSION['rid']))->save($data); // 根据条件保存修改的数据
                     D('Desk')->where('id=%d', $_SESSION['did'])->setField('question_counter', 0); //游戏结束，未答题数清空
-                    echo createResponseJson(3, '恭喜你赢得本局比赛！', $number);
+                    D('DeskQuestion')->where('id=%d', $_SESSION['question'])->setField('numbers', formatNumber($number, strlen($number)));
+                    echo createResponseJson(3, '本局比赛结束！', $number);
                 }
             }else{
                 echo createResponseJson(4, '回答错误，继续努力！', '');
@@ -225,7 +232,26 @@ class GameAction extends Action{
         echo 'data:' . intval($id) . "\n\n";
         @ob_flush();
         @flush();
-        sleep(3);
+    }
+
+    public function numbers(){
+        header("X-Accel-Buffering: no");
+        header("Content-Type: text/event-stream");
+        header("Cache-Control: no-cache");
+        $numbers = D('DeskQuestion')->where('id=%d', $_SESSION['question'])->getField('numbers');
+        echo 'data:' . $numbers . "\n\n";
+        @ob_flush();
+        @flush();
+    }
+
+    public function counter(){
+        header("X-Accel-Buffering: no");
+        header("Content-Type: text/event-stream");
+        header("Cache-Control: no-cache");
+        $id = D('Desk')->where(array('id' => $_SESSION['did']))->getField('question_counter');
+        echo 'data:' . intval($id) . "\n\n";
+        @ob_flush();
+        @flush();
     }
 
 }

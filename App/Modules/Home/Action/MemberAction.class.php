@@ -57,6 +57,7 @@ class MemberAction extends Action{
                 }
             }
         }
+        session(null);
         session_unset();
         session_destroy(); //清除所有的session
         $this->success('退出成功', '/');

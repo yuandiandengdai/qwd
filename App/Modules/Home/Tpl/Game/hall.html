@@ -26,6 +26,7 @@
     </volist>
 </span>
 <script type="text/javascript">
+    var flag = true;
     $(function () { //初始化游戏题目信息
         $('#question_show').html($('.subject').first().html());
     });
@@ -54,5 +55,22 @@
     qid.addEventListener("message", function (event) {
         var x = $('.subject').eq(event.data).html(); //获取下一道题目的问题
         $('#question_show').html(x); //显示赋值
+    }, false);
+
+    var numbers = new EventSource("__ROOT__/Game/numbers");
+    numbers.addEventListener("message", function (event) {
+        $('#card').text(event.data);
+    }, false);
+
+    var counter = new EventSource("__ROOT__/Game/counter");
+    counter.addEventListener("message", function (event) {
+        if((event.data == 0) && (flag == true)){
+            var flashMsg = setFlash("本局比赛结束");
+            $('#content').html(flashMsg).find('.flashmsg').flashOut();
+            $('.game_body').hide(3000);
+            $('#to_validation').text("游戏结束");
+            $("#to_validation").attr("disabled", true);
+            flag = false;
+        }
     }, false);
 </script>
