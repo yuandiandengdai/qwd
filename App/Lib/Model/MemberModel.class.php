@@ -8,8 +8,8 @@
  */
 class MemberModel extends RelationModel{
     protected $trueTableName = 'member';
-    protected $fields = array('id', 'rid', 'name', 'email', 'password', 'create_at',
-        'admin', 'status', 'activate', 'add_time', 'win');
+    protected $fields = array('id', 'rid', 'tid', 'name', 'email', 'password', 'create_at',
+        'admin', 'status', 'activate', 'add_time', 'win', 'correct', 'error');
 
     protected $_link = array(
         'Room' => array(

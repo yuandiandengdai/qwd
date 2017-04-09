@@ -8,7 +8,7 @@
             <dt class="item_list_info">
                 <span class="num_order"
                       style="<?php if($i < 4){echo 'background-color:orange;color: #FFF;';} ?>">{$i}</span>
-                <span class="xu_wei"><a href="javascript:void(0)"><span id="name_{$val.id}"></span>&nbsp;总共赢得了</a></span>
+                <span class="xu_wei"><a href="javascript:void(0)"><span id="name_{$val.id}"></span>&nbsp;总共赢得</a></span>
                 <span class="z_wu_pai_ming" id="win_{$val.id}"></span><span>&nbsp;局比赛</span>
             </dt>
         </volist>
@@ -19,7 +19,7 @@
         <volist name="add_time" id="val">
             <dt class="item_list_info">
                 <span class="num_order">{$i}</span>
-                <span class="ply_join_game"><a href="javascript:void(0)"><span id="time_name_{$val.id}"></span>&nbsp;进入了&nbsp;<span id="rid_{$val.id}"></span>&nbsp;号房间</a></span>
+                <span class="ply_join_game"><a href="javascript:void(0)"><span id="time_name_{$val.id}"></span>&nbsp;进入&nbsp;<span id="rid_{$val.id}"></span>&nbsp;号房&nbsp;<span id="tid_{$val.id}"></span>&nbsp;号桌</a></span>
                 <span class="ply_join_time" id="time_{$val.id}"></span>
             </dt>
         </volist>
@@ -56,6 +56,7 @@
         for (var k in data) {
             $('#time_name_' + data[k]['id']).text(data[k]['name']);
             $('#rid_' + data[k]['id']).text(data[k]['rid']);
+            $('#tid_' + data[k]['id']).text(data[k]['tid']);
             $('#time_' + data[k]['id']).text(data[k]['add_time']);
         }
     }, false);

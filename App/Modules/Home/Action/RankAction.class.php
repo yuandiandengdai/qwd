@@ -37,7 +37,7 @@ class RankAction extends Action{
         header("X-Accel-Buffering: no");
         header("Content-Type: text/event-stream");
         header("Cache-Control: no-cache");
-        $add_time = D('Member')->field('id,name,rid,add_time')->order('add_time DESC')->limit(9)->select();
+        $add_time = D('Member')->field('id,name,rid,tid,add_time')->order('add_time DESC')->limit(9)->select();
         foreach($add_time as $key => $val){
             $add_time[$key]['add_time'] = date('m-d H:i:s', $add_time[$key]['add_time']);
         }

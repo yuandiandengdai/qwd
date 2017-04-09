@@ -25,6 +25,9 @@
 			<ul class="nav navbar-nav pull-right">
 				<li><a href="__ROOT__/">主页</a></li>
 				<li><a href="__ROOT__/Rank">排行榜</a></li>
+				<?php if(isset($_SESSION['uid'])){ ?>
+				<li><a href="__ROOT__/Game">游戏</a></li>
+				<?php } ?>
 				<?php if(!isset($_SESSION['uid'])){ ?>
 					<li><a href="__ROOT__/Member/login">登录</a></li>
 				<?php }else{ ?>
