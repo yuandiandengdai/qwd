@@ -4,7 +4,7 @@
     <div class="col-md-12">
         <table style="margin:auto;">
             <tr>
-                <volist name="table" id="val" offset="0" length='3'>
+                <volist name="tables" id="val" offset="0" length='3'>
                     <td>
                         <table width="180" border="1" style="margin: 27px">
                             <tr>
@@ -28,7 +28,7 @@
                 </volist>
             </tr>
             <tr>
-                <volist name="table" id="val" offset="3" length='3'>
+                <volist name="tables" id="val" offset="3" length='3'>
                     <td>
                         <table width="180" border="1" style="margin: 27px">
                             <tr>
@@ -52,7 +52,7 @@
                 </volist>
             </tr>
             <tr>
-                <volist name="table" id="val" offset="6" length='3'>
+                <volist name="tables" id="val" offset="6" length='3'>
                     <td>
                         <table width="180" border="1" style="margin: 27px">
                             <tr>
@@ -85,11 +85,11 @@
     es.addEventListener("message", function (event) {
         var data = JSON.parse(event.data);
         for (var k in data) {
-            $('#top_' + data[k]['id']).text(data[k]['member_one']);
-            $('#left_' + data[k]['id']).text(data[k]['member_two']);
-            $('#right_' + data[k]['id']).text(data[k]['member_three']);
+            $('#top_' + data[k]['tid']).text(data[k]['member_one']);
+            $('#left_' + data[k]['tid']).text(data[k]['member_two']);
+            $('#right_' + data[k]['tid']).text(data[k]['member_three']);
             if (data[k]['number'] >= 1) { //根据房间的人数切换背景图片
-                $('#img_' + data[k]['id']).attr('src', '__PUBLIC__/images/hall/b.png');
+                $('#img_' + data[k]['tid']).attr('src', '__PUBLIC__/images/hall/b.png');
             }
             if (data[k]['number'] == 3) { //根据人数进行跳转
                 setTimeout(function () {
