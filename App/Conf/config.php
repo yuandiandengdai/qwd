@@ -15,8 +15,8 @@ return array(
     'URL_MODEL' => 2,
     /* 邮件配置 */
     'SMTP_MAIL' => array(
-        'username' => '2739792145@qq.com',
-        'password' => 'mxlxsfkoagkrddce',
+        'username' => '1551422971@qq.com',
+        'password' => 'kequvrxxfnbmbaah',
     ),
     /* 公共的提示模板文件 */
     'TMPL_ACTION_ERROR' => 'Public/html/tip.html', // 默认错误跳转对应的模板文件
