@@ -30,7 +30,7 @@
         <volist name="room" id="val">
             <dt class="item_list_info">
                 <span class="num_order">{$i}</span>
-                <span class="ply_info"><a href="javascript:void(0)"><span id="room_{$val.id}"></span>&nbsp;在本房间赢得比赛</a></span>
+                <span class="ply_info"><a href="javascript:void(0)"><span id="room_{$val.id}"></span>&nbsp;在&nbsp;<span id="room_rid_{$val.id}"></span>&nbsp;号房&nbsp;<span id="room_tid_{$val.id}"></span>&nbsp;号桌赢局</a></span>
                 <span class="ply_num"><span id="count_{$val.id}"></span>&nbsp;人在玩</span>
             </dt>
         </volist>
@@ -65,8 +65,10 @@
     room.addEventListener("message", function (event) {
         var data = JSON.parse(event.data);
         for (var k in data) {
-            $('#room_' + data[k]['id']).text(data[k]['onwer']);
-            $('#count_' + data[k]['id']).text(data[k]['count']);
+            $('#room_' + data[k]['id']).text(data[k]['winner']);
+            $('#room_rid_' + data[k]['id']).text(data[k]['rid']);
+            $('#room_tid_' + data[k]['id']).text(data[k]['tid']);
+            $('#count_' + data[k]['id']).text(data[k]['room']['count']);
         }
     }, false);
 </script>

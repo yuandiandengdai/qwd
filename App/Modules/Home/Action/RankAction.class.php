@@ -10,7 +10,7 @@ class RankAction extends Action{
     public function index(){
         $counter = D('Member')->field('id,name,win')->order('win DESC')->limit(9)->select();
         $add_time = D('Member')->field('id,name,rid,add_time')->order('add_time DESC')->limit(9)->select();
-        $room = D('Room')->field('id,onwer,count')->select();
+        $room = D('Desk')->field('id,rid,tid')->select();
         $this->assign('counter', $counter);
         $this->assign('add_time', $add_time);
         $this->assign('room', $room);
@@ -53,8 +53,8 @@ class RankAction extends Action{
         header("X-Accel-Buffering: no");
         header("Content-Type: text/event-stream");
         header("Cache-Control: no-cache");
-        $room = D('Room')->field('id,onwer,count')->select();
-        echo 'data:' . json_encode($room) . "\n\n";
+        $room = D('Desk')->relation(true)->field('id,rid,tid,winner')->select();
+        echo 'data:' . json_encode($room, JSON_UNESCAPED_UNICODE) . "\n\n";
         @ob_flush();
         @flush();
     }
