@@ -1,6 +1,6 @@
 <include file="public:headerhall"/>
 
-<h2>游戏大厅--{$room['id']}号房间{$table}号桌</h2>
+<h2>游戏大厅--{$room['id']}号房{$table}号桌</h2>
 <div>
     <div id="chartContainer" style="width: 410px;height: 300px;float: left;margin-right: 8px">
     </div>
@@ -23,7 +23,7 @@
         <ol class="room_player_link" style="text-align: center">
             <a href="javascript:void(0)">
                 <span class="room_player_font">1号玩家:</span>
-                <span class="room_name">&nbsp;{$room.name}</span>
+                <span class="room_name">&nbsp;{$data['member_one']}</span>
                 <span class="room_player_font">准确率:</span>
                 <span class="player_num">&nbsp;{$room.count}</span>
             </a>
@@ -31,7 +31,7 @@
         <ol class="room_player_link" style="text-align: center">
             <a href="javascript:void(0)">
                 <span class="room_player_font">2号玩家:</span>
-                <span class="room_name">&nbsp;{$room.name}</span>
+                <span class="room_name">&nbsp;{$data['member_two']}</span>
                 <span class="room_player_font">准确率:</span>
                 <span class="player_num">&nbsp;{$room.count}</span>
             </a>
@@ -39,7 +39,7 @@
         <ol class="room_player_link" style="text-align: center">
             <a href="javascript:void(0)">
                 <span class="room_player_font">3号玩家:</span>
-                <span class="room_name">&nbsp;{$room.name}</span>
+                <span class="room_name">&nbsp;{$data['member_three']}</span>
                 <span class="room_player_font">准确率:</span>
                 <span class="player_num">&nbsp;{$room.count}</span>
             </a>

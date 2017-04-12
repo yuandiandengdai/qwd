@@ -7,13 +7,14 @@
  * Time: 17:07
  */
 class MemberAction extends Action{
+    /**
+     * 玩家个人资料页
+     */
     public function index(){
-//        var_dump(D('Member')->relation(true)->where(array('id' => $_SESSION['uid']))->find());
         if(empty($_SESSION['uid'])){
             $this->error('请登录后再操作');
             $this->redirect('/');
         }
-        var_dump($_SESSION['did']);
         $this->display();
     }
 
@@ -49,11 +50,11 @@ class MemberAction extends Action{
     public function logout(){
         $time = time() - $_SESSION['time_did']; //如果用户进入房间后时间小于规定时间内退出，清除记录
         if($time < 60){
-            D('Desk')->where('id=%d', $_SESSION['did'])->setDec('number');
-            $member = D('Desk')->field('member_one,member_two,member_three')->where('id=%d', $_SESSION['did'])->find();
-            foreach($member as $key => $value) {
+            D('Desk')->where(array('rid' => $_SESSION['rid'], 'tid' => $_SESSION['tid']))->setDec('number');
+            $member = D('Desk')->field('member_one,member_two,member_three')->where(array('rid' => $_SESSION['rid'], 'tid' => $_SESSION['tid']))->find();
+            foreach($member as $key => $value){ //清空原来玩家所在的记录用户名
                 if($value == $_SESSION['user_name']){
-                    D('Desk')->where('id=%d', $_SESSION['did'])->setField($key, '');
+                    D('Desk')->where(array('rid' => $_SESSION['rid'], 'tid' => $_SESSION['tid']))->setField($key, '');
                 }
             }
         }
@@ -108,6 +109,9 @@ EOF;
         $this->display();
     }
 
+    /**
+     * 验证用昵称唯一性
+     */
     public function checkUsername(){
         $map['name'] = $this->_post('name');
         $count = D('Member')->where($map)->count('id');
@@ -118,6 +122,9 @@ EOF;
         }
     }
 
+    /**
+     * 验证邮箱唯一性
+     */
     public function checkEmail(){
         $map['email'] = $this->_post('email');
         $count = D('Member')->where($map)->count('id');
@@ -241,62 +248,5 @@ EOF;
      */
     public function test(){
         $this->display();
-    }
-
-    public function test1(){
-        $this->display();
-    }
-
-    public function test2(){
-        $this->display();
-    }
-
-    public function test8(){
-        $this->display();
-    }
-
-    public function test4(){
-        header("X-Accel-Buffering: no");
-        header("Content-Type: text/event-stream");
-        header("Cache-Control: no-cache");
-        $dataPoints_1 = array(
-            array("y" => 243, "label" => "France"),
-            array("y" => 273, "label" => "Great Britain"),
-            array("y" => 525, "label" => "Soviet Union"),
-            array("y" => 1118, "label" => "USA")
-        );
-        echo 'data:' . json_encode($dataPoints_1) . "\n\n";
-        @ob_flush();
-        @flush();
-    }
-
-    public function test5(){
-        header("X-Accel-Buffering: no");
-        header("Content-Type: text/event-stream");
-        header("Cache-Control: no-cache");
-        $dataPoints_2 = array(
-            array("y" => 272, "label" => "France"),
-            array("y" => 299, "label" => "Great Britain"),
-            array("y" => 419, "label" => "Soviet Union"),
-            array("y" => 896, "label" => "USA")
-        );
-        echo 'data:' . json_encode($dataPoints_2) . "\n\n";
-        @ob_flush();
-        @flush();
-    }
-
-    public function test6(){
-        header("X-Accel-Buffering: no");
-        header("Content-Type: text/event-stream");
-        header("Cache-Control: no-cache");
-        $dataPoints_3 = array(
-            array("y" => 307, "label" => "France"),
-            array("y" => 301, "label" => "Great Britain"),
-            array("y" => 392, "label" => "Soviet Union"),
-            array("y" => 788, "label" => "USA")
-        );
-        echo 'data:' . json_encode($dataPoints_3) . "\n\n";
-        @ob_flush();
-        @flush();
     }
 }

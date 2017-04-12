@@ -16,10 +16,10 @@ class GameAction extends Action{
             $this->error('请登录后再操作');
             $this->redirect('/');
         }
-        var_dump($_SESSION['uid']);
         $data = D('Room')->select();
         if(IS_POST){
             $rid = I('post.rid');
+            D('Member')->where(array('id' => $_SESSION['uid']))->setField('rid', $rid);
             $_SESSION['rid'] = $rid; //------------玩家进入房间的id-------------
             $this->success('正在前往' . $rid . '号房间......', __ROOT__ . '/Game/wait');
             return;
@@ -37,11 +37,11 @@ class GameAction extends Action{
             $this->redirect('/');
         }
         $rid = $_SESSION['rid'];
-//        var_dump($_SESSION['did']);
-//        var_dump($_SESSION['rid']);
-//        var_dump($_SESSION['user_name']);
-//        var_dump($_SESSION['time_did']);
-//        var_dump(time() - $_SESSION['time_did']);
+        var_dump($_SESSION['tid']);
+        var_dump($_SESSION['rid']);
+        var_dump($_SESSION['user_name']);
+        var_dump($_SESSION['time_did']);
+        var_dump(time() - $_SESSION['time_did']);
         $tables = D('Tables')->select(); //获取桌子表的数据
         $this->assign('rid', $rid);
         $this->assign('tables', $tables);
@@ -57,6 +57,8 @@ class GameAction extends Action{
         header("Cache-Control: no-cache");
         if(IS_POST){
             $id = $this->_post('id'); //接受玩家选择桌子号id
+            D('Member')->where(array('id' => $_SESSION['uid']))->setField('tid', $id);
+            D('Member')->where(array('id' => $_SESSION['uid']))->setField('add_time', time());
             if($id != $_SESSION['tid']){  //先判断玩家进入的房间和桌子号是否相等
                 D('Desk')->where(array('rid' => $_SESSION['rid'], 'tid' => $_SESSION['tid']))->setDec('number'); //原来的房间和桌子人数减一
                 $member = D('Desk')->field('member_one,member_two,member_three')->where(array('rid' => $_SESSION['rid'], 'tid' => $_SESSION['tid']))->find();
@@ -130,6 +132,9 @@ class GameAction extends Action{
         @flush();
     }
 
+    /**随机生成题库
+     * @return bool
+     */
     public function question(){
         global $qid;
         $room = D('Room')->where(array('id' => $_SESSION['rid']))->find(); //获取玩家进入房间的id
@@ -155,6 +160,9 @@ class GameAction extends Action{
         return true;
     }
 
+    /**
+     * 游戏大厅，根据qid取得题目
+     */
     public function hall(){
         global $qid;
         $question = array();
@@ -170,12 +178,17 @@ class GameAction extends Action{
         foreach($arr as $a){
             $question[] = D('Question')->find($a);
         }
+        $data = D('Desk')->where(array('rid' => $_SESSION['rid'], 'tid' => $_SESSION['tid']))->find();
         $this->assign('room', $room);
+        $this->assign('data', $data);
         $this->assign('table', $_SESSION['tid']);
         $this->assign('question', $question);
         $this->display();
     }
 
+    /**
+     * 验证答案
+     */
     public function check(){
         header("X-Accel-Buffering: no");
         header("Content-Type: text/event-stream");
@@ -206,6 +219,8 @@ class GameAction extends Action{
                     }
                     $id = D('Desk')->where(array('rid' => $_SESSION['rid'], 'tid' => $_SESSION['tid']))->getField('qid'); //记录qid
                     D('Desk')->where(array('rid' => $_SESSION['rid'], 'tid' => $_SESSION['tid']))->setField('numbers', formatNumber($number, $id)); //记录当前的卡号
+
+                    D('Member')->where(array('id' => $_SESSION['uid']))->setInc('correct'); //玩家答对书加一
                     echo createResponseJson(2, '回答正确，再接再厉！', $numberto);
                 }else if(intval($id) == (strlen($number)-1)){
                     $counter = array();
@@ -221,15 +236,20 @@ class GameAction extends Action{
                             $winner = D('Desk')->where(array('rid' => $_SESSION['rid'], 'tid' => $_SESSION['tid']))->getField(substr($key,0,strlen($key)-8)); //截取字符串
                         }
                     }
-                    D('Desk')->where(array('rid' => $_SESSION['rid'], 'tid' => $_SESSION['tid']))->setField('winner', $winner); //游戏结束，记录最多的赢数
+                    D('Desk')->where(array('rid' => $_SESSION['rid'], 'tid' => $_SESSION['tid']))->setField('winner', $winner); //游戏结束，记录最多的赢数玩家
+
+                    D('Member')->where(array('name' => $winner))->setInc('win');
 
                     D('Desk')->where(array('rid' => $_SESSION['rid'], 'tid' => $_SESSION['tid']))->setField('question_counter', 0); //游戏结束，未答题数清空
                     D('Desk')->where(array('rid' => $_SESSION['rid'], 'tid' => $_SESSION['tid']))->setField('question', ''); //游戏结束，清空题库
-                    D('Desk')->where(array('rid' => $_SESSION['rid'], 'tid' => $_SESSION['tid']))->setField('qid', 0); //游戏结束，清空题库
-                    D('Desk')->where(array('rid' => $_SESSION['rid'], 'tid' => $_SESSION['tid']))->setField('numbers', formatNumber($number, strlen($number)));
+                    D('Desk')->where(array('rid' => $_SESSION['rid'], 'tid' => $_SESSION['tid']))->setField('winner_time', time()); //游戏结束，清空题库
+                    D('Desk')->where(array('rid' => $_SESSION['rid'], 'tid' => $_SESSION['tid']))->setField('qid', 0); //游戏结束，当前的题号为0
+                    D('Desk')->where(array('rid' => $_SESSION['rid'], 'tid' => $_SESSION['tid']))->setField('numbers', formatNumber($number, strlen($number))); //显示所有的卡号
+
                     echo createResponseJson(3, '本局比赛结束！', $number);
                 }
             }else{
+                D('Member')->where(array('id' => $_SESSION['uid']))->setInc('error');
                 echo createResponseJson(4, '回答错误，继续努力！', '');
             }
         }
@@ -257,6 +277,9 @@ class GameAction extends Action{
         sleep(3);
     }
 
+    /**
+     * 获取题目id号
+     */
     public function questionId(){
         header("X-Accel-Buffering: no");
         header("Content-Type: text/event-stream");
@@ -267,6 +290,9 @@ class GameAction extends Action{
         @flush();
     }
 
+    /**
+     * 获取房间卡号
+     */
     public function numbers(){
         header("X-Accel-Buffering: no");
         header("Content-Type: text/event-stream");
@@ -277,6 +303,9 @@ class GameAction extends Action{
         @flush();
     }
 
+    /**
+     * 获取题目的数量
+     */
     public function counter(){
         header("X-Accel-Buffering: no");
         header("Content-Type: text/event-stream");
@@ -285,10 +314,6 @@ class GameAction extends Action{
         echo 'data:' . intval($id) . "\n\n";
         @ob_flush();
         @flush();
-    }
-
-    public function test(){
-
     }
 
 }
