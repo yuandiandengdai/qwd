@@ -8,7 +8,7 @@ class IndexAction extends Action{
             $data = D('Admin')->where(array('name' => $name, 'password' => sha1($password)))->find();
             if ($data) {
                 $this->success('登录成功', __URL__.'/welcome');
-                session('aid', $data['id']);
+                $_SESSION['aid'] = $data['id'];
                 return;
             } else {
                 $this->error('账号或密码错误');
@@ -23,7 +23,7 @@ class IndexAction extends Action{
     }
 
     public function welcome(){
-        if(empty(session('aid'))){
+        if(empty($_SESSION['aid'])){
             $this->error('请登录后再操作');
             $this->redirect('/Admin');
         }

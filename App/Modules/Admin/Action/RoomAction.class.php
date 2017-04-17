@@ -8,7 +8,7 @@
  */
 class RoomAction extends Action{
     public function index(){
-        if(empty(session('aid'))){
+        if(empty($_SESSION['aid'])){
             $this->error('请登录后再操作');
             $this->redirect(__ROOT__.'/Admin');
         }
