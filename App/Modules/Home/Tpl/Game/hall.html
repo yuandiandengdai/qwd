@@ -5,7 +5,7 @@
     <div id="chartContainer" style="width: 410px;height: 300px;float: left;margin-right: 8px">
     </div>
     <div style="width: 500px;margin: auto;padding-top: 0px;float: left">
-        <button id="card" type="button" class="btn btn-info btn-lg">{$room.number|formatNumber=###,0}</button>
+        <button id="card" type="button" class="btn btn-info btn-lg"></button>
         <div id="content" class="cc"></div>
         <div class="game_body">
             <h3>本题题目：</h3>
@@ -55,12 +55,14 @@
 <include file="Public:footerhall"/>
 <script type="text/javascript">
     var flag = true;
+    var questionId = '';
     $(function () { //初始化游戏题目信息
         $('#question_show').html($('.subject').first().html());
     });
     var es = new EventSource("__ROOT__/Game/information");
     es.addEventListener("message", function (event) {
         data1 = JSON.parse(event.data);
+        questionId = data1[0]['y'];
         var chart = new CanvasJS.Chart("chartContainer", {
             theme: "theme2",
             animationEnabled: false,
@@ -82,7 +84,9 @@
     var qid = new EventSource("__ROOT__/Game/questionId");
     qid.addEventListener("message", function (event) {
         var x = $('.subject').eq(event.data).html(); //获取下一道题目的问题
-        $('#question_show').html(x); //显示赋值
+        if (questionId >= 1) {
+            $('#question_show').html(x); //显示赋值
+        }
     }, false);
 
     var numbers = new EventSource("__ROOT__/Game/numbers");
@@ -92,7 +96,7 @@
 
     var counter = new EventSource("__ROOT__/Game/counter");
     counter.addEventListener("message", function (event) {
-        if((event.data == 0) && (flag == true)){
+        if ((event.data == 0) && (flag == true)) {
             var flashMsg = setFlash("本局比赛结束");
             $('#content').html(flashMsg).find('.flashmsg').flashOut();
             $('.game_body').hide(3000);
@@ -100,5 +104,11 @@
             $("#to_validation").attr("disabled", true);
             flag = false;
         }
+    }, false);
+
+    var message = new EventSource("__ROOT__/Game/message");
+    message.addEventListener("message", function (event) {
+        var flashMsg = setFlash(event.data);
+        $('#content').html(flashMsg).find('.flashmsg').flashOut();
     }, false);
 </script>

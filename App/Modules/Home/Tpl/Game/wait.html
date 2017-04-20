@@ -1,4 +1,9 @@
 <include file="Public:header"/>
+<style type="text/css">
+    body {
+        background: #F5FAFD
+    }
+</style>
 <h2><span style="color: orange">{$rid}</span>号房间</h2>
 <div class="row">
     <div class="col-md-12">
@@ -90,6 +95,8 @@
             $('#right_' + data[k]['tid']).text(data[k]['member_three']);
             if (data[k]['number'] >= 1) { //根据房间的人数切换背景图片
                 $('#img_' + data[k]['tid']).attr('src', '__PUBLIC__/images/hall/b.png');
+            }else{
+                $('#img_' + data[k]['tid']).attr('src', '__PUBLIC__/images/hall/a.png');
             }
             if (data[k]['number'] == 3) { //根据人数进行跳转
                 setTimeout(function () {
@@ -102,6 +109,32 @@
     function select_table(id) {
         $.post(Config.root + 'Home/Game/desk', {id: id});
     }
+</script>
+
+<script language="javascript">
+    var delVal = 50;
+    function autoMove() {
+        delVal++;
+        if (delVal > 400) {
+            delVal = 50;
+        }
+        $(".mvBtn").css("left", delVal);
+    }
+    setInterval(autoMove, 8);
+    var deNum = 0;
+    function autoTsq() {
+        $(".mvSq").css("color", "#F5FAFD");
+        setTimeout(function () {
+            $(".mvSq").eq(0).css("color", "#29B6FF")
+        }, 0);
+        setTimeout(function () {
+            $(".mvSq").eq(1).css("color", "#29B6FF")
+        }, 500);
+        setTimeout(function () {
+            $(".mvSq").eq(2).css("color", "#29B6FF")
+        }, 1000);
+    }
+    setInterval(autoTsq, 1500);
 </script>
 
 <include file="Public:footer"/>

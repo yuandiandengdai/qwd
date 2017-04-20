@@ -27,7 +27,7 @@ function sendMail($to, $title, $content){
     $mail->From = C('SMTP_MAIL')['username'];
     $mail->isHTML(true);
     $mail->addAddress($to);
-    $mail->FromName = '趣味竞猜游戏';
+    $mail->FromName = '趣味答游戏';
     $mail->Subject = $title;
     $mail->Body = $content;
     $status = $mail->send();

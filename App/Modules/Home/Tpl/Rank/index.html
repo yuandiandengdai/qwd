@@ -1,44 +1,51 @@
 <include file="Public:headerhall"/>
 
-<div class="container" id="all_info">
-    <h2 id="game_order_info">排行榜</h2>
-    <div id="leader_info">
-        <div class="top_title">领先排行列表</div>
-        <volist name="counter" id="val">
-            <dt class="item_list_info">
+<div style="height:100%; min-height: 520px">
+
+    <div class="container" id="all_info">
+        <h2 id="game_order_info">排行榜</h2>
+        <div id="leader_info">
+            <div class="top_title">领先排行列表</div>
+            <volist name="counter" id="val">
+                <dt class="item_list_info">
                 <span class="num_order"
                       style="<?php if($i < 4){echo 'background-color:orange;color: #FFF;';} ?>">{$i}</span>
-                <span class="xu_wei"><a href="javascript:void(0)"><span id="name_{$val.id}"></span>&nbsp;总共赢得</a></span>
-                <span class="z_wu_pai_ming" id="win_{$val.id}"></span><span>&nbsp;局比赛</span>
-            </dt>
-        </volist>
-    </div>
+                    <span class="xu_wei"><a href="javascript:void(0)"><span
+                            id="name_{$val.id}"></span>&nbsp;总共赢得</a></span>
+                    <span class="z_wu_pai_ming" id="win_{$val.id}"></span><span>&nbsp;局比赛</span>
+                </dt>
+            </volist>
+        </div>
 
-    <div id="user_info">
-        <div class="top_title">玩家状态列表</div>
-        <volist name="add_time" id="val">
-            <dt class="item_list_info">
-                <span class="num_order">{$i}</span>
-                <span class="ply_join_game"><a href="javascript:void(0)"><span id="time_name_{$val.id}"></span>&nbsp;进入&nbsp;<span id="rid_{$val.id}"></span>&nbsp;号房&nbsp;<span id="tid_{$val.id}"></span>&nbsp;号桌</a></span>
-                <span class="ply_join_time" id="time_{$val.id}"></span>
-            </dt>
-        </volist>
-    </div>
+        <div id="user_info">
+            <div class="top_title">玩家状态列表</div>
+            <volist name="add_time" id="val">
+                <dt class="item_list_info">
+                    <span class="num_order">{$i}</span>
+                    <span class="ply_join_game"><a href="javascript:void(0)"><span id="time_name_{$val.id}"></span>&nbsp;进入&nbsp;<span
+                            id="rid_{$val.id}"></span>&nbsp;号房&nbsp;<span id="tid_{$val.id}"></span>&nbsp;号桌</a></span>
+                    <span class="ply_join_time" id="time_{$val.id}"></span>
+                </dt>
+            </volist>
+        </div>
 
-    <div id="room_info">
-        <div class="top_title">房间状态列表</div>
-        <volist name="room" id="val">
-            <dt class="item_list_info">
-                <span class="num_order">{$i}</span>
-                <span class="ply_info"><a href="javascript:void(0)"><span id="room_{$val.id}"></span>&nbsp;在&nbsp;<span id="room_rid_{$val.id}"></span>&nbsp;号房&nbsp;<span id="room_tid_{$val.id}"></span>&nbsp;号桌赢局</a></span>
-                <span class="ply_num"><span id="count_{$val.id}"></span>&nbsp;人在玩</span>
-            </dt>
-        </volist>
-    </div>
-    <a href="<?php echo isset($_SESSION['uid']) ? " __ROOT__/Game" : "__ROOT__/Member/login" ?>">
-    <input id="game_start_button1" name="commit" value="开始游戏" class="btn btn-primary" type="submit">
-    </a>
+        <div id="room_info">
+            <div class="top_title">房间状态列表</div>
+            <volist name="room" id="val">
+                <dt class="item_list_info">
+                    <span class="num_order">{$i}</span>
+                    <span class="ply_info"><a href="javascript:void(0)"><span
+                            id="room_{$val.id}"></span>&nbsp;在&nbsp;<span
+                            id="room_rid_{$val.id}"></span>&nbsp;号房&nbsp;<span id="room_tid_{$val.id}"></span>&nbsp;号桌赢局</a></span>
+                    <span class="ply_num"><span id="count_{$val.id}"></span>&nbsp;人在玩</span>
+                </dt>
+            </volist>
+        </div>
+        <a href="<?php echo isset($_SESSION['uid']) ? " __ROOT__/Game" : "__ROOT__/Member/login" ?>">
+        <input id="game_start_button1" name="commit" value="开始游戏" class="btn btn-primary" type="submit">
+        </a>
 
+    </div>
 </div>
 <script type="text/javascript">
     var counter = new EventSource("__ROOT__/Rank/counter");

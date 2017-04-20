@@ -86,11 +86,11 @@ class MemberAction extends Action{
                     $token = uniqid(rand(), true);    //23位随机令牌
                     $activeToken = md5($token);
                     date_default_timezone_set("Asia/Shanghai");
-                    $url = "http://qwd.com/Member/activeMember" . "?x={$email}" . "&y={$token}";
+                    $url = 'http://123.207.240.204/Member/activeMember' . "/x/{$email}" . "/y/{$token}";
                     $encode = urlencode($url);
                     $msg = <<<EOF
 		亲爱的{$name},您好!<br/>
-		欢迎您来到趣味竞猜游戏,您是第{$uid}位玩家<br/>
+		欢迎您来到趣味答游戏,您是第{$uid}位玩家<br/>
 		请点击此链接激活帐号！30分钟内有效<br/>
 		<a href="{$url}">{$encode}</a>
 		<br/>
@@ -149,7 +149,7 @@ EOF;
                 $token = uniqid(rand(), true);    //23位随机令牌
                 $resetPasswordToken = md5($token);
                 date_default_timezone_set("Asia/Shanghai");
-                $url = "http://qwd.com/Member/getResetPasswordToken" . "?x={$email}" . "&y={$token}";
+                $url = 'http://123.207.240.204/Member/getResetPasswordToken' . "/x/{$email}" . "/y/{$token}";
                 $encode = urlencode($url);
                 $msg = <<<EOF
         {$member['name']}，你好：<br/>
@@ -170,7 +170,7 @@ EOF;
     }
 
     public function getResetPasswordToken(){
-        $token = I('get.y');
+        $token = $_GET['y'];
         if(md5($token) == $_SESSION['resetPasswordToken']){
             $this->redirect(__ROOT__ . 'Member/resetPassword');
         }else{
@@ -194,7 +194,7 @@ EOF;
                 $this->error('重置密码失败');
             }
         }
-        $this->display();
+        $this->display('resetpassword');
     }
 
     /**
@@ -217,7 +217,7 @@ EOF;
                 $this->error('资料更新失败或没有修改');
             }
         }else{
-            $this->display();
+            $this->display('updateinfo');
         }
     }
 
@@ -247,6 +247,11 @@ EOF;
      * 测试ueditor使用
      */
     public function test(){
+        $this->display();
+    }
+
+    public function test1(){
+        var_dump($_FILES);
         $this->display();
     }
 }

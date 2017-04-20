@@ -13,6 +13,7 @@ return array(
     'DB_PORT' => '3306',        // 端口
     /* url模式，去掉index.php */
     'URL_MODEL' => 2,
+    'URL_CASE_INSENSITIVE' =>true,
     /* 邮件配置 */
     'SMTP_MAIL' => array(
         'username' => '1551422971@qq.com',

@@ -37,11 +37,11 @@ class GameAction extends Action{
             $this->redirect('/');
         }
         $rid = $_SESSION['rid'];
-        var_dump($_SESSION['tid']);
-        var_dump($_SESSION['rid']);
-        var_dump($_SESSION['user_name']);
-        var_dump($_SESSION['time_did']);
-        var_dump(time() - $_SESSION['time_did']);
+//        var_dump($_SESSION['tid']);
+//        var_dump($_SESSION['rid']);
+//        var_dump($_SESSION['user_name']);
+//        var_dump($_SESSION['time_did']);
+//        var_dump(time() - $_SESSION['time_did']);
         $tables = D('Tables')->select(); //获取桌子表的数据
         $this->assign('rid', $rid);
         $this->assign('tables', $tables);
@@ -205,24 +205,26 @@ class GameAction extends Action{
             $qid = I('get.qid');
             $currentItem = I('get.c');
             $answer = D('Question')->field('answer')->find($qid);
-            if($memberAnswer == $answer['answer']){
+            if($memberAnswer == $answer['answer']){ //回答正确
                 $id = D('Desk')->where(array('rid' => $_SESSION['rid'], 'tid' => $_SESSION['tid']))->getField('qid'); //记录qid
-                if(intval($id) < (strlen($number)-1)){
+                if(intval($id) < (strlen($number) - 1)){
                     $numberto = formatNumber($number, $currentItem);
                     D('Desk')->where(array('rid' => $_SESSION['rid'], 'tid' => $_SESSION['tid']))->setDec('question_counter'); //题目数量减一
                     D('Desk')->where(array('rid' => $_SESSION['rid'], 'tid' => $_SESSION['tid']))->setInc('qid'); //记录当前的qid
                     $member = D('Desk')->field('member_one,member_two,member_three')->where(array('rid' => $_SESSION['rid'], 'tid' => $_SESSION['tid']))->find();
                     foreach($member as $key => $value){
                         if($value == $_SESSION['user_name']){
-                            D('Desk')->where(array('rid' => $_SESSION['rid'], 'tid' => $_SESSION['tid']))->setInc($key.'_counter'); //记录玩家答对的题目数量
+                            D('Desk')->where(array('rid' => $_SESSION['rid'], 'tid' => $_SESSION['tid']))->setInc($key . '_counter'); //记录玩家答对的题目数量
                         }
                     }
                     $id = D('Desk')->where(array('rid' => $_SESSION['rid'], 'tid' => $_SESSION['tid']))->getField('qid'); //记录qid
                     D('Desk')->where(array('rid' => $_SESSION['rid'], 'tid' => $_SESSION['tid']))->setField('numbers', formatNumber($number, $id)); //记录当前的卡号
 
                     D('Member')->where(array('id' => $_SESSION['uid']))->setInc('correct'); //玩家答对书加一
-                    echo createResponseJson(2, '回答正确，再接再厉！', $numberto);
-                }else if(intval($id) == (strlen($number)-1)){
+
+                    D('Desk')->where(array('rid' => $_SESSION['rid'], 'tid' => $_SESSION['tid']))->setField('message', "{$_SESSION['user_name']}" . '回答正确，再接再厉！');
+                    echo createResponseJson(2, "{$_SESSION['user_name']}" . '回答正确，再接再厉！', $numberto);
+                }else if(intval($id) == (strlen($number) - 1)){ //游戏结束
                     $counter = array();
                     $counter['one'] = D('Desk')->where(array('rid' => $_SESSION['rid'], 'tid' => $_SESSION['tid']))->getField('member_one_counter');
                     $counter['two'] = D('Desk')->where(array('rid' => $_SESSION['rid'], 'tid' => $_SESSION['tid']))->getField('member_two_counter');
@@ -233,7 +235,7 @@ class GameAction extends Action{
                     $member = D('Desk')->field('member_one_counter,member_two_counter,member_three_counter')->where(array('rid' => $_SESSION['rid'], 'tid' => $_SESSION['tid']))->find();
                     foreach($member as $key => $value){
                         if($value == $winner_counter){
-                            $winner = D('Desk')->where(array('rid' => $_SESSION['rid'], 'tid' => $_SESSION['tid']))->getField(substr($key,0,strlen($key)-8)); //截取字符串
+                            $winner = D('Desk')->where(array('rid' => $_SESSION['rid'], 'tid' => $_SESSION['tid']))->getField(substr($key, 0, strlen($key) - 8)); //截取字符串
                         }
                     }
                     D('Desk')->where(array('rid' => $_SESSION['rid'], 'tid' => $_SESSION['tid']))->setField('winner', $winner); //游戏结束，记录最多的赢数玩家
@@ -246,11 +248,15 @@ class GameAction extends Action{
                     D('Desk')->where(array('rid' => $_SESSION['rid'], 'tid' => $_SESSION['tid']))->setField('qid', 0); //游戏结束，当前的题号为0
                     D('Desk')->where(array('rid' => $_SESSION['rid'], 'tid' => $_SESSION['tid']))->setField('numbers', formatNumber($number, strlen($number))); //显示所有的卡号
 
+                    D('Desk')->where(array('rid' => $_SESSION['rid'], 'tid' => $_SESSION['tid']))->setField('message', '本局比赛结束！');
+
                     echo createResponseJson(3, '本局比赛结束！', $number);
                 }
-            }else{
+            }else{ //回答错误
                 D('Member')->where(array('id' => $_SESSION['uid']))->setInc('error');
-                echo createResponseJson(4, '回答错误，继续努力！', '');
+                echo createResponseJson(4, "{$_SESSION['user_name']}" . '回答错误，继续努力！', '');
+                D('Desk')->where(array('rid' => $_SESSION['rid'], 'tid' => $_SESSION['tid']))->setField('message', "{$_SESSION['user_name']}" . '回答错误，继续努力！');
+
             }
         }
     }
@@ -274,7 +280,6 @@ class GameAction extends Action{
         echo 'data:' . json_encode($dataPoints, JSON_UNESCAPED_UNICODE) . "\n\n";
         @ob_flush();
         @flush();
-        sleep(3);
     }
 
     /**
@@ -316,4 +321,16 @@ class GameAction extends Action{
         @flush();
     }
 
+    public function message(){
+        header("X-Accel-Buffering: no");
+        header("Content-Type: text/event-stream");
+        header("Cache-Control: no-cache");
+        $messageNew = D('Desk')->where(array('rid' => $_SESSION['rid'], 'tid' => $_SESSION['tid']))->getField('message');
+        if(md5($_SESSION['message']) != md5($messageNew)){ //比对数据库信息是否做修改
+            echo 'data:' . $messageNew . "\n\n";
+            @ob_flush();
+            @flush();
+            $_SESSION['message'] = $messageNew;
+        }
+    }
 }

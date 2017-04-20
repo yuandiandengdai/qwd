@@ -22,35 +22,35 @@ function loadPageData() {
         success: function (data) {
             if (data.sts == 1) {
                 //题库发生未知错误
-                var flashMsg = setFlash(data.msg);
-                $('#content').html(flashMsg).find('.flashmsg').flashOut();
-                $('.game_body').hide(3000);
+                // var flashMsg = setFlash(data.msg);
+                // $('#content').html(flashMsg).find('.flashmsg').flashOut();
+                // $('.game_body').hide(3000);
                 $('#to_validation').text("请重新选择房间");
                 $("#to_validation").attr("disabled", true);
             } else if (data.sts == 2) {
                 //回答正确，再接再厉哦
-                $('#card').text(data.num);
-                var x = $('.subject').eq(currentItem).html(); //获取下一道题目的问题
-                $('#question_show').html(x); //显示赋值
-                var next = ++currentItem;
+                // $('#card').text(data.num);
+                // var x = $('.subject').eq(currentItem).html(); //获取下一道题目的问题
+                // $('#question_show').html(x); //显示赋值
+                // var next = ++currentItem;
                 $("#answer_check").val("");
                 $('#answer_check').focus();
-                $('#to_validation').attr('currentItem', next);
-                var flashMsg = setFlash(data.msg);
-                $('#content').html(flashMsg).find('.flashmsg').flashOut();
+                // $('#to_validation').attr('currentItem', next);
+                // var flashMsg = setFlash(data.msg);
+                // $('#content').html(flashMsg).find('.flashmsg').flashOut();
             } else if (data.sts == 3) {
                 //已经赢得本局比赛
                 $('#card').text(data.num);
-                var flashMsg = setFlash(data.msg);
-                $('#content').html(flashMsg).find('.flashmsg').flashOut();
+                // var flashMsg = setFlash(data.msg);
+                // $('#content').html(flashMsg).find('.flashmsg').flashOut();
                 $('.game_body').hide(3000);
                 $('#to_validation').text("游戏结束");
                 $("#to_validation").attr("disabled", true);
             } else if (data.sts == 4) {
                 //回答错误
                 $('#answer_check').focus();
-                var flashMsg = setFlash(data.msg);
-                $('#content').html(flashMsg).find('.flashmsg').flashOut();
+                // var flashMsg = setFlash(data.msg);
+                // $('#content').html(flashMsg).find('.flashmsg').flashOut();
             }
         }
     });
