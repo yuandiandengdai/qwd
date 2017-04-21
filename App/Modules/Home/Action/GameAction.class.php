@@ -16,13 +16,12 @@ class GameAction extends Action{
             $this->error('请登录后再操作');
             $this->redirect('/');
         }
-        $data = D('Room')->select();
+        $data = D('Room')->field('id')->select();
         if(IS_POST){
-            $rid = I('post.rid');
+            $rid = $this->_post('id'); //接受玩家选择房间id
             D('Member')->where(array('id' => $_SESSION['uid']))->setField('rid', $rid);
             $_SESSION['rid'] = $rid; //------------玩家进入房间的id-------------
-            $this->success('正在前往' . $rid . '号房间......', __ROOT__ . '/Game/wait');
-            return;
+            $this->ajaxReturn(200); //验证码错误
         }
         $this->assign('data', $data);
         $this->display();
@@ -108,18 +107,18 @@ class GameAction extends Action{
             $_SESSION['clear_did'] = $id;  //session赋值给刚刚进入的房间号,用于清空房间信息
             $_SESSION['time_did'] = time();   //session赋值给时间，监测 30 分钟内如果房间没有满人，则清空$_SESSION['did']所在玩家的信息
         }
-        $time = time() - $_SESSION['time_did'];
-        $desk = D('Desk')->where(array('rid' => $_SESSION['rid'], 'tid' => $_SESSION['tid']))->find();
-        if(($time > 60) && ($desk['number'] != 3)){
-            D('Desk')->where(array('rid' => $_SESSION['rid'], 'tid' => $_SESSION['tid']))->setDec('number');
-            $member = D('Desk')->field('member_one,member_two,member_three')->where(array('rid' => $_SESSION['rid'], 'tid' => $_SESSION['tid']))->find();
-            foreach($member as $key => $value){
-                if($value == $_SESSION['user_name']){
-                    D('Desk')->where(array('rid' => $_SESSION['rid'], 'tid' => $_SESSION['tid']))->setField($key, '');
-                }
-            }
-            unset($_SESSION['clear_did']); // 释放玩家当时所在房间号
-        }
+//        $time = time() - $_SESSION['time_did'];
+//        $desk = D('Desk')->where(array('rid' => $_SESSION['rid'], 'tid' => $_SESSION['tid']))->find();
+//        if(($time > 60) && ($desk['number'] != 3)){
+//            D('Desk')->where(array('rid' => $_SESSION['rid'], 'tid' => $_SESSION['tid']))->setDec('number');
+//            $member = D('Desk')->field('member_one,member_two,member_three')->where(array('rid' => $_SESSION['rid'], 'tid' => $_SESSION['tid']))->find();
+//            foreach($member as $key => $value){
+//                if($value == $_SESSION['user_name']){
+//                    D('Desk')->where(array('rid' => $_SESSION['rid'], 'tid' => $_SESSION['tid']))->setField($key, '');
+//                }
+//            }
+//            unset($_SESSION['clear_did']); // 释放玩家当时所在房间号
+//        }
 
         $data = D('Desk')->where('rid=%d', $_SESSION['rid'])->order('tid ASC')->select();
         echo 'data:' . json_encode($data) . "\n\n";
@@ -199,8 +198,8 @@ class GameAction extends Action{
             $memberAnswer = I('get.memberAnswer');
             $qid = I('get.qid');
             $currentItem = I('get.c');
-            $answer = D('Question')->field('answer')->find($qid);
-            if($memberAnswer == $answer['answer']){ //回答正确
+            $answer = D('Question')->where(array('id' => $qid))->getField('answer');
+            if($memberAnswer == $answer){ //回答正确
                 $id = D('Desk')->where(array('rid' => $_SESSION['rid'], 'tid' => $_SESSION['tid']))->getField('qid'); //记录qid
                 if(intval($id) < (strlen($number) - 1)){
                     $numberto = formatNumber($number, $currentItem);

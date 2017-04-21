@@ -36,8 +36,8 @@ function loadPageData() {
                 $("#answer_check").val("");
                 $('#answer_check').focus();
                 // $('#to_validation').attr('currentItem', next);
-                // var flashMsg = setFlash(data.msg);
-                // $('#content').html(flashMsg).find('.flashmsg').flashOut();
+                var flashMsg = setFlash(data.msg);
+                $('#content').html(flashMsg).find('.flashmsg').flashOut();
             } else if (data.sts == 3) {
                 //已经赢得本局比赛
                 $('#card').text(data.num);
@@ -49,8 +49,8 @@ function loadPageData() {
             } else if (data.sts == 4) {
                 //回答错误
                 $('#answer_check').focus();
-                // var flashMsg = setFlash(data.msg);
-                // $('#content').html(flashMsg).find('.flashmsg').flashOut();
+                var flashMsg = setFlash(data.msg);
+                $('#content').html(flashMsg).find('.flashmsg').flashOut();
             }
         }
     });

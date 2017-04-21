@@ -1,39 +1,86 @@
 <include file="Public:header"/>
 
-<h2 id="room_list_and_state">各房间状态列表</h2>
+<h2 style="text-align: center; margin-bottom: 20px; margin-left: 10px">房间列表</h2>
 <div class="row">
-	<div class="col-md-4 col-md-offset-4">
-		<ul class="room_info_list" id="room_state_all_list">
-			<volist name="data" id="room">
-				<ol class="room_player_link">
-					<a href="javascript:void(0)">
-						<span class="room_player_font">{$room.id}号房间:</span>
-						<span class="room_name">&nbsp;{$room.name}</span>
-						<span class="room_player_font">在玩人数:</span>
-						<span class="player_num">&nbsp;{$room.count}</span>
-					</a>
-				</ol>
-			</volist>
-		</ul>
+    <div>
+        <span>234325345</span>
+        <span>234325345</span>
+        <span>234325345</span>
+        <span>234325345</span>
+        <span>234325345</span>
+        <span>234325345</span>
+        <span>234325345</span>
+        <span>234325345</span>
+        <span>234325345</span>
+        <span>234325345</span>
+        <span>234325345</span>
+        <span>234325345</span>
+        <span>234325345</span>
+        <span>234325345</span>
+        <span>234325345</span>
+        <span>234325345</span>
+        <span>234325345</span>
+        <span>234325345</span>
+        <span>234325345</span>
+        <span>234325345</span>
+        <span>234325345</span>
+        <span>234325345</span>
+        <span>234325345</span>
+        <span>234325345</span>
+        <span>234325345</span>
+    </div>
+    <div class="col-md-8 col-md-offset-4">
+        <volist name="data" id="val" offset="0" length='3'>
+            <div class="col-xs-2" style="text-align: center">
+                <a href="javascript:void(0)" onclick="select_room({$val.id})" class="thumbnail">
+                    <button class="panel" style="height: 100px ;width: 100px;background-color: #337ab7">
+                        <span style="color: white; font-size: 20px"><span id="room_{$val['id']}">{$val['id']}</span>号房间</span>
+                    </button>
+                </a>
+            </div>
+        </volist>
+    </div>
 
-		<form class="new_user" id="new_user" action=""
-		      accept-charset="UTF-8" method="post">
-			<label>请选择房间:</label>
+    <div class="col-md-8 col-md-offset-4">
+        <volist name="data" id="val" offset="3" length='3'>
+            <div class="col-xs-2" style="text-align: center">
+                <a href="javascript:void(0)" onclick="select_room({$val.id})" class="thumbnail">
+                    <button class="panel" style="height: 100px ;width: 100px;background-color: #337ab7">
+                        <span style="color: white; font-size: 20px"><span id="room_{$val['id']}">{$val['id']}</span>号房间</span>
+                    </button>
+                </a>
+            </div>
+        </volist>
+    </div>
 
-			<select id="ply_select_room" name="rid" class="form-control">
-				<volist name="data" id="room">
-					<option value="{$room.id}">{$room.id}号房间</option>
-				</volist>
-			</select>
+    <div class="col-md-8 col-md-offset-4">
+        <volist name="data" id="val" offset="6" length='3'>
+            <div class="col-xs-2" style="text-align: center">
+                <a href="javascript:void(0)" onclick="select_room({$val.id})" class="thumbnail">
+                    <button class="panel" style="height: 100px ;width: 100px;background-color: #337ab7">
+                        <span style="color: white; font-size: 20px"><span id="room_{$val['id']}">{$val['id']}</span>号房间</span>
+                    </button>
+                </a>
+            </div>
+        </volist>
+    </div>
 
-			<input id="game_start_button" name="commit" value="开始游戏" class="btn btn-primary" type="submit">
-		</form>
-
-		<a href="__ROOT__/Rank">
-			<button id="look_phb" type="button" class="btn btn-default">你可以点击这里查看游戏排行榜</button>
-		</a>
-
-	</div>
+    <a href="__ROOT__/Rank">
+        <button id="look_phb" type="button" class="btn btn-default" style="width: 30%; margin-left: 420px">
+            你可以点击这里查看游戏排行榜
+        </button>
+    </a>
 </div>
 
 <include file="Public:footer"/>
+
+<script type="text/javascript">
+    var Config = {root: '/'};
+    function select_room(id) {
+        $.post(Config.root + 'Home/Game/index', {id: id}, function (data) {
+            if (data == 200) {
+                window.location = Config.root + 'Home/Game/wait';
+            }
+        });
+    }
+</script>
