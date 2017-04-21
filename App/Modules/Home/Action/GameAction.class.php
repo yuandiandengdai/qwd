@@ -37,11 +37,6 @@ class GameAction extends Action{
             $this->redirect('/');
         }
         $rid = $_SESSION['rid'];
-//        var_dump($_SESSION['tid']);
-//        var_dump($_SESSION['rid']);
-//        var_dump($_SESSION['user_name']);
-//        var_dump($_SESSION['time_did']);
-//        var_dump(time() - $_SESSION['time_did']);
         $tables = D('Tables')->select(); //获取桌子表的数据
         $this->assign('rid', $rid);
         $this->assign('tables', $tables);

@@ -1,51 +1,49 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-	<meta charset="utf-8">
-	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<title>趣味答</title>
-	<link rel="stylesheet" href="http://cdn.bootcss.com/bootstrap/3.3.0/css/bootstrap.min.css">
-	<script type="text/javascript" src="__PUBLIC__/js/jquery.min.js"></script>
-	<script src="http://cdn.bootcss.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
-	<link rel="stylesheet" href="__PUBLIC__/css/home.css" type="text/css"/>
-	<link rel="stylesheet" href="__PUBLIC__/css/jqueryConfirm.css" type="text/css"/>
-	<script type="text/javascript" src="__PUBLIC__/js/passcheck.js"></script>
-	<script type="text/javascript" src="__PUBLIC__/js/chart.js"></script>
-	<script type="text/javascript" src="__PUBLIC__/js/jqueryConfirm.js"></script>
-
-	<script src="__PUBLIC__/js/canvasjs.min.js"></script>
-
-	<script src="__PUBLIC__/layer/layer.js"></script>
-
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>趣味答</title>
+    <link rel="stylesheet" href="http://cdn.bootcss.com/bootstrap/3.3.0/css/bootstrap.min.css">
+    <script type="text/javascript" src="__PUBLIC__/js/jquery.min.js"></script>
+    <script src="http://cdn.bootcss.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="__PUBLIC__/css/home.css" type="text/css"/>
+    <link rel="stylesheet" href="__PUBLIC__/css/jqueryConfirm.css" type="text/css"/>
+    <script type="text/javascript" src="__PUBLIC__/js/passcheck.js"></script>
+    <script type="text/javascript" src="__PUBLIC__/js/chart.js"></script>
+    <script type="text/javascript" src="__PUBLIC__/js/highcharts.js"></script>
+    <script type="text/javascript" src="__PUBLIC__/js/jqueryConfirm.js"></script>
+    <script src="__PUBLIC__/js/canvasjs.min.js"></script>
+    <script src="__PUBLIC__/layer/layer.js"></script>
 </head>
 <body>
 <header class="navbar navbar-fixed-top navbar-inverse">
-	<div class="container">
-		<a href="__ROOT__/" id="logo">趣味答</a>
-		<nav>
-			<ul class="nav navbar-nav pull-right">
-				<li><a href="__ROOT__/">主页</a></li>
-				<li><a href="__ROOT__/Rank">排行榜</a></li>
-				<?php if(isset($_SESSION['uid'])){ ?>
-				<li><a href="__ROOT__/Game">游戏</a></li>
-				<?php } ?>
-				<?php if(!isset($_SESSION['uid'])){ ?>
-					<li><a href="__ROOT__/Member/login">登录</a></li>
-				<?php }else{ ?>
-					<li class="dropdown">
-						<a href="javascript:void(0)" class="dropdown-toggle" data-toggle="dropdown">账号<b class="caret"></b></a>
-						<ul class="dropdown-menu">
-							<li><a href="__ROOT__/Member">个人资料</a></li>
-							<li><a href="__ROOT__/Member/updateInfo">更新资料</a></li>
-							<li class="divider"></li>
-							<li><a href="__ROOT__/Member/logout">退出</a></li>
-						</ul>
-					</li>
-				<?php } ?>
-			</ul>
-		</nav>
-	</div>
+    <div class="container">
+        <a href="__ROOT__/" id="logo">趣味答</a>
+        <nav>
+            <ul class="nav navbar-nav pull-right">
+                <li><a href="__ROOT__/">主页</a></li>
+                <li><a href="__ROOT__/Rank">排行榜</a></li>
+                <?php if(isset($_SESSION['uid'])){ ?>
+                <li><a href="__ROOT__/Game">游戏</a></li>
+                <?php } ?>
+                <?php if(!isset($_SESSION['uid'])){ ?>
+                <li><a href="__ROOT__/Member/login">登录</a></li>
+                <?php }else{ ?>
+                <li class="dropdown">
+                    <a href="javascript:void(0)" class="dropdown-toggle" data-toggle="dropdown">账号<b class="caret"></b></a>
+                    <ul class="dropdown-menu">
+                        <li><a href="__ROOT__/Member">个人资料</a></li>
+                        <li><a href="__ROOT__/Member/updateInfo">更新资料</a></li>
+                        <li class="divider"></li>
+                        <li><a href="__ROOT__/Member/logout">退出</a></li>
+                    </ul>
+                </li>
+                <?php } ?>
+            </ul>
+        </nav>
+    </div>
 </header>
 <div class="container">
 

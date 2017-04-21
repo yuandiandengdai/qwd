@@ -15,6 +15,14 @@ class MemberAction extends Action{
             $this->error('请登录后再操作');
             $this->redirect('/');
         }
+        $winAll = D('Member')->sum('win');
+        $correctAll = D('Member')->sum('correct');
+        $errorAll = D('Member')->sum('error');
+        $info = D('Member')->field('id', 'rid', 'tid', 'name', 'email', 'create_at', 'add_time', 'win', 'correct', 'error')->where(array('id' => $_SESSION['uid']))->find();
+        $this->assign('winRate', ($info['win'] / $winAll) * 100);
+        $this->assign('correctRate', ($info['correct'] / $correctAll) * 100);
+        $this->assign('errorRate', ($info['error'] / $errorAll) * 100);
+        $this->assign('info', $info);
         $this->display();
     }
 
@@ -250,8 +258,4 @@ EOF;
         $this->display();
     }
 
-    public function test1(){
-        var_dump($_FILES);
-        $this->display();
-    }
 }

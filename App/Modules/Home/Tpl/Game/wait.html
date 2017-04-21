@@ -3,10 +3,42 @@
     body {
         background: #F5FAFD
     }
+    /*opacity是设置遮罩透明度的，可以自己调节*/
+    #loading {
+        position: fixed;
+        width: 760px;
+        height: 480px;
+        background: #FAFAFA;
+        opacity: 0.6;
+        z-index: 15000;
+        margin-left: 230px;
+    }
+
+    #loading img {
+        width: 150px;
+        height: 150px;
+        margin-top: 157px;
+        margin-left: 275px;
+        opacity: 0.8;
+        vertical-align:middle;
+    }
+
+    #loading p {
+        position: absolute;
+        top: 55%;
+        left: 48%;
+        width: 70px;
+        height: 70px;
+        margin-top: 30px;
+        margin-left: 20px;
+    }
 </style>
-<h2><span style="color: orange">{$rid}</span>号房间</h2>
+<h2 style="text-align: center"><span style="color: orange">{$rid}</span>号房间</h2>
+<div id="loading" class="list-item" style="display: none">
+    <img alt="" src="__PUBLIC__/images/loading/loading.gif">
+</div>
 <div class="row">
-    <div class="col-md-12">
+    <div class="col-md-12" style="margin-left: 10px">
         <table style="margin:auto;">
             <tr>
                 <volist name="tables" id="val" offset="0" length='3'>
@@ -95,13 +127,14 @@
             $('#right_' + data[k]['tid']).text(data[k]['member_three']);
             if (data[k]['number'] >= 1) { //根据房间的人数切换背景图片
                 $('#img_' + data[k]['tid']).attr('src', '__PUBLIC__/images/hall/b.png');
-            }else{
+            } else {
                 $('#img_' + data[k]['tid']).attr('src', '__PUBLIC__/images/hall/a.png');
             }
             if (data[k]['number'] == 3) { //根据人数进行跳转
+                $("#loading").show();
                 setTimeout(function () {
                     window.location = Config.root + 'Home/Game/hall';
-                }, 5000);
+                }, 3000);
             }
         }
     }, false);
@@ -109,32 +142,6 @@
     function select_table(id) {
         $.post(Config.root + 'Home/Game/desk', {id: id});
     }
-</script>
-
-<script language="javascript">
-    var delVal = 50;
-    function autoMove() {
-        delVal++;
-        if (delVal > 400) {
-            delVal = 50;
-        }
-        $(".mvBtn").css("left", delVal);
-    }
-    setInterval(autoMove, 8);
-    var deNum = 0;
-    function autoTsq() {
-        $(".mvSq").css("color", "#F5FAFD");
-        setTimeout(function () {
-            $(".mvSq").eq(0).css("color", "#29B6FF")
-        }, 0);
-        setTimeout(function () {
-            $(".mvSq").eq(1).css("color", "#29B6FF")
-        }, 500);
-        setTimeout(function () {
-            $(".mvSq").eq(2).css("color", "#29B6FF")
-        }, 1000);
-    }
-    setInterval(autoTsq, 1500);
 </script>
 
 <include file="Public:footer"/>
