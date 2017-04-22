@@ -1,75 +1,69 @@
 <include file="Public:header"/>
 
-<h2 style="text-align: center; margin-bottom: 20px; margin-left: 10px">房间列表</h2>
+<h2 style="text-align: center; margin-bottom: 20px; margin-left: 18px">房间列表</h2>
 <div class="row">
-    <div>
-        <span>234325345</span>
-        <span>234325345</span>
-        <span>234325345</span>
-        <span>234325345</span>
-        <span>234325345</span>
-        <span>234325345</span>
-        <span>234325345</span>
-        <span>234325345</span>
-        <span>234325345</span>
-        <span>234325345</span>
-        <span>234325345</span>
-        <span>234325345</span>
-        <span>234325345</span>
-        <span>234325345</span>
-        <span>234325345</span>
-        <span>234325345</span>
-        <span>234325345</span>
-        <span>234325345</span>
-        <span>234325345</span>
-        <span>234325345</span>
-        <span>234325345</span>
-        <span>234325345</span>
-        <span>234325345</span>
-        <span>234325345</span>
-        <span>234325345</span>
-    </div>
-    <div class="col-md-8 col-md-offset-4">
-        <volist name="data" id="val" offset="0" length='3'>
-            <div class="col-xs-2" style="text-align: center">
-                <a href="javascript:void(0)" onclick="select_room({$val.id})" class="thumbnail">
-                    <button class="panel" style="height: 100px ;width: 100px;background-color: #337ab7">
-                        <span style="color: white; font-size: 20px"><span id="room_{$val['id']}">{$val['id']}</span>号房间</span>
-                    </button>
-                </a>
-            </div>
-        </volist>
-    </div>
+    <div class="col-md-12">
+        <div class="col-md-4">
+            <span>234325345在04-21 16:05:57进入4号房5号桌342342345345345345345</span>
+            <span>234325345在04-21 16:05:57进入4号房5号桌</span>
+            <span>234325345在04-21 16:05:57进入4号房5号桌</span>
+            <span>234325345在04-21 16:05:57进入4号房5号桌</span>
+            <span>234325345在04-21 16:05:57进入4号房5号桌</span>
+            <span>234325345在04-21 16:05:57进入4号房5号桌</span>
+            <span>234325345在04-21 16:05:57进入4号房5号桌</span>
+            <span>234325345在04-21 16:05:57进入4号房5号桌</span>
+            <span>234325345在04-21 16:05:57进入4号房5号桌</span>
+            <span>234325345在04-21 16:05:57进入4号房5号桌</span>
+            <span>234325345在04-21 16:05:57进入4号房5号桌</span>
+            <span>234325345在04-21 16:05:57进入4号房5号桌</span>
+            <span>234325345在04-21 16:05:57进入4号房5号桌</span>
 
-    <div class="col-md-8 col-md-offset-4">
-        <volist name="data" id="val" offset="3" length='3'>
-            <div class="col-xs-2" style="text-align: center">
-                <a href="javascript:void(0)" onclick="select_room({$val.id})" class="thumbnail">
-                    <button class="panel" style="height: 100px ;width: 100px;background-color: #337ab7">
-                        <span style="color: white; font-size: 20px"><span id="room_{$val['id']}">{$val['id']}</span>号房间</span>
-                    </button>
-                </a>
+        </div>
+        <div class="col-md-8" style="margin-left: -35px">
+            <div class="col-md-12">
+                <volist name="data" id="val" offset="0" length='3'>
+                    <div class="col-xs-2" style="text-align: center; margin: 5px">
+                        <a href="javascript:void(0)" onclick="select_room({$val.id})" class="thumbnail">
+                            <button class="panel" style="height: 100px ;width: 100px;background-color: #337ab7">
+                                <span style="color: white; font-size: 20px"><span id="room_{$val['id']}">{$val['id']}</span>号房间</span>
+                            </button>
+                        </a>
+                    </div>
+                </volist>
             </div>
-        </volist>
-    </div>
 
-    <div class="col-md-8 col-md-offset-4">
-        <volist name="data" id="val" offset="6" length='3'>
-            <div class="col-xs-2" style="text-align: center">
-                <a href="javascript:void(0)" onclick="select_room({$val.id})" class="thumbnail">
-                    <button class="panel" style="height: 100px ;width: 100px;background-color: #337ab7">
-                        <span style="color: white; font-size: 20px"><span id="room_{$val['id']}">{$val['id']}</span>号房间</span>
-                    </button>
-                </a>
+            <div class="col-md-12">
+                <volist name="data" id="val" offset="3" length='3'>
+                    <div class="col-xs-2" style="text-align: center;margin: 5px">
+                        <a href="javascript:void(0)" onclick="select_room({$val.id})" class="thumbnail">
+                            <button class="panel" style="height: 100px ;width: 100px;background-color: #337ab7">
+                                <span style="color: white; font-size: 20px"><span id="room_{$val['id']}">{$val['id']}</span>号房间</span>
+                            </button>
+                        </a>
+                    </div>
+                </volist>
             </div>
-        </volist>
-    </div>
 
-    <a href="__ROOT__/Rank">
-        <button id="look_phb" type="button" class="btn btn-default" style="width: 30%; margin-left: 420px">
-            你可以点击这里查看游戏排行榜
-        </button>
-    </a>
+            <div class="col-md-12">
+                <volist name="data" id="val" offset="6" length='3'>
+                    <div class="col-xs-2" style="text-align: center;margin: 5px">
+                        <a href="javascript:void(0)" onclick="select_room({$val.id})" class="thumbnail">
+                            <button class="panel" style="height: 100px ;width: 100px;background-color: #337ab7">
+                                <span style="color: white; font-size: 20px"><span id="room_{$val['id']}">{$val['id']}</span>号房间</span>
+                            </button>
+                        </a>
+                    </div>
+                </volist>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-12" style="margin-left: -30px">
+        <a href="__ROOT__/Rank">
+            <button id="look_phb" type="button" class="btn btn-default" style="width: 32%; margin-left: 425px">
+                你可以点击这里查看游戏排行榜
+            </button>
+        </a>
+    </div>
 </div>
 
 <include file="Public:footer"/>

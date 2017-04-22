@@ -1,6 +1,82 @@
 <include file="Public:headerhall"/>
-
 <h2>游戏大厅--{$room['id']}号房{$table}号桌</h2>
+<style type="text/css">
+    body {
+        overflow-x: hidden;
+    }
+
+    .radio {
+        padding-left: 20px;
+    }
+
+    .radio label {
+        vertical-align: middle;
+        position: relative;
+        padding-left: 5px;
+
+    }
+
+    .radio label::before {
+        content: "";
+        position: absolute;
+        width: 17px;
+        height: 17px;
+        left: 0;
+        margin-left: -20px;
+        border: 1px solid #cccccc;
+        border-radius: 50%;
+        background-color: #fff;
+        -webkit-transition: border 0.15s ease-in-out;
+        -o-transition: border 0.15s ease-in-out;
+        transition: border 0.15s ease-in-out;
+    }
+
+    .radio label::after {
+        position: absolute;
+        content: " ";
+        width: 13px;
+        height: 13px;
+        left: 2px;
+        top: 2px;
+        margin-left: -20px;
+        border-radius: 100%;
+        background-color: #555555;
+        -webkit-transform: scale(0, 0);
+        -ms-transform: scale(0, 0);
+        -o-transform: scale(0, 0);
+        transform: scale(0, 0);
+        -webkit-transition: -webkit-transform 0.1s cubic-bezier(0.8, -0.33, 0.2, 1.33);
+        -moz-transition: -moz-transform 0.1s cubic-bezier(0.8, -0.33, 0.2, 1.33);
+        -o-transition: -o-transform 0.1s cubic-bezier(0.8, -0.33, 0.2, 1.33);
+        transition: transform 0.1s cubic-bezier(0.8, -0.33, 0.2, 1.33);
+    }
+
+    .radio input[type="radio"] {
+        opacity: 0;
+        z-index: 1;
+    }
+
+    .radio input[type="radio"]:checked + label::after {
+        -webkit-transform: scale(1, 1);
+        -ms-transform: scale(1, 1);
+        -o-transform: scale(1, 1);
+        transform: scale(1, 1);
+    }
+
+    .radio-success input[type="radio"] + label::after {
+        background-color: #5cb85c;
+    }
+
+    .radio-success input[type="radio"]:checked + label::before {
+        border-color: #5cb85c;
+
+    }
+
+    .radio-success input[type="radio"]:checked + label::after {
+        background-color: #5cb85c;
+    }
+
+</style>
 <div>
     <div id="chartContainer" style="width: 410px;height: 300px;float: left;margin-right: 8px">
     </div>
@@ -12,8 +88,24 @@
             <div class="alert alert-info" role="alert" id="question_show">
             </div>
             <h3>开始抢答：</h3>
-            <input class="form-control" type="text" id="answer_check" placeholder="请在这里输入你的答案"
-                   value="" required/>
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-4">
+                        <fieldset>
+                            <div class="radio radio-success">
+                                <input type="radio" id="singleRadio1" value="1" name="question" data-rule="checked"/>
+                                <label style="font-size: 18px;">都是感受到</label>
+                            </div>
+                            <div class="radio radio-success">
+                                <input type="radio" id="singleRadio2" value="2" name="question"/>
+                                <label style="font-size: 18px;">个地方官</label>
+                            </div>
+                        </fieldset>
+                    </div>
+                </div>
+            </div>
+            <!--<input class="form-control" type="text" id="answer_check" placeholder="请在这里输入你的答案"-->
+                   <!--value="" required/>-->
         </div>
         <button type="button" currentItem="1" class="btn btn-primary" id="to_validation" onclick="loadPageData()">提交验证
         </button>
@@ -24,24 +116,24 @@
             <a href="javascript:void(0)">
                 <span class="room_player_font">1号玩家:</span>
                 <span class="room_name">&nbsp;{$data['member_one']}</span>
-                <!--<span class="room_player_font">准确率:</span>-->
-                <!--<span class="player_num">&nbsp;{$room.count}</span>-->
+                <span class="room_player_font">准确率:</span>
+                <span class="player_num">&nbsp;{$room.count}</span>
             </a>
         </ol>
         <ol class="room_player_link" style="text-align: center">
             <a href="javascript:void(0)">
                 <span class="room_player_font">2号玩家:</span>
                 <span class="room_name">&nbsp;{$data['member_two']}</span>
-                <!--<span class="room_player_font">准确率:</span>-->
-                <!--<span class="player_num">&nbsp;{$room.count}</span>-->
+                <span class="room_player_font">准确率:</span>
+                <span class="player_num">&nbsp;{$room.count}</span>
             </a>
         </ol>
         <ol class="room_player_link" style="text-align: center">
             <a href="javascript:void(0)">
                 <span class="room_player_font">3号玩家:</span>
                 <span class="room_name">&nbsp;{$data['member_three']}</span>
-                <!--<span class="room_player_font">准确率:</span>-->
-                <!--<span class="player_num">&nbsp;{$room.count}</span>-->
+                <span class="room_player_font">准确率:</span>
+                <span class="player_num">&nbsp;{$room.count}</span>
             </a>
         </ol>
     </div>
