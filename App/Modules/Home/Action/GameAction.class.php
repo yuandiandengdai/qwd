@@ -23,6 +23,8 @@ class GameAction extends Action{
             $_SESSION['rid'] = $rid; //------------玩家进入房间的id-------------
             $this->ajaxReturn(200); //验证码错误
         }
+        $add_time = D('Member')->field('id,name,rid,add_time')->order('add_time DESC')->select();
+        $this->assign('add_time', $add_time);
         $this->assign('data', $data);
         $this->display();
     }
@@ -169,14 +171,18 @@ class GameAction extends Action{
             $qid = D('Desk')->where(array('rid' => $_SESSION['rid'], 'tid' => $_SESSION['tid']))->getField('question');
         }
         $arr = explode(",", $qid); //分隔字符串，得到题库
-        foreach($arr as $a){
-            $question[] = D('Question')->find($a);
+        foreach($arr as $a => $value){
+            $question[] = D('Question')->find($value);
+        }
+        $questionNew = $question;
+        foreach($questionNew as &$item){
+            $item['answer_text'] = explode(",", $item['answer_text']);
         }
         $data = D('Desk')->where(array('rid' => $_SESSION['rid'], 'tid' => $_SESSION['tid']))->find();
         $this->assign('room', $room);
         $this->assign('data', $data);
         $this->assign('table', $_SESSION['tid']);
-        $this->assign('question', $question);
+        $this->assign('question', $questionNew);
         $this->display();
     }
 
@@ -326,5 +332,9 @@ class GameAction extends Action{
             @flush();
             $_SESSION['message'] = $messageNew;
         }
+    }
+
+    public function again(){
+
     }
 }

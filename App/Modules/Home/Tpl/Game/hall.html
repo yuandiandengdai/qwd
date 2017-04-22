@@ -92,20 +92,12 @@
                 <div class="row">
                     <div class="col-md-4">
                         <fieldset>
-                            <div class="radio radio-success">
-                                <input type="radio" id="singleRadio1" value="1" name="question" data-rule="checked"/>
-                                <label style="font-size: 18px;">都是感受到</label>
-                            </div>
-                            <div class="radio radio-success">
-                                <input type="radio" id="singleRadio2" value="2" name="question"/>
-                                <label style="font-size: 18px;">个地方官</label>
+                            <div class="radio radio-success" id="question_text">
                             </div>
                         </fieldset>
                     </div>
                 </div>
             </div>
-            <!--<input class="form-control" type="text" id="answer_check" placeholder="请在这里输入你的答案"-->
-                   <!--value="" required/>-->
         </div>
         <button type="button" currentItem="1" class="btn btn-primary" id="to_validation" onclick="loadPageData()">提交验证
         </button>
@@ -142,14 +134,23 @@
     <volist name="question" id="val">
         <p class="subject"><input type="hidden" class="qid" name="qid" value="{$val.id}" id="question_id"/>{$val.question}
         </p>
+        <p class="subject_text"><input type="hidden" class="qid_text" name="qid_text" value="{$val.id}" id="question_id_text"/>
+            <volist name="val['answer_text']" id="item" key="k">
+                <input type="radio" value="{$k}" name="question"/>
+                <label style="font-size: 18px;">{$item}</label><br>
+            </volist>
+        </p>
     </volist>
 </span>
+<input type="hidden" name="player" id="player" value="<?php echo $_SESSION['uid'] ?>">
 <include file="Public:footerhall"/>
 <script type="text/javascript">
-    var flag = true;
+    var Config = {root: '/'};
+    var flag = 1;
     var questionId = '';
     $(function () { //初始化游戏题目信息
         $('#question_show').html($('.subject').first().html());
+        $('#question_text').html($('.subject_text').first().html());
     });
     var es = new EventSource("__ROOT__/Game/information");
     es.addEventListener("message", function (event) {
@@ -176,8 +177,10 @@
     var qid = new EventSource("__ROOT__/Game/questionId");
     qid.addEventListener("message", function (event) {
         var x = $('.subject').eq(event.data).html(); //获取下一道题目的问题
+        var y = $('.subject_text').eq(event.data).html();
         if (questionId >= 1) {
             $('#question_show').html(x); //显示赋值
+            $('#question_text').html(y);
         }
     }, false);
 
@@ -188,13 +191,25 @@
 
     var counter = new EventSource("__ROOT__/Game/counter");
     counter.addEventListener("message", function (event) {
-        if ((event.data == 0) && (flag == true)) {
+        if ((event.data == 0) && (flag == 1)) {
+            flag = 2;
             var flashMsg = setFlash("本局比赛结束");
             $('#content').html(flashMsg).find('.flashmsg').flashOut();
             $('.game_body').hide(3000);
             $('#to_validation').text("游戏结束");
             $("#to_validation").attr("disabled", true);
-            flag = false;
+        }else if(flag == 2){
+            flag =3;
+            if(window.confirm('再来一局么？')){
+                var uid = $('#player').val();
+                $.post(Config.root + 'Home/Game/again', {id: uid}, function (data) {
+                    if (data == 200) {
+                        window.location = Config.root + 'Home/Game/again';
+                    }
+                });
+            }else {
+                return false;
+            }
         }
     }, false);
 

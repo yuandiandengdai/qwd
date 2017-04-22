@@ -1,22 +1,48 @@
 <include file="Public:header"/>
+<style type="text/css">
+    .thumbnail {
+        display: block;
+        padding: 4px;
+        width: 110px;
+        height: 110px;
+        margin-bottom: 20px;
+        line-height: 1.42857143;
+        background-color: #fff;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        -webkit-transition: border .2s ease-in-out;
+        -o-transition: border .2s ease-in-out;
+        transition: border .2s ease-in-out
+    }
 
+    a.thumbnail:hover, a.thumbnail:focus, a.thumbnail.active {
+        border-color: #d9534f;
+    }
+
+    .font-size {
+        font-size: 16px;
+    }
+</style>
 <h2 style="text-align: center; margin-bottom: 20px; margin-left: 18px">房间列表</h2>
 <div class="row">
     <div class="col-md-12">
         <div class="col-md-4">
-            <span>234325345在04-21 16:05:57进入4号房5号桌342342345345345345345</span>
-            <span>234325345在04-21 16:05:57进入4号房5号桌</span>
-            <span>234325345在04-21 16:05:57进入4号房5号桌</span>
-            <span>234325345在04-21 16:05:57进入4号房5号桌</span>
-            <span>234325345在04-21 16:05:57进入4号房5号桌</span>
-            <span>234325345在04-21 16:05:57进入4号房5号桌</span>
-            <span>234325345在04-21 16:05:57进入4号房5号桌</span>
-            <span>234325345在04-21 16:05:57进入4号房5号桌</span>
-            <span>234325345在04-21 16:05:57进入4号房5号桌</span>
-            <span>234325345在04-21 16:05:57进入4号房5号桌</span>
-            <span>234325345在04-21 16:05:57进入4号房5号桌</span>
-            <span>234325345在04-21 16:05:57进入4号房5号桌</span>
-            <span>234325345在04-21 16:05:57进入4号房5号桌</span>
+            <volist name="add_time" id="val">
+                <span style="margin-bottom: 5px">
+                    <span class="ply_join_game">
+                        <a href="javascript:void(0)">
+                            <span id="time_name_{$val.id}" class="font-size">
+                            </span><span class="font-size">&nbsp;进入</span>
+                            <span id="rid_{$val.id}" class="font-size">
+                            </span><span class="font-size">号房</span>
+                            <span id="tid_{$val.id}" class="font-size">
+                            </span><span class="font-size">号桌</span>
+                        </a>
+                    </span>
+                        <span class="ply_join_time font-size" id="time_{$val.id}">
+                    </span>
+                </span>
+            </volist>
 
         </div>
         <div class="col-md-8" style="margin-left: -35px">
@@ -25,7 +51,8 @@
                     <div class="col-xs-2" style="text-align: center; margin: 5px">
                         <a href="javascript:void(0)" onclick="select_room({$val.id})" class="thumbnail">
                             <button class="panel" style="height: 100px ;width: 100px;background-color: #337ab7">
-                                <span style="color: white; font-size: 20px"><span id="room_{$val['id']}">{$val['id']}</span>号房间</span>
+                                <span style="color: white; font-size: 20px"><span
+                                        id="room_{$val['id']}">{$val['id']}</span>号房间</span>
                             </button>
                         </a>
                     </div>
@@ -37,7 +64,8 @@
                     <div class="col-xs-2" style="text-align: center;margin: 5px">
                         <a href="javascript:void(0)" onclick="select_room({$val.id})" class="thumbnail">
                             <button class="panel" style="height: 100px ;width: 100px;background-color: #337ab7">
-                                <span style="color: white; font-size: 20px"><span id="room_{$val['id']}">{$val['id']}</span>号房间</span>
+                                <span style="color: white; font-size: 20px"><span
+                                        id="room_{$val['id']}">{$val['id']}</span>号房间</span>
                             </button>
                         </a>
                     </div>
@@ -49,7 +77,8 @@
                     <div class="col-xs-2" style="text-align: center;margin: 5px">
                         <a href="javascript:void(0)" onclick="select_room({$val.id})" class="thumbnail">
                             <button class="panel" style="height: 100px ;width: 100px;background-color: #337ab7">
-                                <span style="color: white; font-size: 20px"><span id="room_{$val['id']}">{$val['id']}</span>号房间</span>
+                                <span style="color: white; font-size: 20px"><span
+                                        id="room_{$val['id']}">{$val['id']}</span>号房间</span>
                             </button>
                         </a>
                     </div>
@@ -77,4 +106,15 @@
             }
         });
     }
+
+    var time = new EventSource("__ROOT__/Rank/time");
+    time.addEventListener("message", function (event) {
+        var data = JSON.parse(event.data);
+        for (var k in data) {
+            $('#time_name_' + data[k]['id']).text(data[k]['name']);
+            $('#rid_' + data[k]['id']).text(data[k]['rid']);
+            $('#tid_' + data[k]['id']).text(data[k]['tid']);
+            $('#time_' + data[k]['id']).text(data[k]['add_time']);
+        }
+    }, false);
 </script>

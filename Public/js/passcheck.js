@@ -11,7 +11,6 @@ function loadPageData() {
     var flag = false;
     for (var i = 0; i < answer1.length; i++) {
         if (answer1[i].checked) {
-            alert(answer1[i].value);
             flag = true;
         }
     }

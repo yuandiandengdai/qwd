@@ -8,5 +8,5 @@
  */
 class QuestionModel extends Model{
     protected $trueTableName = 'question';
-    protected $fields = array('id', 'question', 'answer', 'status');
+    protected $fields = array('id', 'question', 'answer_text', 'answer', 'status');
 }

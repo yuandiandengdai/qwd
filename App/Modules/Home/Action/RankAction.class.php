@@ -8,7 +8,7 @@
  */
 class RankAction extends Action{
     public function index(){
-        $counter = D('Member')->field('id,name,win')->order('win DESC')->limit(9)->select();
+        $counter = D('Member')->field('id,name,win')->order('win DESC')->select();
         $add_time = D('Member')->field('id,name,rid,add_time')->order('add_time DESC')->limit(9)->select();
         $room = D('Desk')->field('id,rid,tid')->limit(9)->select();
         $this->assign('counter', $counter);
@@ -24,7 +24,7 @@ class RankAction extends Action{
         header("X-Accel-Buffering: no");
         header("Content-Type: text/event-stream");
         header("Cache-Control: no-cache");
-        $counter = D('Member')->field('id,name,win')->order('win DESC')->limit(9)->select();
+        $counter = D('Member')->field('id,name,win')->order('win DESC')->select();
         echo 'data:' . json_encode($counter) . "\n\n";
         @ob_flush();
         @flush();
@@ -37,9 +37,9 @@ class RankAction extends Action{
         header("X-Accel-Buffering: no");
         header("Content-Type: text/event-stream");
         header("Cache-Control: no-cache");
-        $add_time = D('Member')->field('id,name,rid,tid,add_time')->order('add_time DESC')->limit(9)->select();
+        $add_time = D('Member')->field('id,name,rid,tid,add_time')->order('add_time DESC')->select();
         foreach($add_time as $key => $val){
-            $add_time[$key]['add_time'] = date('m-d H:i:s', $add_time[$key]['add_time']);
+            $add_time[$key]['add_time'] = date('Y-m-d H:i:s', $add_time[$key]['add_time']);
         }
         echo 'data:' . json_encode($add_time) . "\n\n";
         @ob_flush();

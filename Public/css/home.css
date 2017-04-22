@@ -372,21 +372,20 @@ input {
 }
 
 .ply_join_game {
-    margin-left: 20px;
+    margin-left: -10px;
     /*text-align: center;*/
     float: left;
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
     display: -moz-inline-box;
-    width: 230px;
 }
 
 .ply_join_time {
-    margin-left: 35px;
+    margin-right: 10px;
     text-align: center;
-    /*float :left ;*/
-    width: 135px;
+    float :right ;
+    /*width: 135px;*/
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
