@@ -4,7 +4,7 @@
 
     <div class="container" id="all_info">
         <h2 id="game_order_info">排行榜</h2>
-        <div id="leader_info"  style="margin-left: 200px">
+        <div id="leader_info"  style="margin-left: 390px">
             <div class="top_title">赢局排行榜</div>
             <volist name="counter" id="val">
                 <dt class="item_list_info">
@@ -13,19 +13,6 @@
                     <span class="xu_wei"><a href="javascript:void(0)"><span
                             id="name_{$val.id}"></span>&nbsp;总共赢得</a></span>
                     <span class="z_wu_pai_ming" id="win_{$val.id}"></span><span>&nbsp;局比赛</span>
-                </dt>
-            </volist>
-        </div>
-
-        <div id="room_info">
-            <div class="top_title">准确率排行榜</div>
-            <volist name="room" id="val">
-                <dt class="item_list_info">
-                    <span class="num_order" style="<?php if($i < 4){echo 'background-color:orange;color: #FFF;';} ?>">{$i}</span>
-                    <span class="ply_info"><a href="javascript:void(0)"><span
-                            id="room_{$val.id}"></span>&nbsp;在&nbsp;<span
-                            id="room_rid_{$val.id}"></span>&nbsp;号房&nbsp;<span id="room_tid_{$val.id}"></span>&nbsp;号桌赢局</a></span>
-                    <span class="ply_num"><span id="count_{$val.id}"></span>&nbsp;人在玩</span>
                 </dt>
             </volist>
         </div>

@@ -215,7 +215,7 @@ input {
     margin-right: 35px;
     font-size: 1.3em;
     text-align: center;
-    color: #dd3535;
+    color: black;
 }
 
 /*玩家的数量*/
@@ -399,10 +399,10 @@ p {
 }
 
 #game_start_button1 {
-    width: 62%;
+    width: 31%;
     margin-top: 20px; /*设置距离下一个标签底部的距离*/
     margin-bottom: 20px;
-    margin-left: 218px;
+    margin-left: 390px;
 }
 
 /*==================================================游戏排行结束========================================*/

@@ -131,45 +131,32 @@
 			<tbody>
 			<tr>
 				<td style="width: 30%">1号玩家</td>
-				<td style="width: 500px"></td>
+				<td style="width: 500px;color: #dd3535"><?php echo $data['member_one'] == $_SESSION['user_name'] ? $data['member_one']."&nbsp;&nbsp;[本玩家]"  : $data['member_one'] ; ?>
+				</td>
 			</tr>
 			<tr>
 				<td>2号玩家</td>
-				<td></td>
+				<td style="color: #dd3535">
+					<?php echo $data['member_two'] == $_SESSION['user_name'] ? $data['member_two']."&nbsp;&nbsp;[本玩家]"  : $data['member_two'] ; ?>
+				</td>
 			</tr>
 			<tr>
 				<td>3号玩家</td>
-				<td></td>
+				<td style="color: #dd3535">
+					<?php echo $data['member_three'] == $_SESSION['user_name'] ? $data['member_three']."&nbsp;&nbsp;[本玩家]"  : $data['member_three'] ; ?>
+				</td>
 			</tr>
 			</tbody>
 		</table>
 
-
-		<ol class="room_player_link" style="text-align: center">
-			<a href="javascript:void(0)">
-				<span class="room_player_font">1号玩家:</span>
-				<span class="room_name">&nbsp;
-					<?php echo $data['member_one'] == $_SESSION['user_name'] ? $data['member_one']."&nbsp;&nbsp;[本玩家]"  : $data['member_one'] ; ?></span>
-			</a>
-		</ol>
-
-		<ol class="room_player_link" style="text-align: center">
-			<a href="javascript:void(0)">
-				<span class="room_player_font">2号玩家:</span>
-				<span class="room_name">&nbsp;
-			<?php echo $data['member_two'] == $_SESSION['user_name'] ? $data['member_two']."&nbsp;&nbsp;[本玩家]"  : $data['member_two'] ; ?></span>
-				</span>
-			</a>
-		</ol>
-
-		<ol class="room_player_link" style="text-align: center">
-			<a href="javascript:void(0)">
-				<span class="room_player_font">3号玩家:</span>
-				<span class="room_name">&nbsp;
-					<?php echo $data['member_three'] == $_SESSION['user_name'] ? $data['member_three']."&nbsp;&nbsp;[本玩家]"  : $data['member_three'] ; ?></span>
-				</span>
-			</a>
-		</ol>
+		<volist name="message" id="val">
+			<ol class="room_player_link" style="text-align: center">
+				<a href="javascript:void(0)">
+					<span class="room_player_font" id="name_{$val.id}"></span>
+					<span class="room_name" id="message_{$val.id}">&nbsp;</span>
+				</a>
+			</ol>
+		</volist>
 	</div>
 </div>
 <span style="display: none">
@@ -190,6 +177,7 @@
 <script type="text/javascript">
     var Config = {root: '/'};
     var flag = 1;
+    var x = 1;
     var questionId = '';
     $(function () { //初始化游戏题目信息
         $('#question_show').html($('.subject').first().html());
@@ -242,23 +230,38 @@
             $('#to_validation').text("游戏结束");
             $("#to_validation").attr("disabled", true);
         } else if (flag == 2) {
-//            flag = 3;
-//            if (window.confirm('再来一局么？')) {
-//                var uid = $('#player').val();
-//                $.post(Config.root + 'Home/Game/again', {id: uid}, function (data) {
-//                    if (data == 200) {
-//                        window.location = Config.root + 'Home/Game/again';
-//                    }
-//                });
-//            } else {
-//                return false;
-//            }
+            flag = 3;
+            if (window.confirm('再来一局么？')) {
+                var uid = $('#player').val();
+                $.post(Config.root + 'Home/Game/again', {id: uid});
+            } else {
+                $.post(Config.root + 'Home/Game/again', {id: 0});
+                return false;
+            }
         }
     }, false);
 
-    var message = new EventSource("__ROOT__/Game/message");
-    message.addEventListener("message", function (event) {
+    var messages = new EventSource("__ROOT__/Game/message");
+    messages.addEventListener("message", function (event) {
         var flashMsg = setFlash(event.data);
         $('#content').html(flashMsg).find('.flashmsg').flashOut();
     }, false);
+
+    var message = new EventSource("__ROOT__/Game/again");
+    message.addEventListener("message", function (event) {
+        var data = JSON.parse(event.data);
+        for (var k in data) {
+            $('#name_' + data[k]['id']).text(data[k]['name'] + ':');
+            $('#message_' + data[k]['id']).text(data[k]['message']);
+        }
+    }, false);
+
+    var again = new EventSource("__ROOT__/Game/once");
+    again.addEventListener("message", function (event) {
+        if ((event.data == 4) ||  (event.data == 5) || (event.data == 6) ) {
+            window.location.reload();
+            $.post(Config.root + 'Home/Game/again', {id: -1});
+        }
+    }, false);
+
 </script>

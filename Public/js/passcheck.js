@@ -15,7 +15,7 @@ function loadPageData() {
         }
     }
     if (!flag) {
-        layer.alert('请选择答案');
+        // layer.alert('请选择答案');
     } else {
         $.ajax({
             type: "GET",
