@@ -316,7 +316,7 @@ input {
     text-overflow: ellipsis;
     white-space: nowrap;
     display: -moz-inline-box;
-    width: 220px;
+    width: 200px;
 }
 
 .z_wu_pai_ming {
@@ -324,8 +324,8 @@ input {
     /*margin-left: 5px;*/
     /*margin-right: 10px;*/
     /*float :left ;*/
-    width: 80px;
-    overflow: hidden;
+    width: 50px;
+    /*overflow: hidden;*/
     text-overflow: ellipsis;
     white-space: nowrap;
     display: -moz-inline-box;

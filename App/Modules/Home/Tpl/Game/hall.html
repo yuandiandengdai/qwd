@@ -1,140 +1,183 @@
 <include file="Public:headerhall"/>
 <h2>游戏大厅--{$room['id']}号房{$table}号桌</h2>
 <style type="text/css">
-    body {
-        overflow-x: hidden;
-    }
+	body {
+		overflow-x: hidden;
+	}
 
-    .radio {
-        padding-left: 20px;
-    }
+	.radio {
+		padding-left: 20px;
+	}
 
-    .radio label {
-        vertical-align: middle;
-        position: relative;
-        padding-left: 5px;
+	.radio label {
+		vertical-align: middle;
+		position: relative;
+		padding-left: 5px;
 
-    }
+	}
 
-    .radio label::before {
-        content: "";
-        position: absolute;
-        width: 17px;
-        height: 17px;
-        left: 0;
-        margin-left: -20px;
-        border: 1px solid #cccccc;
-        border-radius: 50%;
-        background-color: #fff;
-        -webkit-transition: border 0.15s ease-in-out;
-        -o-transition: border 0.15s ease-in-out;
-        transition: border 0.15s ease-in-out;
-    }
+	.radio label::before {
+		content: "";
+		position: absolute;
+		width: 17px;
+		height: 17px;
+		left: 0;
+		margin-left: -20px;
+		border: 1px solid #cccccc;
+		border-radius: 50%;
+		background-color: #fff;
+		-webkit-transition: border 0.15s ease-in-out;
+		-o-transition: border 0.15s ease-in-out;
+		transition: border 0.15s ease-in-out;
+	}
 
-    .radio label::after {
-        position: absolute;
-        content: " ";
-        width: 13px;
-        height: 13px;
-        left: 2px;
-        top: 2px;
-        margin-left: -20px;
-        border-radius: 100%;
-        background-color: #555555;
-        -webkit-transform: scale(0, 0);
-        -ms-transform: scale(0, 0);
-        -o-transform: scale(0, 0);
-        transform: scale(0, 0);
-        -webkit-transition: -webkit-transform 0.1s cubic-bezier(0.8, -0.33, 0.2, 1.33);
-        -moz-transition: -moz-transform 0.1s cubic-bezier(0.8, -0.33, 0.2, 1.33);
-        -o-transition: -o-transform 0.1s cubic-bezier(0.8, -0.33, 0.2, 1.33);
-        transition: transform 0.1s cubic-bezier(0.8, -0.33, 0.2, 1.33);
-    }
+	.radio label::after {
+		position: absolute;
+		content: " ";
+		width: 13px;
+		height: 13px;
+		left: 2px;
+		top: 2px;
+		margin-left: -20px;
+		border-radius: 100%;
+		background-color: #555555;
+		-webkit-transform: scale(0, 0);
+		-ms-transform: scale(0, 0);
+		-o-transform: scale(0, 0);
+		transform: scale(0, 0);
+		-webkit-transition: -webkit-transform 0.1s cubic-bezier(0.8, -0.33, 0.2, 1.33);
+		-moz-transition: -moz-transform 0.1s cubic-bezier(0.8, -0.33, 0.2, 1.33);
+		-o-transition: -o-transform 0.1s cubic-bezier(0.8, -0.33, 0.2, 1.33);
+		transition: transform 0.1s cubic-bezier(0.8, -0.33, 0.2, 1.33);
+	}
 
-    .radio input[type="radio"] {
-        opacity: 0;
-        z-index: 1;
-    }
+	.radio input[type="radio"] {
+		opacity: 0;
+		z-index: 1;
+	}
 
-    .radio input[type="radio"]:checked + label::after {
-        -webkit-transform: scale(1, 1);
-        -ms-transform: scale(1, 1);
-        -o-transform: scale(1, 1);
-        transform: scale(1, 1);
-    }
+	.radio input[type="radio"]:checked + label::after {
+		-webkit-transform: scale(1, 1);
+		-ms-transform: scale(1, 1);
+		-o-transform: scale(1, 1);
+		transform: scale(1, 1);
+	}
 
-    .radio-success input[type="radio"] + label::after {
-        background-color: #5cb85c;
-    }
+	.radio-success input[type="radio"] + label::after {
+		background-color: #5cb85c;
+	}
 
-    .radio-success input[type="radio"]:checked + label::before {
-        border-color: #5cb85c;
+	.radio-success input[type="radio"]:checked + label::before {
+		border-color: #5cb85c;
 
-    }
+	}
 
-    .radio-success input[type="radio"]:checked + label::after {
-        background-color: #5cb85c;
-    }
+	.radio-success input[type="radio"]:checked + label::after {
+		background-color: #5cb85c;
+	}
+
+	td {
+		color: #000;
+		border-width: 1px;
+		border-style: solid;
+		border-color: rgb(81, 130, 187);
+	}
+
+	tr, th {
+		border-width: 1px;
+		border-style: solid;
+		border-color: rgb(81, 130, 187);
+	}
+
+	td, th {
+		padding: 5px 10px;
+		font-size: 20px;
+		font-weight: bold;
+	}
 
 </style>
 <div>
-    <div id="chartContainer" style="width: 410px;height: 300px;float: left;margin-right: 8px">
-    </div>
-    <div style="width: 500px;margin: auto;padding-top: 0px;float: left">
-        <button id="card" type="button" class="btn btn-info btn-lg"></button>
-        <div id="content" class="cc"></div>
-        <div class="game_body">
-            <h3>本题题目：</h3>
-            <div class="alert alert-info" role="alert" id="question_show">
-            </div>
-            <h3>开始抢答：</h3>
-            <div class="container">
-                <div class="row">
-                    <div class="col-md-4">
-                        <fieldset>
-                            <div class="radio radio-success" id="question_text">
-                            </div>
-                        </fieldset>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <button type="button" currentItem="1" class="btn btn-primary" id="to_validation" onclick="loadPageData()">提交验证
-        </button>
-    </div>
-    <div style="width: 410px;height: 300px;float: left;margin-left: 20px">
-        <h3 style="text-align: center">本桌玩家</h3>
-        <ol class="room_player_link" style="text-align: center">
-            <a href="javascript:void(0)">
-                <span class="room_player_font">1号玩家:</span>
-                <span class="room_name">&nbsp;{$data['member_one']}</span>
-                <span class="room_player_font">准确率:</span>
-                <span class="player_num">&nbsp;{$room.count}</span>
-            </a>
-        </ol>
-        <ol class="room_player_link" style="text-align: center">
-            <a href="javascript:void(0)">
-                <span class="room_player_font">2号玩家:</span>
-                <span class="room_name">&nbsp;{$data['member_two']}</span>
-                <span class="room_player_font">准确率:</span>
-                <span class="player_num">&nbsp;{$room.count}</span>
-            </a>
-        </ol>
-        <ol class="room_player_link" style="text-align: center">
-            <a href="javascript:void(0)">
-                <span class="room_player_font">3号玩家:</span>
-                <span class="room_name">&nbsp;{$data['member_three']}</span>
-                <span class="room_player_font">准确率:</span>
-                <span class="player_num">&nbsp;{$room.count}</span>
-            </a>
-        </ol>
-    </div>
+	<div id="chartContainer" style="width: 410px;height: 300px;float: left;margin-right: 8px">
+	</div>
+	<div style="width: 500px;margin: auto;padding-top: 0px;float: left">
+		<h3 style="font-size: 20px;color: #428bca;margin-top: -5px;text-align: center">房间卡号：{$room['number']}</h3>
+		<button
+				id="card"
+				type="button"
+				class="btn btn-info btn-lg"></button>
+		<div id="content" class="cc"></div>
+		<div class="game_body">
+			<h3>本题题目：</h3>
+			<div class="alert alert-info" role="alert" id="question_show">
+			</div>
+			<h3>开始抢答：</h3>
+			<div class="container">
+				<div class="row">
+					<div class="col-md-4">
+						<fieldset>
+							<div class="radio radio-success" id="question_text">
+							</div>
+						</fieldset>
+					</div>
+				</div>
+			</div>
+		</div>
+		<button type="button" currentItem="1" class="btn btn-primary" id="to_validation" onclick="loadPageData()">提交验证
+		</button>
+	</div>
+	<div style="width: 400px;height: 500px;float: left;margin-left: 20px">
+		<h3 style="text-align: center;margin-top: 1px">本桌玩家</h3>
+		<table id="table-1" style="float: left;margin-left: 50px;width: ">
+			<tbody>
+			<tr>
+				<td style="width: 30%">1号玩家</td>
+				<td style="width: 500px"></td>
+			</tr>
+			<tr>
+				<td>2号玩家</td>
+				<td></td>
+			</tr>
+			<tr>
+				<td>3号玩家</td>
+				<td></td>
+			</tr>
+			</tbody>
+		</table>
+
+
+		<ol class="room_player_link" style="text-align: center">
+			<a href="javascript:void(0)">
+				<span class="room_player_font">1号玩家:</span>
+				<span class="room_name">&nbsp;
+					<?php echo $data['member_one'] == $_SESSION['user_name'] ? $data['member_one']."&nbsp;&nbsp;[本玩家]"  : $data['member_one'] ; ?></span>
+			</a>
+		</ol>
+
+		<ol class="room_player_link" style="text-align: center">
+			<a href="javascript:void(0)">
+				<span class="room_player_font">2号玩家:</span>
+				<span class="room_name">&nbsp;
+			<?php echo $data['member_two'] == $_SESSION['user_name'] ? $data['member_two']."&nbsp;&nbsp;[本玩家]"  : $data['member_two'] ; ?></span>
+				</span>
+			</a>
+		</ol>
+
+		<ol class="room_player_link" style="text-align: center">
+			<a href="javascript:void(0)">
+				<span class="room_player_font">3号玩家:</span>
+				<span class="room_name">&nbsp;
+					<?php echo $data['member_three'] == $_SESSION['user_name'] ? $data['member_three']."&nbsp;&nbsp;[本玩家]"  : $data['member_three'] ; ?></span>
+				</span>
+			</a>
+		</ol>
+	</div>
 </div>
 <span style="display: none">
     <volist name="question" id="val">
         <p class="subject"><input type="hidden" class="qid" name="qid" value="{$val.id}" id="question_id"/>{$val.question}
         </p>
-        <p class="subject_text"><input type="hidden" class="qid_text" name="qid_text" value="{$val.id}" id="question_id_text"/>
+        <p class="subject_text"><input type="hidden" class="qid_text" name="qid_text" value="{$val.id}"
+                                       id="question_id_text"/>
             <volist name="val['answer_text']" id="item" key="k">
                 <input type="radio" value="{$k}" name="question"/>
                 <label style="font-size: 18px;">{$item}</label><br>
@@ -198,18 +241,18 @@
             $('.game_body').hide(3000);
             $('#to_validation').text("游戏结束");
             $("#to_validation").attr("disabled", true);
-        }else if(flag == 2){
-            flag =3;
-            if(window.confirm('再来一局么？')){
-                var uid = $('#player').val();
-                $.post(Config.root + 'Home/Game/again', {id: uid}, function (data) {
-                    if (data == 200) {
-                        window.location = Config.root + 'Home/Game/again';
-                    }
-                });
-            }else {
-                return false;
-            }
+        } else if (flag == 2) {
+//            flag = 3;
+//            if (window.confirm('再来一局么？')) {
+//                var uid = $('#player').val();
+//                $.post(Config.root + 'Home/Game/again', {id: uid}, function (data) {
+//                    if (data == 200) {
+//                        window.location = Config.root + 'Home/Game/again';
+//                    }
+//                });
+//            } else {
+//                return false;
+//            }
         }
     }, false);
 

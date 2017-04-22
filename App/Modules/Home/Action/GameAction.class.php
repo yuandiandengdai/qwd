@@ -109,19 +109,6 @@ class GameAction extends Action{
             $_SESSION['clear_did'] = $id;  //session赋值给刚刚进入的房间号,用于清空房间信息
             $_SESSION['time_did'] = time();   //session赋值给时间，监测 30 分钟内如果房间没有满人，则清空$_SESSION['did']所在玩家的信息
         }
-//        $time = time() - $_SESSION['time_did'];
-//        $desk = D('Desk')->where(array('rid' => $_SESSION['rid'], 'tid' => $_SESSION['tid']))->find();
-//        if(($time > 60) && ($desk['number'] != 3)){
-//            D('Desk')->where(array('rid' => $_SESSION['rid'], 'tid' => $_SESSION['tid']))->setDec('number');
-//            $member = D('Desk')->field('member_one,member_two,member_three')->where(array('rid' => $_SESSION['rid'], 'tid' => $_SESSION['tid']))->find();
-//            foreach($member as $key => $value){
-//                if($value == $_SESSION['user_name']){
-//                    D('Desk')->where(array('rid' => $_SESSION['rid'], 'tid' => $_SESSION['tid']))->setField($key, '');
-//                }
-//            }
-//            unset($_SESSION['clear_did']); // 释放玩家当时所在房间号
-//        }
-
         $data = D('Desk')->where('rid=%d', $_SESSION['rid'])->order('tid ASC')->select();
         echo 'data:' . json_encode($data) . "\n\n";
         @ob_flush();
@@ -226,6 +213,14 @@ class GameAction extends Action{
                     echo createResponseJson(2, "{$_SESSION['user_name']}" . '回答正确，再接再厉！', $numberto);
                 }else if(intval($id) == (strlen($number) - 1)){ //游戏结束
                     $counter = array();
+
+                    $member = D('Desk')->field('member_one,member_two,member_three')->where(array('rid' => $_SESSION['rid'], 'tid' => $_SESSION['tid']))->find();
+                    foreach($member as $key => $value){
+                        if($value == $_SESSION['user_name']){
+                            D('Desk')->where(array('rid' => $_SESSION['rid'], 'tid' => $_SESSION['tid']))->setInc($key . '_counter'); //记录玩家答对的题目数量
+                        }
+                    }
+
                     $counter['one'] = D('Desk')->where(array('rid' => $_SESSION['rid'], 'tid' => $_SESSION['tid']))->getField('member_one_counter');
                     $counter['two'] = D('Desk')->where(array('rid' => $_SESSION['rid'], 'tid' => $_SESSION['tid']))->getField('member_two_counter');
                     $counter['three'] = D('Desk')->where(array('rid' => $_SESSION['rid'], 'tid' => $_SESSION['tid']))->getField('member_three_counter');
@@ -241,6 +236,7 @@ class GameAction extends Action{
                     D('Desk')->where(array('rid' => $_SESSION['rid'], 'tid' => $_SESSION['tid']))->setField('winner', $winner); //游戏结束，记录最多的赢数玩家
 
                     D('Member')->where(array('name' => $winner))->setInc('win');
+                    D('Member')->where(array('id' => $_SESSION['uid']))->setInc('correct'); //玩家答对书加一
 
                     D('Desk')->where(array('rid' => $_SESSION['rid'], 'tid' => $_SESSION['tid']))->setField('question_counter', 0); //游戏结束，未答题数清空
                     D('Desk')->where(array('rid' => $_SESSION['rid'], 'tid' => $_SESSION['tid']))->setField('question', ''); //游戏结束，清空题库
@@ -335,6 +331,9 @@ class GameAction extends Action{
     }
 
     public function again(){
+        if(IS_POST){
+            $uid = $_POST['id'];
 
+        }
     }
 }
