@@ -196,7 +196,7 @@ class GameAction extends Action{
         }
         $number = D('Room')->where(array('id' => $_SESSION['rid']))->getField('number');
         if (IS_GET) {
-            $memberAnswer = I('get.memberAnswer');
+            $memberAnswer = $this->_get('memberAnswer');
             $qid = I('get.qid');
             $currentItem = I('get.c');
             $answer = D('Question')->where(array('id' => $qid))->getField('answer');

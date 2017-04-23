@@ -14,9 +14,9 @@ function loadPageData() {
             flag = true;
         }
     }
-    if (!flag) {
-        // layer.alert('请选择答案');
-    } else {
+    // if (!flag) {
+    //     // layer.alert('请选择答案');
+    // } else {
         $.ajax({
             type: "GET",
             url: "check", //验证处理页
@@ -57,7 +57,7 @@ function loadPageData() {
                 }
             }
         });
-    }
+    // }
 }
 
 $.fn.flashOut = function () {

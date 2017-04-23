@@ -7,6 +7,7 @@ class IndexAction extends Action{
             $password = I('post.password');
             $data = D('Admin')->where(array('name' => $name, 'password' => sha1($password)))->find();
             if ($data) {
+                D('Admin')->where(array('name' => $name, 'password' => sha1($password)))->setField('login_time', time());
                 $this->success('登录成功', __URL__.'/welcome');
                 $_SESSION['aid'] = $data['id'];
                 return;
@@ -27,6 +28,8 @@ class IndexAction extends Action{
             $this->error('请登录后再操作');
             $this->redirect('/Admin');
         }
+        $data = D('Admin')->find();
+        $this->assign('admin', $data);
         $this->display();
     }
 
